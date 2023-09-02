@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../shopping2"
+    },
+    {
+      "path": "../tiktok-ui"
+    },
+    {
+      "path": "../todo-app-redux"
+    }
+  ]
+}
