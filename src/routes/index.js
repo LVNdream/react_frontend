@@ -4,6 +4,7 @@ import Products from "../page/Products";
 import ProductDetail from "../page/Products/productDetail/ProductDetail";
 import Register from "../page/accountClient/Register";
 import Cart from "../page/Cart/Cart";
+import Payment from "../page/Payment/Payment";
 
 
 
@@ -17,6 +18,8 @@ const publicRoutes = [
     { path: '/products/men/detail/:id', component: ProductDetail,layout:LayoutCilent},
     { path: '/cilent/register', component: Register,layout:LayoutCilent},
     { path: '/cart', component: Cart,layout:LayoutCilent},
+    { path: '/payment', component: Payment,layout:LayoutCilent},
+
 
     
     

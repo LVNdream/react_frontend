@@ -60,7 +60,7 @@ function Products(props) {
   const dispatch = useDispatch();
   dispatch(productsSlice.actions.setProductsList(products));
   const productsList = useSelector(productsAfterFilter);
-  console.log(productsList);
+  // console.log(productsList);
 
   // console.log(keyFilter)
   // useEffect(()=>{

@@ -100,8 +100,10 @@ main {
 .itemStyle {
   gap: 15px;
 }
-// .productInCart--quantity{
-// }
+.productInCart--quantity{
+  align-items: center;
+  gap: 15px;
+}
 .input--quantity {
   width: 35px;
   height: 25px;
@@ -135,4 +137,10 @@ main {
   cursor: pointer;
   color: #5f272790;
   font-size: 25px;
+}
+.btnUpdateQuantity{
+  height: 27px;
+  width: 85px;
+  font-size: 13px !important;
+  text-align: center !important;
 }

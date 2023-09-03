@@ -5,7 +5,10 @@ export const searchTextSelector = (state) => {
 };
 
 export const productsListSelector = (state) => {
-  return state.products.productsList
+  return state.products.productsList;
+};
+export const cartSelector = (state) => {
+  return state.cart.items;
 };
 
 // export const filterStatusSelector = (state) => {
@@ -20,8 +23,6 @@ export const productsAfterFilter = createSelector(
   searchTextSelector,
   productsListSelector,
   (searchText, productsList) => {
-
-
     // const aaaaa=productsList.productsList.filter((product) => {
     //     return product.name.includes(searchText);
     //   });
@@ -31,7 +32,7 @@ export const productsAfterFilter = createSelector(
     // console.log(productsList);
 
     if (productsList.length === 0) {
-        return []
+      return [];
     } else {
       return productsList.filter((product) => {
         return product.name_product.includes(searchText);
@@ -39,6 +40,24 @@ export const productsAfterFilter = createSelector(
     }
   }
 );
+
+export const totalItem = createSelector(cartSelector, (cartSelector) => {
+  // console.log(cartSelector);
+  const total = cartSelector.reduce((total, item) => {
+    return total + 1;
+  }, 0);
+  // console.log(total);
+  return total;
+});
+
+export const totalMoney = createSelector(cartSelector, (cartSelector) => {
+  // console.log(cartSelector);
+  const total = cartSelector.reduce((total, item) => {
+    return total + item.quantity * item.price_product;
+  }, 0);
+  // console.log(total);
+  return total;
+});
 
 // cach lam thu cong khi serachText
 // export const todoListSelector = (state) => {

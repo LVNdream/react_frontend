@@ -9,8 +9,9 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { filtersSlice } from "./filtersSlice";
+import { totalItem, totalMoney } from "../../../../redux/selector";
 const cx = className.bind(styles);
 
 function Header() {
@@ -32,6 +33,12 @@ function Header() {
     // dispatch(searchFilterChange(e.target.value));
     dispatch(filtersSlice.actions.searchFilterChange(e.target.value));
   };
+
+  const totalItemInCart = useSelector(totalItem);
+  // console.log(totalItemInCart);
+
+  const totalMoneyInCart = useSelector(totalMoney);
+  // console.log(totalMoneyInCart);
 
   return (
     <>
@@ -65,7 +72,6 @@ function Header() {
                     className={cx("list--fashion__link")}
                     to={"/products/men/aothun"}
                   >
-                    {" "}
                     <p>Áo thun</p>
                   </Link>
                   {/* <p className={cx("list--fashion__link")}>Áo thun</p> */}
@@ -75,7 +81,6 @@ function Header() {
                     className={cx("list--fashion__link")}
                     to={"/products/men/aosomi"}
                   >
-                    {" "}
                     <p>Áo sơ mi</p>
                   </Link>
 
@@ -348,7 +353,7 @@ function Header() {
               >
                 <FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>
 
-                <p className={cx("number-items")}>0</p>
+                <p className={cx("number-items")}>{totalItemInCart}</p>
               </div>
               {openCart === true ? (
                 <div
@@ -358,7 +363,15 @@ function Header() {
                   <h5>GIỎ HÀNG</h5>
                   <hr />
                   <div className={cx("customerCart")}>
-                    <p className={cx("noItemInCart")}>Hiện chưa có sản phẩm</p>
+                    {totalItemInCart < 0 ? (
+                      <p className={cx("noItemInCart")}>
+                        Hiện chưa có sản phẩm
+                      </p>
+                    ) : (
+                      <p className={cx("noItemInCart")}>
+                        Hiện đã có {totalItemInCart} trong giỏ hàng
+                      </p>
+                    )}
                   </div>
                   <div
                     className={cx(
@@ -369,7 +382,9 @@ function Header() {
                     )}
                   >
                     <h5>TỔNG TIỀN:</h5>
-                    <p className={cx("cost")}>0</p>
+                    <p className={cx("cost")}>
+                      {totalItemInCart > 0 ? totalMoneyInCart  : "0"}
+                    </p>
                   </div>
                   <div
                     className={cx(
