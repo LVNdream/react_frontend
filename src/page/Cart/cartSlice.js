@@ -15,7 +15,11 @@ export const cartSlice = createSlice({
       let new_cart = state.items;
 
       const exist_itemIndex_inCart = state.items.findIndex((product) => {
-        return product.id_product === action.payload.id_product;
+        return (
+          product.id_product === action.payload.id_product &&
+          product.size === action.payload.size &&
+          product.color === action.payload.color
+        );
       });
       // console.log(exist_itemIndex_inCart);
 
@@ -34,9 +38,14 @@ export const cartSlice = createSlice({
       // console.log(new_cart);
 
       let new_cart = state.items;
+      // console.log(new_cart);
 
       const exist_itemIndex_inCart = state.items.findIndex((product) => {
-        return product.id_product === action.payload.id_product;
+        return (
+          product.id_product === action.payload.id_product &&
+          product.size === action.payload.size &&
+          product.color === action.payload.color
+        );
       });
       // console.log(exist_itemIndex_inCart);
 
@@ -48,6 +57,31 @@ export const cartSlice = createSlice({
       }
 
       // console.log(state.items);
+    },
+    DeleteItemInCart: (state, action) => {
+      // console.log(state.items);
+      // console.log(action.payload.id_product);
+      // console.log(action.payload.size);
+      // console.log(action.payload.color);
+
+      const newCart = state.items.filter((item) => {
+        // console.log(
+        //   !(
+        //     item.id_product === action.payload.id_product &&
+        //     item.size === action.payload.size &&
+        //     item.color === action.payload.color
+        //   )
+        // );
+
+        return !(
+          item.id_product === action.payload.id_product &&
+          item.size === action.payload.size &&
+          item.color === action.payload.color
+        );
+      });
+
+      // // console.log(newCart);
+      state.items = newCart;
     },
   },
 });

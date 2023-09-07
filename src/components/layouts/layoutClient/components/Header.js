@@ -43,7 +43,7 @@ function Header() {
   return (
     <>
       {/* <h1 id={cx('nhut')} >adsa</h1> */}
-      <header className={cx("container")}>
+      <header className={cx("container","")}>
         <div className={cx("titleFS")}>
           <p className={cx("titleFS_IF")}>
             Miễn phí vận chuyển cho đơn hàng trên <strong>300k</strong>
@@ -109,11 +109,11 @@ function Header() {
               </ul>
             </li>
             <li className={cx("option-of__nav", "option-of__nav--deep")}>
-              <p className={cx("list_link")}>
+              <Link className={cx("list_link")}>
                 Thời trang nữ
                 {/* <i className={cx("down fa-solid fa-angle-down")}></i> */}
                 <FontAwesomeIcon icon={faAngleDown}></FontAwesomeIcon>
-              </p>
+              </Link>
               <ul className={cx("list--fashion")}>
                 <li className={cx("list--fashion__selectors")}>
                   <p className={cx("list--fashion__link")}>Áo thun</p>
@@ -144,13 +144,13 @@ function Header() {
               </ul>
             </li>
             <li className={cx("option-of__nav")}>
-              <p className={cx("list_link")}>Phụ kiện</p>
+              <Link className={cx("list_link")}>Phụ kiện</Link>
             </li>
             <li className={cx("option-of__nav ", "option-of__nav--deep  ")}>
-              <p className={cx("list_link")}>
+              <Link className={cx("list_link")}>
                 Thông tin
                 <i className={cx("down fa-solid fa-angle-down")}></i>
-              </p>
+              </Link>
               <ul className={cx("list--fashion")}>
                 <li className={cx("list--fashion__selectors")}>
                   <p className={cx("list--fashion__link")}>Liên hệ</p>

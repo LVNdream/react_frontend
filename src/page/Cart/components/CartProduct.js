@@ -1,29 +1,42 @@
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./cartproduct.module.scss";
 import { useDispatch } from "react-redux";
 import { cartSlice } from "../cartSlice";
 // import { totalMoney } from "../../../redux/selector";
 
+// ES6 Modules or TypeScript
+import Swal from "sweetalert2";
+
+// CommonJS
+
 function CartProduct(props) {
+  // const Swal = require("sweetalert2");
   const {
     // caterogy_product,
 
-    // id_product,
+    id_product,
 
     name_product,
 
     price_product,
 
     quantity,
+    size,
+    color,
 
     // type_product,
 
     picture_product,
   } = props.product;
+
+  // console.log(quantity);
   const [inputQuantity, setInputQuantity] = useState(quantity);
+  useEffect(() => {
+    setInputQuantity(quantity);
+  }, [quantity]);
   const cx = classNames.bind(styles);
 
   const dispatch = useDispatch();
@@ -45,6 +58,24 @@ function CartProduct(props) {
     }
   };
 
+  const hadleDeleteOnClick = (product) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(cartSlice.actions.DeleteItemInCart(product));
+
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      }
+    });
+  };
+
   return (
     <div className={cx("article--borderCart", "mt-3")}>
       <div className={cx("productIncart", "d-flex")}>
@@ -59,8 +90,8 @@ function CartProduct(props) {
             <p hidden>2410</p>
             <p className={cx("productInCart--name")}>{name_product}</p>
             <div className={cx("d-flex", "itemStyle")}>
-              <p className={cx("productInCart--size")}>M</p>
-              <p className={cx("productInCart--color")}>Do</p>
+              <p className={cx("productInCart--size")}>{size}</p>
+              <p className={cx("productInCart--color")}>{color}</p>
             </div>
             <div className={cx("productInCart--quantity", "d-flex")}>
               <div className={cx("d-flex")}>
@@ -111,7 +142,12 @@ function CartProduct(props) {
               </button>
             </div>
           </div>
-          <div className={cx("delete--product", "col-2")}>
+          <div
+            className={cx("delete--product", "col-2")}
+            onClick={() => {
+              hadleDeleteOnClick({ size, color, id_product });
+            }}
+          >
             {/* <i className={cx("fa-solid fa-trash iconDelete")}></i>
              */}
             <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>

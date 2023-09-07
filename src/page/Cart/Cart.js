@@ -4,6 +4,7 @@ import styles from "./cart.module.scss";
 import CartProduct from "./components/CartProduct";
 import { useSelector } from "react-redux";
 import { cartSelector, totalItem, totalMoney } from "../../redux/selector";
+import { Link } from "react-router-dom";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,8 +15,8 @@ function Cart() {
   const totalMoneyInCart = useSelector(totalMoney);
   const itemInCart = useSelector(cartSelector);
   // console.log({
-  //   totalItemInCart,
-  //   totalMoneyInCart,
+  // //   totalItemInCart,
+  // //   totalMoneyInCart,
   //   itemInCart,
   // });
   return (
@@ -23,12 +24,18 @@ function Cart() {
       <h1 className={cx("title--cart")}>Giỏ hàng của bạn</h1>
       <div className={cx("article--main", "d-flex", "justify-content-between")}>
         <div className={cx("article-productInCart")}>
-        {totalItemInCart<0?<p className={cx("itemCount")}>Giỏ hàng của bạn đang trống</p>:itemInCart.map((product)=>{
-          return(
-            <CartProduct key={product.id_product} product={product}></CartProduct>
-          )
-        })}
-
+          {!totalItemInCart || totalItemInCart < 0 ? (
+            <p className={cx("itemCount")}>Giỏ hàng của bạn đang trống</p>
+          ) : (
+            itemInCart.map((product,index) => {
+              return (
+                <CartProduct
+                  key={product.id_product+index}
+                  product={product}
+                ></CartProduct>
+              );
+            })
+          )}
         </div>
         <div className={cx("infor--order")}>
           <div className={cx("ordered", "container")}>
@@ -36,22 +43,35 @@ function Cart() {
             <hr />
             <div className={cx("d-flex", "justify-content-between")}>
               <h6 className={cx("mt-2")}>Tổng tiền:</h6>
-              <p className={cx("ordered--cost", "fw-bold")}>{totalItemInCart<0?"0":totalMoneyInCart}</p>
+              <p className={cx("ordered--cost", "fw-bold")}>
+                {totalItemInCart < 0 ? "0" : totalMoneyInCart}
+              </p>
             </div>
             <hr />
             <ul>
               <li>Phí vận chuyển sẽ được tính ở trang thanh toán.</li>
               <li>Bạn cũng có thể nhập mã giảm giá ở trang thanh toán.</li>
             </ul>
-            <a id="pay--link" href="/pay">
-              <button
-                type="submit"
-                className={cx("btn", "btn-danger", "pay--button")}
-                id="pay--button"
-              >
-                THANH TOÁN
-              </button>
-            </a>
+            <Link id="pay--link" to={"/payment"}>
+              {!totalItemInCart || totalItemInCart < 0 ? (
+                <button
+                  type="submit"
+                  className={cx("btn", "btn-danger", "pay--button")}
+                  id="pay--button"
+                  disabled
+                >
+                  THANH TOÁN
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className={cx("btn", "btn-danger", "pay--button")}
+                  id="pay--button"
+                >
+                  THANH TOÁN
+                </button>
+              )}
+            </Link>
           </div>
           <div className={cx("ordered--policy", "container")}>
             <h5>Chính sách mua hàng:</h5>

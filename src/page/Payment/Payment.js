@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./payment.module.scss";
+import PayProduct from "./components/PayProduct";
+import { useSelector } from "react-redux";
+import { cartSelector, totalMoney } from "../../redux/selector";
+import { Link } from "react-router-dom";
 
 function Payment() {
   const cx = classNames.bind(styles);
+
+  // const totalItemInCart = useSelector(totalItem);
+  const totalMoneyInCart = useSelector(totalMoney);
+  const itemInCart = useSelector(cartSelector);
+
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [recive, setrecive] = useState("Giao tận nơi");
+  const [adress, setAdress] = useState("");
+  const [payMethod, setPayMethod] = useState("Thanh toán khi nhận hàng");
+  const [note, setNote] = useState("");
+
+
+
+  // console.log(itemInCart);
+
+  console.log({ fullname, email, phone, recive, adress, payMethod, note ,itemInCart});
+
   return (
     <div>
       <main className={cx("container", "mt-4")}>
@@ -18,93 +41,91 @@ function Payment() {
                   "between tilte--pay"
                 )}
               >
-                <a className={cx("link--to--cart")} href="/cart">
+                <Link className={cx("link--to--cart")} to="/cart">
                   Giỏ hàng
-                </a>
+                </Link>
                 <i
                   className={cx("fa-solid", "fa-chevron-right", "icon--next")}
                 ></i>
-                <p>Thông tin giao hàng</p>
               </div>
               <h5 className={cx("mb-4")}>Thông tin giao hàng</h5>
-              <form
-                className={cx("needs-validation")}
-                id="payForm"
-                method="POST"
-                action=""
-                novalidate
-              >
+              <form className={cx("needs-validation")} id="payForm">
                 <div className={cx("form-floating", "mb-3 ")}>
                   <input
+                    onChange={(e) => {
+                      setFullname(e.target.value);
+                      // console.log(fullname)
+                    }}
                     type="text"
                     className={cx("form-control", "input--infor")}
                     id="floatinghovaten"
                     name="hovaten"
                     placeholder="Họ và tên"
+                    value={fullname}
                     required
                   />
-                  <label for="floatinghovaten">Họ và tên</label>
-                  <div className={cx("valid-feedback")}>
-                    Bạn đã nhập thông tin, vui lòng xem lại thông tin trước khi
-                    submit!
-                  </div>
-                  <div className={cx("invalid-feedback")}>
-                    Bạn vui lòng nhập thông tin!
-                  </div>
+                  <label htmlFor="floatinghovaten">Họ và tên</label>
                 </div>
                 <div className={cx("d-flex", "mb-3", "email_and_phone--gap")}>
                   <div className={cx("form-floating")}>
                     <input
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        // console.log(fullname)
+                      }}
                       type="email"
                       className={cx("form-control", "input--infor input-email")}
                       id="floatingEmail"
                       name="email"
                       placeholder="Email"
                       required
+                      value={email}
                     />
-                    <label for="floatingEmail">Email</label>
+                    <label htmlFor="floatingEmail">Email</label>
                   </div>
 
                   <div className={cx("form-floating")}>
                     <input
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                        // console.log(fullname)
+                      }}
                       type="tel"
                       className={cx("form-control", "input--infor")}
                       id="floatingPhone"
                       name="sodienthoai"
                       placeholder="Số điện thoại"
                       required
+                      value={phone}
                     />
-                    <label for="floatingPhone">Số điện thoại</label>
+                    <label htmlFor="floatingPhone">Số điện thoại</label>
                   </div>
                 </div>
-                html cho input radio
+
                 <div>
                   <div
                     className={cx("article__buy--in--wed", "mb-3")}
                     id="article__buy--in--wed"
                   >
-                    <div className={cx("buy--in--wed")} onclick="clearOption()">
+                    <div className={cx("buy--in--wed")}>
                       <input
                         className={cx("ship--type")}
                         type="radio"
-                        name="nhanhang"
+                        name="recive"
                         id="ship--locate1"
                         value="Giao tận nơi"
+                        onChange={(e) => {
+                          setrecive(e.target.value);
+                          // console.log(fullname)
+                        }}
                         required
                       />
                       <label
                         className={cx("label--shipType")}
-                        for="ship--locate1"
+                        htmlFor="ship--locate1"
                       >
                         Giao tận nơi
                       </label>
-                      <div className={cx("valid-feedback")}>
-                        Bạn đã chọn thông tin, vui lòng xem lại thông tin trước
-                        khi submit!
-                      </div>
-                      <div className={cx("invalid-feedback")}>
-                        Bạn vui lòng chọn thông tin!
-                      </div>
                     </div>
                     <div
                       className={cx("article__customer--address")}
@@ -112,6 +133,10 @@ function Payment() {
                     >
                       <div className={cx("form-floating", "mb-3")}>
                         <input
+                          onChange={(e) => {
+                            setAdress(e.target.value);
+                            // console.log(fullname)
+                          }}
                           type="text"
                           className={cx(
                             "form-control",
@@ -120,84 +145,37 @@ function Payment() {
                           id="floatingAddress"
                           name="diachichitiet"
                           placeholder="Địa chỉ nhà"
-                          value=""
+                          value={adress}
                         />
-                        <label for="floatingAddress">Địa chỉ chi tiết</label>
+                        <label htmlFor="floatingAddress">
+                          Địa chỉ chi tiết
+                        </label>
                       </div>
-                      Cái để chọn tỉnh thành
-                      <div className={cx("d-flex", "choose--province")}>
-                        <select
-                          className={cx("form-select", "form-select-sm")}
-                          id="city"
-                          aria-label=".form-select-sm"
-                        >
-                          <option
-                            className={cx("option_located")}
-                            value=""
-                            selected
-                          >
-                            Chọn tỉnh thành
-                          </option>
-                        </select>
-
-                        <select
-                          className={cx("form-select", "form-select-sm")}
-                          id="district"
-                          aria-label=".form-select-sm"
-                        >
-                          <option
-                            className={cx("option_located")}
-                            value=""
-                            selected
-                          >
-                            Chọn quận/huyện
-                          </option>
-                        </select>
-
-                        <select
-                          className={cx("form-select", "form-select-sm")}
-                          id="ward"
-                          aria-label=".form-select-sm"
-                        >
-                          <option
-                            className={cx("option_located")}
-                            value=""
-                            selected
-                          >
-                            Chọn phường/xã
-                          </option>
-                        </select>
-                      </div>
-                      {/* ffffffffffffffff  */}
                     </div>
                   </div>
                   <div
                     className={cx("article__buy--in--shop")}
                     id="article__buy--in--shop"
-                    onclick="document.getElementById('floatingAddress').value = ''"
                   >
                     <div className={cx("buy--in--shop")}>
                       <input
+                        onChange={(e) => {
+                          setrecive(e.target.value);
+                          // console.log(fullname)
+                        }}
                         className={cx("ship--type")}
                         type="radio"
-                        name="nhanhang"
+                        name="recive"
                         id="ship--locate2"
                         value="Nhận tại cửa hàng"
                         required
                       />
                       <label
                         className={cx("label--shipType")}
-                        for="ship--locate2"
+                        htmlFor="ship--locate2"
                       >
                         Nhận tại cửa hàng
                       </label>
-                      <div className={cx("valid-feedback")}>
-                        Bạn đã chọn thông tin, vui lòng xem lại thông tin trước
-                        khi submit!
-                      </div>
-                      <div className={cx("invalid-feedback")}>
-                        Bạn vui lòng chọn thông tin!
-                      </div>
                     </div>
                     <div
                       className={cx("article__shop--address")}
@@ -210,17 +188,22 @@ function Payment() {
                     </div>
                   </div>
                 </div>
+
                 <h5 className={cx("tiltle__pay--method")}>
                   Phương thức thanh toán
                 </h5>
                 <div className={cx("mb-3")} id="article--payByCard">
                   <div className={cx("pay--by--card")}>
                     <input
+                      onChange={(e) => {
+                        setPayMethod(e.target.value);
+                        // console.log(fullname)
+                      }}
                       className={cx("pay--type")}
                       type="radio"
                       name="thanhtoan"
                       id="pay--method1"
-                      value="chuyển khoản"
+                      value="Chuyển khoản"
                       required
                     />
                     <svg
@@ -244,22 +227,14 @@ function Payment() {
                         fill="white"
                       />
                     </svg>
-                    <label className={cx("label--payType")} for="pay--method2">
+                    <label
+                      className={cx("label--payType")}
+                      htmlFor="pay--method2"
+                    >
                       Chuyển khoản
                     </label>
-                    <div className={cx("valid-feedback")}>
-                      Bạn đã chọn thông tin, vui lòng xem lại thông tin trước
-                      khi submit!
-                    </div>
-                    <div className={cx("invalid-feedback")}>
-                      Bạn vui lòng chọn thông tin!
-                    </div>
                   </div>
-                  <div
-                    className={cx("infor--bank-card")}
-                    id="infor--bank-card"
-                    hidden
-                  >
+                  <div className={cx("infor--bank-card")} id="infor--bank-card">
                     <ul>
                       <li className={cx("mb-3")}>
                         Thông tin tài khoản: STK: 01110001xxxxx. Chủ TK: Lê Việt
@@ -272,14 +247,19 @@ function Payment() {
                     </ul>
                   </div>
                 </div>
+
                 <div className={cx("mb-3")} id="article--payByMoney">
                   <div className={cx("pay--by--money")}>
                     <input
+                      onChange={(e) => {
+                        setPayMethod(e.target.value);
+                        // console.log(fullname)
+                      }}
                       className={cx("pay--type")}
                       type="radio"
                       name="thanhtoan"
                       id="pay--method2"
-                      value="thanh toán khi nhận hàng"
+                      value="Thanh toán khi nhận hàng"
                       required
                     />
                     <svg
@@ -332,39 +312,33 @@ function Payment() {
                         fill="#33393A"
                       />
                     </svg>
-                    <label className={cx("label--payType")} for="pay--method1">
+                    <label
+                      className={cx("label--payType")}
+                      htmlFor="pay--method1"
+                    >
                       Thanh toán khi nhận được hàng/mua tại shop
                     </label>
-                    <div className={cx("valid-feedback")}>
-                      Bạn đã chọn thông tin, vui lòng xem lại thông tin trước
-                      khi submit!
-                    </div>
-                    <div className={cx("invalid-feedback")}>
-                      Bạn vui lòng chọn thông tin!
-                    </div>
                   </div>
                 </div>
+
                 <div className={cx("article--customer-note", "mb-4")}>
                   <p className={cx("fw-bold")}>
-                    <label for="customer--note">Ghi chú đơn hàng:</label>
+                    <label htmlFor="customer--note">Ghi chú đơn hàng:</label>
                   </p>
                   <textarea
+                    onChange={(e) => {
+                      setNote(e.target.value);
+                      // console.log(fullname)
+                    }}
                     id="customer--note"
                     name="ghichu"
                     rows="5"
                     cols="72"
                     required
+                    value={note}
                   ></textarea>
-                  <div className={cx("valid-feedback")}>
-                    Bạn đã nhập thông tin, vui lòng xem lại thông tin trước khi
-                    submit!
-                  </div>
-                  <div className={cx("invalid-feedback")}>
-                    Bạn vui lòng nhập thông tin!
-                  </div>
                 </div>
                 <button
-                  type="submit"
                   className={cx("btn", "btn-danger", "btn-comleteOddered")}
                 >
                   Hoàn tất đơn hàng
@@ -372,38 +346,49 @@ function Payment() {
               </form>
             </div>
           </div>
-          {/* {layout bên phải  */}
+
           <div className={cx("col-5", "article--review-ordered")}>
+            {itemInCart.map((item, index) => {
+              return (
+                <PayProduct
+                  key={item.id_product + index}
+                  item={item}
+                ></PayProduct>
+              );
+            })}
 
-          <div className={cx("d-flex","mb-3","article--inforItem")}>
-                <img className={cx("picture")} src="https://product.hstatic.net/1000296747/product/9658b6249cd58d7d169cc033e391a081_960970bb55324e5e9b31235ad34851ac_large.jpeg" alt="Loading"/>
-                <div className={cx("")}>
-                    <p hidden>001</p>
-                    <h5 className={cx("article--inforItem--name")}>nameeeeeeeeeeeeeee</h5>
-                    <div className={cx("d-flex","pay_itemStyle")}>
-                        <p className={cx("article--inforItem--size")}>XLLLLLLLLLLLLLLLL</p>
-                        <p className={cx("article--inforItem--color")}>Do</p>
-                    </div>
-                </div>
-                <p className={cx("article--inforItem--money")}>200000</p>
-                <p className={cx("article--inforItem--quantity")}>3006</p>
+            <hr />
+            <div
+              className={cx(
+                "d-flex",
+                "justify-content-between",
+                "article--temporary-money"
+              )}
+            >
+              <p className={cx("title--bill")}>Tạm tính</p>
+              <p className={cx("color--money")}>{totalMoneyInCart}</p>
             </div>
-
-            <hr/>
-            <div className={cx("d-flex","justify-content-between","article--temporary-money")}>
-                <p className={cx("title--bill")}>Tạm tính</p>
-                <p className={cx("color--money")}>30062003</p>
+            <div
+              className={cx(
+                "d-flex",
+                "justify-content-between",
+                "article--ship-charge"
+              )}
+            >
+              <p className={cx("title--bill")}>Phí vận chuyển</p>
+              <p className={cx("color--money")}>
+                {totalMoneyInCart > 300000 ? 0 : 30000}
+              </p>
             </div>
-            <div className={cx("d-flex","justify-content-between","article--ship-charge")}>
-                <p className={cx("title--bill")}>Phí vận chuyển</p>
-                <p className={cx("color--money")}>30000</p>
+            <hr />
+            <div className={cx("d-flex", "justify-content-between")}>
+              <p className={cx("title--bill")}>Tổng tiền</p>
+              <p className={cx("color--money")}>
+                {totalMoneyInCart && totalMoneyInCart > 30000
+                  ? totalMoneyInCart
+                  : totalMoneyInCart + 30000}
+              </p>
             </div>
-            <hr/>
-            <div className={cx("d-flex","justify-content-between")}>
-                <p className={cx("title--bill")}>Tổng tiền</p>
-                <p className={cx("color--money")}>24102001</p>
-            </div>    
-
           </div>
         </div>
       </main>

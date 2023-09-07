@@ -39,7 +39,7 @@ function Products(props) {
         )
         .then((res) => {
           // console.log(res.data);
-          setProducts(res.data.products);
+          setProducts(res.data);
         })
         .catch((error) => {
           console.log(error);
@@ -49,7 +49,7 @@ function Products(props) {
         .get(`http://localhost:3001/products/men/`)
         .then((res) => {
           // console.log(res.data);
-          setProducts(res.data.products);
+          setProducts(res.data);
         })
         .catch((error) => {
           console.log(error);

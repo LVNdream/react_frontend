@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Product.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,9 +12,57 @@ import { useDispatch } from "react-redux";
 import { cartSlice } from "../../Cart/cartSlice";
 
 function Product(props) {
-  const dispatch = useDispatch()
-  const { id_product, name_product, picture_product, price_product } =
-    props.product;
+  const {
+    id_product,
+    picture_product,
+    name_product,
+    price_product,
+    type_product,
+    caterogy_product,
+    listColor,
+    listColorDetail,
+  } = props.product;
+  const [quantity, setQuantity] = useState(listColorDetail[0].quantity_product);
+  const [size, setSize] = useState("S");
+  const [colorrr, setColor] = useState(listColor[0].color);
+
+  // console.log(listColor)
+
+  const handleOnChangeColor = (e) => {
+    // setQuantity(quantity);
+    // console.log(e.target.value);
+    setColor(e.target.value);
+    const itemColor = listColorDetail.filter((productColor) => {
+      return (
+        productColor.color === e.target.value && productColor.id_size === size
+      );
+    });
+    setQuantity(itemColor[0].quantity_product);
+
+    // console.log(itemColor);
+    // console.log(itemColor.quantity_product);
+  };
+  const handleOnChangeSize = (e) => {
+    // setQuantity(quantity);
+    // console.log(e.target.value);
+    setSize(e.target.value);
+    const itemColor = listColorDetail.filter((productColor) => {
+      return (
+        productColor.color === colorrr &&
+        productColor.id_size === e.target.value
+      );
+    });
+    // console.log(itemColor);
+    setQuantity(itemColor[0].quantity_product);
+  };
+  // const handleOnChangeQuantity = () => {
+  //   const itemColor = listColorDetail.filter((productColor) => {
+  //     return productColor.color === colorrr && productColor.id_size === size;
+  //   });
+  //   console.log(itemColor);
+  // };
+
+  const dispatch = useDispatch();
   // console.log(props.product)
   const cx = classNames.bind(styles);
   return (
@@ -22,7 +70,7 @@ function Product(props) {
       <div className={cx("avata--product")}>
         <Link
           className={cx("avata__link")}
-          to={`/products/men/detail/${id_product}`}
+          to={`/products/men/${caterogy_product}/${id_product}`}
         >
           <img
             className={cx("img-fluid", "avata__link--product")}
@@ -41,48 +89,98 @@ function Product(props) {
 
         <div className={cx("article--itemStyle")}>
           <div className={cx("d-flex", "color--selection")}>
-            <div>
-              <input type="radio" name="itemColor" value="" />
-              <label>do</label>
-              <br />
-            </div>
-            <div>
-              <input type="radio" name="itemColor" value="" />
-              <label>xanh</label>
-              <br />
-            </div>
-            <div>
-              <input type="radio" name="itemColor" value="" />
-              <label>tim</label>
-              <br />
-            </div>
+            {listColor && listColor.length > 0
+              ? listColor.map((color, index) => {
+                  return (
+                    <div key={index}>
+                      <input
+                        onChange={(e) => {
+                          handleOnChangeColor(e);
+                        }}
+                        type="radio"
+                        name="itemColor"
+                        value={color.color}
+                      />
+                      <label>{color.color}</label>
+                      <br />
+                    </div>
+                  );
+                })
+              : ""}
           </div>
           <div className={cx("d-flex", "size--selection", "mt-2")}>
             <div>
-              <input type="radio" id="size1" name="itemSize" value="S" />
+              <input
+                type="radio"
+                onChange={(e) => {
+                  handleOnChangeSize(e);
+                }}
+                id="size1"
+                name="itemSize"
+                value="S"
+              />
               <label htmlFor="size1">S</label>
               <br />
             </div>
             <div>
-              <input type="radio" id="size2" name="itemSize" value="M" />
+              <input
+                type="radio"
+                onChange={(e) => {
+                  handleOnChangeSize(e);
+                }}
+                id="size2"
+                name="itemSize"
+                value="M"
+              />
               <label htmlFor="size2">M</label>
               <br />
             </div>
             <div>
-              <input type="radio" id="size3" name="itemSize" value="L" />
+              <input
+                type="radio"
+                onChange={(e) => {
+                  handleOnChangeSize(e);
+                }}
+                id="size3"
+                name="itemSize"
+                value="L"
+              />
               <label htmlFor="size3">L</label>
             </div>
             <div>
-              <input type="radio" id="size4" name="itemSize" value="XL" />
+              <input
+                type="radio"
+                onChange={(e) => {
+                  handleOnChangeSize(e);
+                }}
+                id="size4"
+                name="itemSize"
+                value="XL"
+              />
               <label htmlFor="size4">XL</label>
             </div>
           </div>
         </div>
         <div className={cx("show--cart")}>
           <div className={cx("cart", "d-flex", "justify-content-around")}>
-            <div className={cx("cart__shopping")} onClick={()=>{
-              dispatch(cartSlice.actions.addToCart({...props.product,quantity:1}))
-            }}>
+            <div
+              className={cx("cart__shopping")}
+              onClick={() => {
+                dispatch(
+                  cartSlice.actions.addToCart({
+                    id_product:id_product,
+                    picture_product:picture_product,
+                    name_product:name_product,
+                    price_product:price_product,
+                    type_product:type_product,
+                    caterogy_product:caterogy_product,
+                    quantity: 1,
+                    size: size,
+                    color: colorrr,
+                  })
+                );
+              }}
+            >
               {/* <i className={cx("fa-solid fa-cart-shopping")}></i> */}
               <FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>
             </div>
@@ -101,7 +199,7 @@ function Product(props) {
             </div>
           </div>
 
-          <p className={cx("item-quantity")}>Số lượng: 306</p>
+          <p className={cx("item-quantity")}>Số lượng: {quantity}</p>
         </div>
       </div>
     </div>

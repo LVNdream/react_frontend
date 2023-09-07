@@ -15,7 +15,7 @@ const publicRoutes = [
     { path: '/', component: Home,layout:LayoutCilent},
     { path: '/products/men', component: Products,layout:LayoutCilent},
     { path: '/products/men/:caterogy', component: Products,layout:LayoutCilent},
-    { path: '/products/men/detail/:id', component: ProductDetail,layout:LayoutCilent},
+    { path: '/products/:type/:caterogy/:id', component: ProductDetail,layout:LayoutCilent},
     { path: '/cilent/register', component: Register,layout:LayoutCilent},
     { path: '/cart', component: Cart,layout:LayoutCilent},
     { path: '/payment', component: Payment,layout:LayoutCilent},
