@@ -5,6 +5,9 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from "react-redux";
+import { cartSlice } from "../../Cart/cartSlice";
+import { getProductDetail } from "../../../apiRequset/product.api";
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -20,20 +23,54 @@ function withRouter(Component) {
 function ProductDetail(props) {
   // console.log(props.router.params);
 
+  const dispatch = useDispatch();
+
   const [inforDetail, setInforDetail] = useState();
+  const [inputQuantity, setInputQuantity] = useState(1);
+
+  // ham dung de thay doi so luong khi nhap vao
+
+  const changeInputQuantity = (data, operator = false) => {
+    // console.log(data);
+    if (operator === true) {
+      if (inputQuantity <= 1 && data === -1) {
+        alert(" Quantity have to larger 0");
+      } else if (data === 1 && inputQuantity >= quantity) {
+        alert(" Quantity not enough for you");
+      } else {
+        setInputQuantity(inputQuantity + data);
+      }
+    } else {
+      if (data < 0) {
+        alert(" Quantity have to larger 0");
+      } else if (data > quantity) {
+        alert(" Quantity not enough for you or please choose size and color");
+      } else {
+        setInputQuantity(data);
+      }
+    }
+  };
+
+  // ham de lay du lieu ve
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:3001/products/${props.router.params.type}/${props.router.params.caterogy}/${props.router.params.id}`
-      )
-      .then((res) => {
-        // console.log(res.data);
-        setInforDetail(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    getProductDetail(
+      props.router.params.type,
+      props.router.params.caterogy,
+      props.router.params.id,
+      setInforDetail
+    );
+    // axios
+    //   .get(
+    //     `http://localhost:3001/products/${props.router.params.type}/${props.router.params.caterogy}/${props.router.params.id}`
+    //   )
+    //   .then((res) => {
+    //     // console.log(res.data);
+    //     setInforDetail(res.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   }, [
     props.router.params.type,
     props.router.params.caterogy,
@@ -49,12 +86,12 @@ function ProductDetail(props) {
   const [quantity, setQuantity] = useState(
     inforDetail ? inforDetail.listColorDetail[0].quantity_product : ""
   );
-  const [size, setSize] = useState("S");
+  const [size, setSize] = useState("");
   const [colorrr, setColor] = useState(
-    inforDetail ? inforDetail.listColorDetail[0].colort : ""
+    inforDetail ? inforDetail.listColorDetail[0].color : ""
   );
 
-  // console.log(listColor)
+  // ham cho biet so luong cua san pham khi thay doi color va size
 
   const handleOnChangeColor = (e) => {
     // setQuantity(quantity);
@@ -65,7 +102,12 @@ function ProductDetail(props) {
         productColor.color === e.target.value && productColor.id_size === size
       );
     });
-    setQuantity(itemColor[0].quantity_product);
+    if (itemColor.length === 0) {
+      alert("Mời bạn chọn kích thước để xem số lượng");
+    } else {
+      setQuantity(itemColor[0].quantity_product);
+      setInputQuantity(1);
+    }
 
     // console.log(itemColor);
     // console.log(itemColor.quantity_product);
@@ -80,12 +122,13 @@ function ProductDetail(props) {
         productColor.id_size === e.target.value
       );
     });
-    console.log(itemColor);
+    // console.log(itemColor);
 
     if (itemColor.length === 0) {
       alert("Mời bạn chọn màu để xem số lượng");
     } else {
       setQuantity(itemColor[0].quantity_product);
+      setInputQuantity(1);
     }
   };
 
@@ -246,22 +289,30 @@ function ProductDetail(props) {
                     className={cx("btnquantityDown")}
                     id={cx("downquantity")}
                     name="down"
+                    onClick={() => {
+                      changeInputQuantity(-1, true);
+                    }}
                   >
                     -
                   </button>
                   <input
                     className={cx("input--quantity")}
                     id={cx("inputquntity")}
-                    type="number"
+                    type="text"
                     name="quantity"
-                    value="1"
-                    max="{{ctproduct.soluongsp}}"
-                    disabled
+                    value={inputQuantity}
+                    max={quantity}
+                    onChange={(event) => {
+                      changeInputQuantity(Number(event.target.value));
+                    }}
                   />
                   <button
                     className={cx("btnquantityUp")}
                     id={cx("upquantity")}
                     name="up"
+                    onClick={() => {
+                      changeInputQuantity(1, true);
+                    }}
                   >
                     +
                   </button>
@@ -271,6 +322,36 @@ function ProductDetail(props) {
                     id={cx("btn-addToCart")}
                     type="button"
                     className={cx("btn", "button-cart", "btn-lg")}
+                    onClick={() => {
+                      if (
+                        colorrr === "" ||
+                        size === "" ||
+                        inputQuantity === ""
+                      ) {
+                        alert(
+                          "Mời ban chọn size, color, quantity để thêm vào giỏ hàng"
+                        );
+                      } else {
+                        dispatch(
+                          cartSlice.actions.addToCart({
+                            id_product: inforDetail.id_product,
+                            picture_product: inforDetail.picture_product,
+                            name_product: inforDetail.name_product,
+                            price_product: inforDetail.price_product,
+                            type_product: inforDetail.type_product,
+                            caterogy_product: inforDetail.caterogy_product,
+                            quantity: inputQuantity,
+                            size: size,
+                            color: colorrr,
+                            quantity_product: quantity,
+                          })
+                        );
+                        // setColor(inforDetail.listColorDetail[0].color)
+                        // setSize(inforDetail.listColorDetail[0].size)
+                        setInputQuantity(1);
+                        alert("Bạn đã thêm sản phẩm vào giỏ hàng thành công");
+                      }
+                    }}
                   >
                     Thêm vào giỏ hàng
                     {/* <i

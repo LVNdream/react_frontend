@@ -1,9 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./register.module.scss";
+import { registerUser } from "../../apiRequset/account.api";
+import { Link } from "react-router-dom";
 
 function Register() {
   const cx = classNames.bind(styles);
+
+  const [lastname, setLastname] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState("");
+  const [dateofbirth, setDateofbirth] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleOnChangeInput = (e, setInput) => {
+    // console.log(e.target.value);
+    setInput(e.target.value);
+  };
+  const inforRegister = {
+    lastname_user: lastname,
+    firstname_user: firstname,
+    phone_user: phone,
+    gender_user: gender,
+    dateofbirth_user: dateofbirth,
+    email_user: email,
+    password_user: password,
+  };
+  // console.log(inforRegister);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      lastname &&
+      firstname &&
+      phone &&
+      gender &&
+      dateofbirth &&
+      email &&
+      password
+    ) {
+      console.log(inforRegister);
+      const resultRegister = await registerUser(inforRegister);
+      alert(resultRegister);
+    } else {
+      alert("Vui lòng điền đủ thông tin để đăng kí");
+    }
+  };
   return (
     <>
       {/* <link rel="stylesheet" href="/css/accountRegister.css">
@@ -16,17 +60,21 @@ function Register() {
         <h3 className={cx("title__signup")}>Tạo tài khoản</h3>
         <p className={cx("policy")}>
           Nếu bạn đã có tài khoản, vui lòng đăng nhập!
-          <a href="/account/login"> Đăng nhập</a>
+          <Link to={"/client/login"}> Đăng nhập</Link>
         </p>
 
-        <div className={cx("alert", "alert-danger", "mt-3")}>Error</div>
-
-        <div className={cx("alert", "alert-success")}>Susscess</div>
-
-        <form className={cx("needs-validation")} id="signupForm"        >
+        <form
+          onSubmit={handleSubmit}
+          className={cx("needs-validation", "mt-4")}
+          id="signupForm"
+        >
           <div className={cx("list-group")}>
             <div className={cx("form-floating", "mb-4")}>
               <input
+                onChange={(e) => {
+                  handleOnChangeInput(e, setLastname);
+                }}
+                value={lastname}
                 type="text"
                 className={cx(
                   "form-control",
@@ -50,6 +98,10 @@ function Register() {
             </div>
             <div className={cx("form-floating", "mb-4")}>
               <input
+                value={firstname}
+                onChange={(e) => {
+                  handleOnChangeInput(e, setFirstname);
+                }}
                 type="text"
                 className={cx(
                   "form-control",
@@ -73,6 +125,10 @@ function Register() {
             </div>
             <div className={cx("form-floating", "mb-4")}>
               <input
+                value={phone}
+                onChange={(e) => {
+                  handleOnChangeInput(e, setPhone);
+                }}
                 type="text"
                 className={cx(
                   "form-control",
@@ -98,6 +154,9 @@ function Register() {
             <div className={cx("mb-4", "d-flex")}>
               <div className={cx("")}>
                 <input
+                  onChange={(e) => {
+                    handleOnChangeInput(e, setGender);
+                  }}
                   className={cx("form-check-input")}
                   type="radio"
                   name="gioitinh"
@@ -111,6 +170,9 @@ function Register() {
               </div>
               <div className={cx("")}>
                 <input
+                  onChange={(e) => {
+                    handleOnChangeInput(e, setGender);
+                  }}
                   className={cx("form-check-input", "form-check-input-female")}
                   type="radio"
                   name="gioitinh"
@@ -128,7 +190,11 @@ function Register() {
             </div>
             <div className={cx("form-floating", "mb-4")}>
               <input
-                type="text"
+                onChange={(e) => {
+                  handleOnChangeInput(e, setDateofbirth);
+                }}
+                value={dateofbirth}
+                type="date"
                 className={cx(
                   "form-control",
                   "size--input-signup",
@@ -152,6 +218,10 @@ function Register() {
             </div>
             <div className={cx("form-floating", "mb-4")}>
               <input
+                value={email}
+                onChange={(e) => {
+                  handleOnChangeInput(e, setEmail);
+                }}
                 type="email"
                 className={cx(
                   "form-control",
@@ -175,6 +245,10 @@ function Register() {
             </div>
             <div className={cx("form-floating", "mb-4")}>
               <input
+                value={password}
+                onChange={(e) => {
+                  handleOnChangeInput(e, setPassword);
+                }}
                 type="password"
                 className={cx(
                   "form-control",

@@ -22,6 +22,8 @@ function Product(props) {
     listColor,
     listColorDetail,
   } = props.product;
+
+  // console.log(props.product);
   const [quantity, setQuantity] = useState(listColorDetail[0].quantity_product);
   const [size, setSize] = useState("S");
   const [colorrr, setColor] = useState(listColor[0].color);
@@ -177,6 +179,7 @@ function Product(props) {
                     quantity: 1,
                     size: size,
                     color: colorrr,
+                    quantity_product:quantity
                   })
                 );
               }}

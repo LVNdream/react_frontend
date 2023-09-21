@@ -10,6 +10,9 @@ export const productsListSelector = (state) => {
 export const cartSelector = (state) => {
   return state.cart.items;
 };
+export const userSelector = (state) => {
+  return state.user.infor;
+};
 
 // export const filterStatusSelector = (state) => {
 //   return state.filters.status;
@@ -35,7 +38,7 @@ export const productsAfterFilter = createSelector(
       return [];
     } else {
       return productsList.filter((product) => {
-        return product.name_product.includes(searchText);
+        return product.name_product.toLowerCase().includes(searchText.toLowerCase());
       });
     }
   }

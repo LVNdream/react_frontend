@@ -11,7 +11,14 @@ import {
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { filtersSlice } from "./filtersSlice";
-import { totalItem, totalMoney } from "../../../../redux/selector";
+import {
+  totalItem,
+  totalMoney,
+  userSelector,
+} from "../../../../redux/selector";
+import DropdownAdmin from "../../layoutAdmin/components/DropdownAdmin";
+import DropDownClient from "./DropDownClient";
+import { logoutUser } from "../../../../apiRequset/account.api";
 const cx = className.bind(styles);
 
 function Header() {
@@ -34,16 +41,22 @@ function Header() {
     dispatch(filtersSlice.actions.searchFilterChange(e.target.value));
   };
 
+  const handleLogout = async (accessToken, dispatch) => {
+    const resLogOut = await logoutUser(accessToken, dispatch);
+  };
+
   const totalItemInCart = useSelector(totalItem);
   // console.log(totalItemInCart);
 
   const totalMoneyInCart = useSelector(totalMoney);
   // console.log(totalMoneyInCart);
+  const inforUser = useSelector(userSelector);
 
+  // console.log(inforUser);
   return (
     <>
       {/* <h1 id={cx('nhut')} >adsa</h1> */}
-      <header className={cx("container","")}>
+      <header className={cx("container", "")}>
         <div className={cx("titleFS")}>
           <p className={cx("titleFS_IF")}>
             Miễn phí vận chuyển cho đơn hàng trên <strong>300k</strong>
@@ -53,6 +66,7 @@ function Header() {
           <div className={cx("nameshop")}>
             <h1 className={cx("titleNS")}>HOMESHOP</h1>
           </div>
+
           <ul className={cx("nav__options")}>
             <li></li>
             <li className={cx("option-of__nav")}>
@@ -218,128 +232,117 @@ function Header() {
               )}
             </div>
             {/* form dang nhap */}
-            <div className={cx("icon__selector", "icos__user")}>
-              <div
-                className={cx("account")}
-                id={cx("account")}
-                onClick={() => {
-                  handleToggle(openForm, setOpenForm);
-                  setOpenSearch(false);
-                  setOpenCart(false);
-                }}
-              >
-                {/* <i className={cx("fa-solid fa-user")}></i> */}
-                <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
-              </div>
-              {openForm === true ? (
-                <div className={cx("formacc", "container")} id={cx("formacc")}>
-                  <h5 className={cx("acc__title")}>ĐĂNG NHẬP TÀI KHOẢN</h5>
-                  <p className={cx("acc__require")}>
-                    Nhập email và mật khẩu của bạn:
-                  </p>
-                  <hr />
-                  <form
-                    method="POST"
-                    action="/account/login"
-                    className={cx("needs-validation")}
-                    noValidate
-                  >
-                    <div className={cx("form-floating", "mb-3")}>
-                      <input
-                        type="email"
-                        className={cx("form-control", "size--input")}
-                        id={cx("floatingInput")}
-                        name="email"
-                        placeholder="name@example.com"
-                        required
-                      />
-                      <label
-                        className={cx("label--text")}
-                        htmlFor="floatingInput"
-                      >
-                        Email
-                      </label>
-                      <div
-                        className={cx("valid-feedback", "content--feedback")}
-                      >
-                        Bạn đã nhập Email, vui lòng xem lại thông tin trước khi
-                        submit!
-                      </div>
-                      <div
-                        className={cx("invalid-feedback", "content--feedback")}
-                      >
-                        Bạn vui lòng nhập Email!
-                      </div>
-                    </div>
-                    <div className={cx("form-floating")}>
-                      <input
-                        type="password"
-                        className={cx("form-control", "size--input")}
-                        id={cx("floatingPassword")}
-                        name="matkhau"
-                        placeholder="Password"
-                        required
-                      />
-                      <label
-                        className={cx("label--text")}
-                        htmlFor="floatingPassword"
-                      >
-                        Password
-                      </label>
-                      <div
-                        className={cx("valid-feedback", "content--feedback")}
-                      >
-                        Bạn đã nhập mật khẩu, vui lòng xem lại thông tin trước
-                        khi submit!
-                      </div>
-                      <div
-                        className={cx("invalid-feedback", "content--feedback")}
-                      >
-                        Bạn vui lòng nhập mật khẩu!
-                      </div>
-                    </div>
-                    <button
-                      type="submit"
-                      className={cx("btn btn-danger", "btn-account")}
+            {inforUser.authorization === 0 ? (
+              <DropdownAdmin></DropdownAdmin>
+            ) : (
+              <div>
+                {inforUser.id_user ? (
+                  <DropDownClient handleLogout={handleLogout}></DropDownClient>
+                ) : (
+                  <div className={cx("icon__selector", "icos__user")}>
+                    <div
+                      className={cx("account")}
+                      id={cx("account")}
+                      onClick={() => {
+                        handleToggle(openForm, setOpenForm);
+                        setOpenSearch(false);
+                        setOpenCart(false);
+                      }}
                     >
-                      Đăng nhập
-                    </button>
-                  </form>
-                  <p className={cx("rules")}>
-                    This site is protected by reCAPTCHA and the
-                    <span>Google Privacy Policy</span>
-                    and
-                    <span>Terms of Service</span>
-                    apply.
-                  </p>
-                  <p className={cx("signup")}>
-                    Khách hàng mới?
-                    <Link
-                      to={"/cilent/register"}
-                      className={cx("link--signup")}
-                    >
-                      Tạo tài khoản
-                    </Link>
-                  </p>
-                  <p className={cx("forgetpass")}>
-                    Quên mật khẩu
-                    <span className={cx("link--forgetpass")}>
-                      Khôi phục mật khẩu
-                    </span>
-                  </p>
-                  <div
-                    id={cx("cancle--acc")}
-                    onClick={() => {
-                      handleToggle(openForm, setOpenForm);
-                    }}
-                  >
-                    <p className={cx("text--cancle--acc")}>x</p>
+                      {/* <i className={cx("fa-solid fa-user")}></i> */}
+                      <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
+                    </div>
+                    {openForm === true ? (
+                      <div
+                        className={cx("formacc", "container")}
+                        id={cx("formacc")}
+                      >
+                        <h5 className={cx("acc__title")}>
+                          ĐĂNG NHẬP TÀI KHOẢN
+                        </h5>
+                        <p className={cx("acc__require")}>
+                          Nhập email và mật khẩu của bạn:
+                        </p>
+                        <hr />
+                        <form className={cx("needs-validation")}>
+                          <div className={cx("form-floating", "mb-3")}>
+                            <input
+                              type="email"
+                              className={cx("form-control", "size--input")}
+                              id={cx("floatingInput")}
+                              name="email"
+                              placeholder="name@example.com"
+                              required
+                            />
+                            <label
+                              className={cx("label--text")}
+                              htmlFor="floatingInput"
+                            >
+                              Email
+                            </label>
+                          </div>
+                          <div className={cx("form-floating")}>
+                            <input
+                              type="password"
+                              className={cx("form-control", "size--input")}
+                              id={cx("floatingPassword")}
+                              name="matkhau"
+                              placeholder="Password"
+                              required
+                            />
+                            <label
+                              className={cx("label--text")}
+                              htmlFor="floatingPassword"
+                            >
+                              Password
+                            </label>
+                          </div>
+                          <button
+                            type="submit"
+                            className={cx("btn btn-danger", "btn-account")}
+                          >
+                            Đăng nhập
+                          </button>
+                        </form>
+                        <p className={cx("rules")}>
+                          This site is protected by reCAPTCHA and the
+                          <span>Google Privacy Policy</span>
+                          and
+                          <span>Terms of Service</span>
+                          apply.
+                        </p>
+                        <p className={cx("signup")}>
+                          Khách hàng mới?
+                          <Link
+                            to={"/client/register"}
+                            className={cx("link--signup")}
+                          >
+                            Tạo tài khoản
+                          </Link>
+                        </p>
+                        <p className={cx("forgetpass")}>
+                          Quên mật khẩu
+                          <span className={cx("link--forgetpass")}>
+                            Khôi phục mật khẩu
+                          </span>
+                        </p>
+                        <div
+                          id={cx("cancle--acc")}
+                          onClick={() => {
+                            handleToggle(openForm, setOpenForm);
+                          }}
+                        >
+                          <p className={cx("text--cancle--acc")}>x</p>
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
-                </div>
-              ) : (
-                ""
-              )}
-            </div>
+                )}
+              </div>
+            )}
+
             {/* press to watch cart */}
             <div className={cx("icon__selector", "icon__cart")}>
               <div
@@ -383,7 +386,7 @@ function Header() {
                   >
                     <h5>TỔNG TIỀN:</h5>
                     <p className={cx("cost")}>
-                      {totalItemInCart > 0 ? totalMoneyInCart  : "0"}
+                      {totalItemInCart > 0 ? totalMoneyInCart : "0"}
                     </p>
                   </div>
                   <div

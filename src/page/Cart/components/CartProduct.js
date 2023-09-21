@@ -26,6 +26,7 @@ function CartProduct(props) {
     quantity,
     size,
     color,
+    quantity_product,
 
     // type_product,
 
@@ -44,14 +45,18 @@ function CartProduct(props) {
   const changeInputQuantity = (data, operator = false) => {
     // console.log(data);
     if (operator === true) {
-      if (inputQuantity === 1 && data === -1) {
+      if (inputQuantity <= 1 && data === -1) {
         alert(" Quantity have to larger 0");
+      } else if (data === 1 && inputQuantity >= quantity_product) {
+        alert(" Quantity not enough for you");
       } else {
         setInputQuantity(inputQuantity + data);
       }
     } else {
-      if (data < 1) {
+      if (data < 0) {
         alert(" Quantity have to larger 0");
+      } else if (data > quantity_product) {
+        alert(" Quantity not enough for you");
       } else {
         setInputQuantity(data);
       }
@@ -151,6 +156,9 @@ function CartProduct(props) {
             {/* <i className={cx("fa-solid fa-trash iconDelete")}></i>
              */}
             <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+          </div>
+          <div className={cx("mt-2", "quanity_product")}>
+            <p>Số lượng: {quantity_product}</p>
           </div>
         </div>
       </div>

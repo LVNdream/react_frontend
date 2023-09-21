@@ -147,7 +147,7 @@
     color: rgb(182, 135, 105);
 }
 
-.button-cart {
+#btn-addToCart {
     width: 300px;
     border: 1px solid rgb(204, 59, 6);
     font-family: inherit;
@@ -155,12 +155,12 @@
     color: rgb(164, 81, 29);
 }
 
-.button-cart:hover {
+#btn-addToCart:hover {
     color: rgb(255, 255, 255);
     background-color: rgb(201, 139, 101);
 }
 
-.button-cart:hover .icon-cartShopping {
+#btn-addToCart:hover .icon-cartShopping {
     color: rgb(255, 255, 255);
 }
 

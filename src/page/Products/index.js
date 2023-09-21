@@ -3,12 +3,16 @@ import classNames from "classnames/bind";
 import styles from "./products.module.scss";
 
 import Product from "./components/Product";
-import axios from "axios";
+// import axios from "axios";
 
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { productsAfterFilter } from "../../redux/selector";
 import { productsSlice } from "./productsSlice";
+import {
+  getAllProduct,
+  getProductByCaterogy,
+} from "../../apiRequset/product.api";
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -24,40 +28,43 @@ function withRouter(Component) {
 function Products(props) {
   // const keyFilter = useSelector(searchTextSelector);
   // console.log(keyFilter);
-
+  // let date =new Date();
   const cx = classNames.bind(styles);
-
-  // console.log(props.router.params.caterogy);
+  const dispatch = useDispatch();
+  // console.log(date.getTime());
 
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     if (props.router.params.caterogy) {
-      axios
-        .get(
-          `http://localhost:3001/products/men/${props.router.params.caterogy}`
-        )
-        .then((res) => {
-          // console.log(res.data);
-          setProducts(res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      getProductByCaterogy(props.router.params.caterogy, setProducts);
+      // axios
+      //   .get(
+      //     `http://localhost:3001/products/men/${props.router.params.caterogy}`
+      //   )
+      //   .then((res) => {
+      //     // console.log(res.data);
+      //     setProducts(res.data);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     } else {
-      axios
-        .get(`http://localhost:3001/products/men/`)
-        .then((res) => {
-          // console.log(res.data);
-          setProducts(res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      getAllProduct(setProducts);
+      // axios
+      //   .get(`http://localhost:3001/products/men/`)
+      //   .then((res) => {
+      //     // console.log(res.data);
+      //     setProducts(res.data);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     }
   }, [props.router.params.caterogy]);
 
-  const dispatch = useDispatch();
+  // console.log(products);
+
   dispatch(productsSlice.actions.setProductsList(products));
   const productsList = useSelector(productsAfterFilter);
   // console.log(productsList);

@@ -32,6 +32,10 @@
 }
 .input--infor {
   border-radius: 0px;
+  border-width: 2px !important;
+  &:focus{
+    box-shadow:none !important;
+  }
 }
 
 // cssc cho 2 sự lựa chọn phương thức lấy hàng
@@ -196,4 +200,17 @@
 }
 .article--layout1 {
   border-right: 1px solid black;
+}
+.invalid{
+  border-color: red !important;
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.valid{
+border-color:green !important;
+color: green;
+font-size: 14px;
+margin-top: 5px;
 }

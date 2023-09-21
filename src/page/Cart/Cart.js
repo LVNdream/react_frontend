@@ -30,7 +30,7 @@ function Cart() {
             itemInCart.map((product,index) => {
               return (
                 <CartProduct
-                  key={product.id_product+index}
+                  key={product.id_product+product.size+product.color}
                   product={product}
                 ></CartProduct>
               );
