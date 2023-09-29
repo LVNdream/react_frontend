@@ -18,17 +18,28 @@ import {
 } from "../../../../redux/selector";
 import DropdownAdmin from "../../layoutAdmin/components/DropdownAdmin";
 import DropDownClient from "./DropDownClient";
-import { logoutUser } from "../../../../apiRequset/account.api";
+import { loginUser, logoutUser } from "../../../../apiRequset/account.api";
+import { useNavigate } from "react-router-dom";
 const cx = className.bind(styles);
 
 function Header() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [searchText, setSearchText] = useState("");
 
   const [openSearch, setOpenSearch] = useState(false);
   const [openForm, setOpenForm] = useState(false);
   const [openCart, setOpenCart] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const [password, setPassword] = useState("");
+
+  // useEffect(()=>{
+  //   setOpenForm(false);
+  //   setOpenSearch(false);
+  //   setOpenCart(false);
+  // },[])
 
   const handleToggle = (status, setStatus) => {
     setStatus(!status);
@@ -43,6 +54,8 @@ function Header() {
 
   const handleLogout = async (accessToken, dispatch) => {
     const resLogOut = await logoutUser(accessToken, dispatch);
+    navigate("/client/login");
+    // console.log(resLogOut);
   };
 
   const totalItemInCart = useSelector(totalItem);
@@ -52,7 +65,32 @@ function Header() {
   // console.log(totalMoneyInCart);
   const inforUser = useSelector(userSelector);
 
-  // console.log(inforUser);
+  // xu li login
+
+  const handleOnChagneInput = (e, setInput) => {
+    setInput(e.target.value);
+  };
+
+  const inforLogin = {
+    email_user: email,
+    password_user: password,
+  };
+  // console.log(inforLogin)
+
+  const handleSubmitLogin = async (e) => {
+    e.preventDefault();
+    if (email && password) {
+      const resultLogin = await loginUser(inforLogin, dispatch);
+      if (resultLogin === true) {
+        setEmail("");
+        setPassword("");
+        setOpenForm(false);
+        navigate("/");
+      }
+    } else {
+      alert("Enter enough infor, please");
+    }
+  };
   return (
     <>
       {/* <h1 id={cx('nhut')} >adsa</h1> */}
@@ -232,11 +270,11 @@ function Header() {
               )}
             </div>
             {/* form dang nhap */}
-            {inforUser.authorization === 0 ? (
-              <DropdownAdmin></DropdownAdmin>
+            {inforUser?.authorization === 0 ? (
+              <DropdownAdmin handleLogout={handleLogout}></DropdownAdmin>
             ) : (
               <div>
-                {inforUser.id_user ? (
+                {inforUser?.id_user ? (
                   <DropDownClient handleLogout={handleLogout}></DropDownClient>
                 ) : (
                   <div className={cx("icon__selector", "icos__user")}>
@@ -264,9 +302,16 @@ function Header() {
                           Nhập email và mật khẩu của bạn:
                         </p>
                         <hr />
-                        <form className={cx("needs-validation")}>
+                        <form
+                          onSubmit={handleSubmitLogin}
+                          className={cx("needs-validation")}
+                        >
                           <div className={cx("form-floating", "mb-3")}>
                             <input
+                              value={email}
+                              onChange={(e) => {
+                                handleOnChagneInput(e, setEmail);
+                              }}
                               type="email"
                               className={cx("form-control", "size--input")}
                               id={cx("floatingInput")}
@@ -284,6 +329,10 @@ function Header() {
                           <div className={cx("form-floating")}>
                             <input
                               type="password"
+                              onChange={(e) => {
+                                handleOnChagneInput(e, setPassword);
+                              }}
+                              value={password}
                               className={cx("form-control", "size--input")}
                               id={cx("floatingPassword")}
                               name="matkhau"

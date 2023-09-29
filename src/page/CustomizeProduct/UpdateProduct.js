@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
-import classNames from "classnames/bind";
-import styles from "./products.module.scss";
-
-import Product from "./components/Product";
-// import axios from "axios";
-
+import classnames from "classnames/bind";
+import styles from "./updateproduct.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { productsAfterFilter } from "../../redux/selector";
-import { productsSlice } from "./productsSlice";
 import {
   getAllProduct,
   getProductByCaterogy,
 } from "../../apiRequset/product.api";
+import { productsSlice } from "../Products/productsSlice";
+const cx = classnames.bind(styles);
+//
+// import axios from "axios";
+
+//
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -25,11 +28,12 @@ function withRouter(Component) {
   return ComponentWithRouterProp;
 }
 
-function Products(props) {
+//
+function UpdateProduct(props) {
+  //
   // const keyFilter = useSelector(searchTextSelector);
   // console.log(keyFilter);
   // let date =new Date();
-  const cx = classNames.bind(styles);
   const dispatch = useDispatch();
   // console.log(date.getTime());
 
@@ -80,33 +84,35 @@ function Products(props) {
   //     setProducts(new_product);
   //   }
   // },[keyFilter,products])
+  //
   return (
-    <div>
-      <div className={cx("frame--intruduce")}>
-        {/* <img className={cx("framepicture__picturemain" src="img/slide_1_img.webp" alt="loading">  */}
+    <>
+      <div>
+        <div>
+          <div>Bạn chưa có sản phẩm</div>
+
+          <div id={cx("aritcle__infor")} className={cx("container")}>
+            <div className={cx("d-flex", "article_infor_item")}>
+              <img className={cx("item_picture")} src="" alt="" />
+              <div className={cx("infor_item")}>
+                <p hidden>123</p>
+                <h5 className={cx("item_name")}>dfdfg</h5>
+                <p className={cx("item_price", "mb-1")}>
+                  <b>Giá: </b>dfgdfg
+                </p>
+                <p className={cx("item_quantity", "mb-1")}>
+                  <b>Số lượng: </b>dgdfgd
+                </p>
+              </div>
+              <div className={cx("icon_edit")}>
+                <FontAwesomeIcon icon={faPen}></FontAwesomeIcon>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <main>
-        <div className={cx("mt-2")}>
-          <h2>Men fashion</h2>
-        </div>
-        <div className={cx("product", "mt-2", "d-flex", "flex-wrap")}>
-          {/* <div>
-            <p>Không sản có sản phẩm được tải lên</p>
-          </div> */}
-
-          {productsList.length > 0
-            ? productsList.map((product) => {
-                return (
-                  <Product key={product.id_product} product={product}></Product>
-                );
-              })
-            : "Chưa có sản phẩm"}
-
-          {/*  */}
-        </div>
-      </main>
-    </div>
+    </>
   );
 }
 
-export default withRouter(Products);
+export default withRouter(UpdateProduct);

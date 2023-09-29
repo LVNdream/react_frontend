@@ -135,12 +135,16 @@ function CartProduct(props) {
                   "btnUpdateQuantity"
                 )}
                 onClick={() => {
-                  dispatch(
-                    cartSlice.actions.updateQuantityInCart({
-                      ...props.product,
-                      quantity: inputQuantity,
-                    })
-                  );
+                  if(inputQuantity>0){
+                    dispatch(
+                      cartSlice.actions.updateQuantityInCart({
+                        ...props.product,
+                        quantity: inputQuantity,
+                      })
+                    );
+                  }else{
+                    alert("Quantity phải lớn hơn 0")
+                  }
                 }}
               >
                 Update

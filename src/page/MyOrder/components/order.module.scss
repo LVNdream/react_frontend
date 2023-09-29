@@ -9,7 +9,7 @@
 }
 
 .statusOrder {
-  margin-top: 15px;
+  margin-top: 7px;
   margin-bottom: 5px;
   color: #015eff;
 }
@@ -42,8 +42,21 @@
 
 #aritcle__infor {
   border: 3px solid #c49d5a;
-//   width: 50%;
+  //   width: 50%;
   height: 600px;
   padding: 20px;
   overflow: scroll;
+}
+.button_toggle_seemore{
+  height: 20px;
+  font-size: 17px;
+  color: #6e460a;
+  text-align: center;
+  
+  &:hover{
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 18px;
+    text-decoration:underline;  
+  }
 }

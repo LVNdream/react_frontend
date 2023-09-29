@@ -38,7 +38,7 @@ function DropDownClient(props) {
           aria-labelledby={"dropdownMenuButton2"}
         >
           <li>
-            <Link className={cx("dropdown-item")} to={""}>
+            <Link className={cx("dropdown-item")} to={"/client/checkorder"}>
               Kiểm tra đơn hàng
             </Link>
           </li>

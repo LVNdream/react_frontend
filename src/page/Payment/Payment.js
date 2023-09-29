@@ -7,7 +7,7 @@ import { cartSelector, totalMoney } from "../../redux/selector";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+// import axios from "axios";
 import { cartSlice } from "../Cart/cartSlice";
 import { addOrder } from "../../apiRequset/order.api";
 

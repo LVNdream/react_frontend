@@ -1,3 +1,17 @@
+.addColor {
+  background-color: antiquewhite;
+  float: right;
+  margin-right: 5px;
+}
+
+#aritcle__infor {
+  border: 3px solid #c49d5a;
+  width: 50%;
+  height: 600px;
+  padding: 20px;
+  overflow: scroll;
+}
+
 .idOrder {
   margin-bottom: 20px;
 }
@@ -9,8 +23,7 @@
 }
 
 .statusOrder {
-  margin-top: 15px;
-  margin-bottom: 5px;
+  margin: 15px 0px;
   color: #015eff;
 }
 
@@ -34,16 +47,6 @@
   font-weight: 400;
   color: red;
 }
-
-.none_formDelete {
-  display: none;
-}
-//
-
-#aritcle__infor {
-  border: 3px solid #c49d5a;
-//   width: 50%;
-  height: 600px;
-  padding: 20px;
-  overflow: scroll;
+.listColor{
+    border: 1px solid red;
 }

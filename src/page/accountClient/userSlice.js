@@ -5,7 +5,7 @@ export const userSlice = createSlice({
   initialState: {
     infor: JSON.parse(window.localStorage.getItem("inforUser"))
       ? JSON.parse(window.localStorage.getItem("inforUser"))
-      : "",
+      : null,
   },
 
   reducers: {
@@ -18,7 +18,7 @@ export const userSlice = createSlice({
       // console.log(state.items);
     },
     clearUser: (state, action) => {
-        state.infor = "";
+        state.infor = null;
         window.localStorage.setItem("inforUser", JSON.stringify(state.infor));
       },
   },

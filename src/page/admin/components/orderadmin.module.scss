@@ -1,0 +1,65 @@
+.idOrder {
+    margin-bottom: 20px;
+  }
+  
+  .inforOrder--customer p {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 5px;
+  }
+  
+  .statusOrder {
+    margin-top: 7px;
+    margin-bottom: 5px;
+    color: #015eff;
+  }
+  .statusUpdate{
+    gap: 10px;
+  }
+  .inforOrder {
+    margin-bottom: 50px;
+    border: 1px dashed black;
+    padding: 10px;
+  }
+  
+  .inforProduct p {
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
+  
+  .listItem p {
+    font-size: 15px;
+  }
+  
+  .tongtien {
+    font-size: 17px;
+    font-weight: 400;
+    color: red;
+  }
+  
+  .none_formDelete {
+    display: none;
+  }
+  //
+  
+  #aritcle__infor {
+    border: 3px solid #c49d5a;
+    //   width: 50%;
+    height: 600px;
+    padding: 20px;
+    overflow: scroll;
+  }
+  .button_toggle_seemore{
+    height: 20px;
+    font-size: 17px;
+    color: #6e460a;
+    text-align: center;
+    
+    &:hover{
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 18px;
+      text-decoration:underline;  
+    }
+  }
+  

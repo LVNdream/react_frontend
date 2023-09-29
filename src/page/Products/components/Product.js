@@ -20,12 +20,13 @@ function Product(props) {
     type_product,
     caterogy_product,
     listColor,
+    listSize,
     listColorDetail,
   } = props.product;
 
-  // console.log(props.product);
+  // console.log(listColorDetail);
   const [quantity, setQuantity] = useState(listColorDetail[0].quantity_product);
-  const [size, setSize] = useState("S");
+  const [size, setSize] = useState(listSize[0].id_size);
   const [colorrr, setColor] = useState(listColor[0].color);
 
   // console.log(listColor)
@@ -111,7 +112,29 @@ function Product(props) {
               : ""}
           </div>
           <div className={cx("d-flex", "size--selection", "mt-2")}>
-            <div>
+            {/*  */}
+
+            {listSize && listSize.length > 0
+              ? listSize.map((size, index) => {
+                  return (
+                    <div key={index + size.id_size}>
+                      <input
+                        type="radio"
+                        onChange={(e) => {
+                          handleOnChangeSize(e);
+                        }}
+                        id="size1"
+                        name="itemSize"
+                        value={size.id_size}
+                      />
+                      <label htmlFor="size1">{size.id_size}</label>
+                      <br />
+                    </div>
+                  );
+                })
+              : ""}
+
+            {/* <div>
               <input
                 type="radio"
                 onChange={(e) => {
@@ -160,7 +183,8 @@ function Product(props) {
                 value="XL"
               />
               <label htmlFor="size4">XL</label>
-            </div>
+            </div> */}
+            {/*  */}
           </div>
         </div>
         <div className={cx("show--cart")}>
@@ -170,16 +194,16 @@ function Product(props) {
               onClick={() => {
                 dispatch(
                   cartSlice.actions.addToCart({
-                    id_product:id_product,
-                    picture_product:picture_product,
-                    name_product:name_product,
-                    price_product:price_product,
-                    type_product:type_product,
-                    caterogy_product:caterogy_product,
+                    id_product: id_product,
+                    picture_product: picture_product,
+                    name_product: name_product,
+                    price_product: price_product,
+                    type_product: type_product,
+                    caterogy_product: caterogy_product,
                     quantity: 1,
                     size: size,
                     color: colorrr,
-                    quantity_product:quantity
+                    quantity_product: quantity,
                   })
                 );
               }}

@@ -5,9 +5,19 @@ import className from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
 
-function DropdownAdmin() {
+function DropdownAdmin(props) {
   const cx = className.bind(styles);
+  const dispatch = useDispatch();
+
+  const accessToken = Cookies.get("accessToken");
+
+  const handleClicklogout = () => {
+    props.handleLogout(accessToken, dispatch);
+  };
+
   return (
     <>
       <div className={cx("dropdown")}>
@@ -46,7 +56,10 @@ function DropdownAdmin() {
             <hr className={cx("dropdown-divider")} />
           </li>
           <li>
-            <div className={cx("btn", "btn-light", "form-control")}>
+            <div
+              className={cx("btn", "btn-light", "form-control")}
+              onClick={handleClicklogout}
+            >
               Đăng xuất
             </div>
           </li>

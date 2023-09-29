@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./productDetail.module.scss";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
@@ -221,7 +221,25 @@ function ProductDetail(props) {
                   <p className={cx("title-size")}>Kich thước:</p>
                 </div>
                 <div className={cx("d-flex", "article-size-option", "mt-2")}>
-                  <div>
+                  {inforDetail.listSize.map((itemSize, index) => {
+                    return (
+                      <div key={index}>
+                        <input
+                          onChange={(e) => {
+                            handleOnChangeSize(e);
+                          }}
+                          type="radio"
+                          id={cx("size1")}
+                          name="itemSize"
+                          value={itemSize.id_size}
+                        />
+                        <label htmlFor="size1">{itemSize.id_size}</label>
+                        <br />
+                      </div>
+                    );
+                  })}
+
+                  {/* <div>
                     <input
                       onChange={(e) => {
                         handleOnChangeSize(e);
@@ -270,7 +288,7 @@ function ProductDetail(props) {
                       value="XL"
                     />
                     <label htmlFor="size4">XL</label>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -331,6 +349,8 @@ function ProductDetail(props) {
                         alert(
                           "Mời ban chọn size, color, quantity để thêm vào giỏ hàng"
                         );
+                      } else if (inputQuantity <=0) {
+                        alert("Quantity phải lớn hơn 0  ");
                       } else {
                         dispatch(
                           cartSlice.actions.addToCart({

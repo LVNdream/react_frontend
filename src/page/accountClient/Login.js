@@ -3,9 +3,12 @@ import classNames from "classnames/bind";
 import styles from "./login.module.scss";
 import { loginUser } from "../../apiRequset/account.api";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 const cx = classNames.bind(styles);
 
 function Login() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,8 +25,12 @@ function Login() {
   const handleSubmitLogin = async (e) => {
     e.preventDefault();
     if (email && password) {
-      const resultLogin = await loginUser(inforLogin,dispatch);
-      // console.log(resultLogin)
+      const resultLogin = await loginUser(inforLogin, dispatch);
+      if (resultLogin === true) {
+        setEmail("");
+        setPassword("");
+        navigate("/");
+      }
     } else {
       alert("Enter enough infor, please");
     }

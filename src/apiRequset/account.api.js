@@ -13,6 +13,7 @@ export const registerUser = async (entity) => {
 
 export const loginUser = async (entity, dispatch) => {
   try {
+    let isloginSuccess = false;
     const res = await axios.post(`http://localhost:3001/auth/login`, entity);
     if (res.data.isSuccess) {
       var now = new Date();
@@ -28,7 +29,8 @@ export const loginUser = async (entity, dispatch) => {
       // console.log(res.data.user_temp);
       dispatch(userSlice.actions.addUser(res.data.user_temp));
       alert("Login Success!!!");
-      return "Login Success!!!";
+      isloginSuccess = true;
+      return isloginSuccess;
     } else {
       alert(res.data);
       return res.data;
@@ -42,7 +44,7 @@ export const logoutUser = async (accessToken, dispatch) => {
     const entity = {
       accessToken: accessToken,
     };
-    console.log(entity);
+    // console.log(entity);
     const res = await axios.post(`http://localhost:3001/auth/logout`, entity);
     if (res.data.isError && res.data.isError === true) {
       alert(res.data.mess);
@@ -51,6 +53,7 @@ export const logoutUser = async (accessToken, dispatch) => {
       Cookies.remove("refreshToken");
       dispatch(userSlice.actions.clearUser());
       alert(res.data);
+      return res.data;
     }
   } catch (error) {
     console.log(error);
@@ -71,6 +74,17 @@ export const getCookie = (cname) => {
     }
   }
   return "";
+};
+
+export const checkAdmin = (inforUser, navigate) => {
+  let isAdmin = false;
+  if (inforUser !== null && inforUser.authorization === 0) {
+    return (isAdmin = true);
+  } else {
+    alert("Bạn phải đăng nhập với tư cách là Admin để vào trang!");
+    navigate("/client/login");
+    return (isAdmin = false);
+  }
 };
 // export const getProductDetail = async (type,caterogy,id,setInforDetail) => {
 //     try {
