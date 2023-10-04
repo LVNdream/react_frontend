@@ -67,7 +67,7 @@ function Products(props) {
 
   dispatch(productsSlice.actions.setProductsList(products));
   const productsList = useSelector(productsAfterFilter);
-  console.log(productsList);
+  // console.log(productsList);
 
   // console.log(keyFilter)
   // useEffect(()=>{

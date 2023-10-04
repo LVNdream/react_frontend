@@ -73,3 +73,15 @@
   font-size: 20px;
   color: #bf8b31;
 }
+.item_color{
+  gap:10px
+}
+.btnToggleSeeDetail{
+  &:hover{
+    font-size: 17px;
+    cursor: pointer;
+  }
+}
+.articleIconUpdate{
+  gap: 30px;
+}

@@ -18,7 +18,15 @@ function AddProduct() {
   const accessToken = Cookies.get("accessToken");
 
   const [dataColor, setDataColor] = useState([
-    { id_size: "S", color: "", quantity_product: "" },
+    {
+      sizeColor: [
+        { id_size: "S", quantity_product: "" },
+        { id_size: "M", quantity_product: "" },
+        { id_size: "L", quantity_product: "" },
+        { id_size: "XL", quantity_product: "" },
+      ],
+      color: "",
+    },
   ]);
 
   const [type_product_data, Set_type_product_data] = useState([]);
@@ -30,7 +38,7 @@ function AddProduct() {
   const [typeProduct, setTypeProduct] = useState("");
   const [caterogyProduct, setCaterogyProduct] = useState("");
 
-  const inforProduct = {
+  let inforProduct = {
     accessToken,
     nameProduct,
     pictureProduct,
@@ -44,25 +52,25 @@ function AddProduct() {
     setInfor(e.target.value);
   };
 
-  const handleOnchangeInputColor = (e, index) => {
+  const handleOnchangeInputColor = (e, i) => {
     let value = e.target.value;
     let cp = [...dataColor];
-    cp[index].color = value;
+    cp[i].color = value;
     setDataColor(cp);
   };
   //
-  const handleOnchangeInputQuantity = (e, index) => {
+  const handleOnchangeInputQuantity = (e, i, i1) => {
     let value = e.target.value;
     let cp = [...dataColor];
-    cp[index].quantity_product = value;
+    cp[i].sizeColor[i1].quantity_product = value;
     setDataColor(cp);
   };
-  const handleOnchangeInputId_size = (e, index) => {
-    let value = e.target.value;
-    let cp = [...dataColor];
-    cp[index].id_size = value;
-    setDataColor(cp);
-  };
+  // const handleOnchangeInputId_size = (e, index) => {
+  //   let value = e.target.value;
+  //   let cp = [...dataColor];
+  //   cp[index].id_size = value;
+  //   setDataColor(cp);
+  // };
 
   const handleOnchangeSelectTypeProduct = async (e) => {
     const caterogy_product = await getCaterogyProduct(
@@ -76,94 +84,126 @@ function AddProduct() {
 
   //   const handleOnchangeInputColor = (e) => {};
   const handleAddColor = () => {
-    setDataColor([
+    const cp = [
       ...dataColor,
-      { id_size: "S", color: "", quantity_product: "" },
-    ]);
+      {
+        sizeColor: [
+          { id_size: "S", quantity_product: "" },
+          { id_size: "M", quantity_product: "" },
+          { id_size: "L", quantity_product: "" },
+          { id_size: "XL", quantity_product: "" },
+        ],
+        color: "",
+      },
+    ];
+    setDataColor(cp);
+  };
+  const handleDeCreaseColor = () => {
+    // console.log(123123);
+    const cp = [...dataColor];
+    if (cp.length > 1) {
+      cp.pop();
+      setDataColor(cp);
+    }
   };
 
   async function get_and_set_typeproduct() {
     const type_product = await getTypeProduct(accessToken);
-    Set_type_product_data(type_product);
-    setTypeProduct(type_product[0].type_product);
-    const initSelectCaterogy = async () => {
-      const caterogy_product = await getCaterogyProduct(
-        type_product[0].type_product,
-        accessToken
-      );
-      Set_Caterogy_product_data(caterogy_product);
-      setCaterogyProduct(caterogy_product[0].caterogy_product);
-    };
-    initSelectCaterogy();
-  }
-
-  useEffect(() => {
-    if (inforUser !== null && inforUser.authorization === 0) {
-      // async function get_and_set_typeproduct() {
-      //   const type_product = await getTypeProduct(accessToken);
-      //   Set_type_product_data(type_product);
-      //   setTypeProduct(type_product[0].type_product);
-      //   const initSelectCaterogy = async () => {
-      //     const caterogy_product = await getCaterogyProduct(
-      //       type_product[0].type_product,
-      //       accessToken
-      //     );
-      //     Set_Caterogy_product_data(caterogy_product);
-      //     setCaterogyProduct(caterogy_product[0].caterogy_product);
-      //   };
-      //   initSelectCaterogy();
-      // }
-      get_and_set_typeproduct();
-    } else {
-      navigate("/client/login");
-    }
-  }, []);
-
-  /* useEffect(() => {
-    async function get_and_set_typeproduct() {
-      const type_product = await getTypeProduct();
+    // console.log(type_product);
+    if (type_product) {
       Set_type_product_data(type_product);
       setTypeProduct(type_product[0].type_product);
       const initSelectCaterogy = async () => {
         const caterogy_product = await getCaterogyProduct(
-          type_product[0].type_product
+          type_product[0].type_product,
+          accessToken
         );
         Set_Caterogy_product_data(caterogy_product);
         setCaterogyProduct(caterogy_product[0].caterogy_product);
       };
       initSelectCaterogy();
     }
-    get_and_set_typeproduct();
-  }, []); */
+  }
+
+  useEffect(() => {
+    if (inforUser !== null && inforUser.authorization === 0) {
+      get_and_set_typeproduct();
+    } else if (inforUser) {
+      alert("You're not Admin");
+    } else {
+      navigate("/client/login");
+    }
+  }, []);
 
   const handleSubmitAddProduct = async (e) => {
     e.preventDefault();
-    console.log(inforProduct);
+    // console.log(inforProduct);
 
-    const resultadd = await addProduct(inforProduct, accessToken);
+    let detailColor = [];
+    inforProduct.dataColor.forEach((data, index) => {
+      const detail = data.sizeColor.map((dataSize) => {
+        return {
+          id_size: dataSize.id_size,
+          color: data.color,
+          quantity_product: dataSize.quantity_product,
+        };
+      });
+      detailColor.push(...detail);
+    });
 
-    if (resultadd.error && resultadd.error === true) {
-      alert(resultadd.mess);
-    } else {
-      alert(resultadd.mess);
+    detailColor = [...detailColor];
+    let errorLoop;
+
+    for (let index = 0; index < detailColor.length; index++) {
+      const element = detailColor[index];
+      for (let i = index + 1; i < detailColor.length; i++) {
+        const elementAfter = detailColor[i];
+        if (
+          element.id_size === elementAfter.id_size &&
+          element.color.toLowerCase() === elementAfter.color.toLowerCase()
+        ) {
+          errorLoop = true;
+          break;
+        } else {
+          errorLoop = false;
+        }
+      }
+      if (errorLoop) {
+        break;
+      }
     }
-    // console.log(resultadd);
 
-    //
-    //
-    //
-    //
+    if (errorLoop) {
+      alert("Lap trinh nhu CC");
+    } else {
+      inforProduct = { ...inforProduct, dataColor: detailColor };
+      const resultadd = await addProduct(inforProduct, accessToken);
+      if (resultadd.error && resultadd.error === true) {
+        alert(resultadd.mess);
+      } else {
+        alert(resultadd.mess);
+      }
 
-    setNameProduct("");
-    setPictureProduct("");
-    setPriceProduct("");
-    setTypeProduct("");
-    setCaterogyProduct("");
-    setDataColor([{ id_size: "S", color: "", quantity_product: "" }]);
-    Set_type_product_data([]);
-    Set_Caterogy_product_data([]);
-
-    get_and_set_typeproduct();
+      setNameProduct("");
+      setPictureProduct("");
+      setPriceProduct("");
+      setTypeProduct("");
+      setCaterogyProduct("");
+      setDataColor([
+        {
+          sizeColor: [
+            { id_size: "S", quantity_product: "" },
+            { id_size: "M", quantity_product: "" },
+            { id_size: "L", quantity_product: "" },
+            { id_size: "XL", quantity_product: "" },
+          ],
+          color: "",
+        },
+      ]);
+      Set_type_product_data([]);
+      Set_Caterogy_product_data([]);
+      get_and_set_typeproduct();
+    }
   };
   return (
     <>
@@ -292,78 +332,79 @@ function AddProduct() {
                   <div className={cx("p-2")}>
                     <div className={cx("d-flex", "justify-content-between")}>
                       <p>Deatail_product</p>
-                      <div
-                        onClick={handleAddColor}
-                        className={cx("btn", "btn-primary", "btn-sm")}
-                      >
-                        +
+                      <div>
+                        <div
+                          onClick={handleAddColor}
+                          className={cx("btn", "btn-primary", "btn-sm")}
+                        >
+                          +
+                        </div>
+                        <div
+                          onClick={handleDeCreaseColor}
+                          className={cx("btn", "btn-primary", "btn-sm", "ms-2")}
+                        >
+                          -
+                        </div>
                       </div>
                     </div>
 
                     {dataColor
-                      ? dataColor.map((data, index) => {
-                          console.log(data);
+                      ? dataColor.map((data, i) => {
+                          // console.log(data.id_size);
                           return (
-                            <div key={index} className={cx("row")}>
-                              <div className={cx("mb-3", "col-4")}>
-                                <label
-                                  htmlFor={`exampleFormControlInput2411${index}`}
-                                  className={cx("form-label")}
-                                >
-                                  ProductSize
-                                </label>
+                            <div key={i} className={cx("row")}>
+                              <div className={cx("row")}>
+                                <div className="col-4">Size</div>
+                                <div className="col-4">Color</div>
 
-                                <select
-                                  className={cx("form-select")}
-                                  onChange={(e) => {
-                                    handleOnchangeInputId_size(e, index);
-                                  }}
-                                  value={data.id_size}
-                                >
-                                  <option value="S">S</option>
-                                  <option value="M">M</option>
-                                  <option value="L">L</option>
-                                  <option value="XL">XL</option>
-                                </select>
+                                <div className="col-4">Quantity</div>
                               </div>
-
-                              <div className={cx("mb-3", "col-4")}>
-                                <label
-                                  htmlFor={`exampleFormControlInput24${index}`}
-                                  className={cx("form-label")}
-                                >
-                                  Productcolor
-                                </label>
-                                <input
-                                  value={data.color}
-                                  onChange={(e) => {
-                                    handleOnchangeInputColor(e, index);
-                                  }}
-                                  required
-                                  type="text"
-                                  className={cx("form-control")}
-                                  id={cx(`exampleFormControlInput24${index}`)}
-                                />
-                              </div>
-
-                              <div className={cx("mb-3", "col-4")}>
-                                <label
-                                  htmlFor={`exampleFormControlInput2410${index}`}
-                                  className={cx("form-label")}
-                                >
-                                  Productquantity
-                                </label>
-                                <input
-                                  value={data.quantity_product}
-                                  onChange={(e) => {
-                                    handleOnchangeInputQuantity(e, index);
-                                  }}
-                                  required
-                                  type="text"
-                                  className={cx("form-control")}
-                                  id={cx(`exampleFormControlInput2410${index}`)}
-                                />
-                              </div>
+                              {data.sizeColor
+                                ? data.sizeColor.map((detail, i1) => {
+                                    return (
+                                      <div key={i1} className={cx("row")}>
+                                        <div className={cx("mb-3", "col-4")}>
+                                          <select
+                                            className={cx("form-select")}
+                                            value={detail.id_size}
+                                            disabled
+                                          >
+                                            <option value="S">S</option>
+                                            <option value="M">M</option>
+                                            <option value="L">L</option>
+                                            <option value="XL">XL</option>
+                                          </select>
+                                        </div>
+                                        <div className={cx("mb-3", "col-4")}>
+                                          <input
+                                            value={data.color}
+                                            onChange={(e) => {
+                                              handleOnchangeInputColor(e, i);
+                                            }}
+                                            required
+                                            type="text"
+                                            className={cx("form-control")}
+                                          />
+                                        </div>
+                                        <div className={cx("mb-3", "col-4")}>
+                                          <input
+                                            value={detail.quantity_product}
+                                            onChange={(e) => {
+                                              handleOnchangeInputQuantity(
+                                                e,
+                                                i,
+                                                i1
+                                              );
+                                            }}
+                                            required
+                                            type="text"
+                                            className={cx("form-control")}
+                                          />
+                                        </div>
+                                      </div>
+                                    );
+                                  })
+                                : "Error Size"}
                             </div>
                           );
                         })
