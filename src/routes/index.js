@@ -11,6 +11,8 @@ import Login from "../page/accountClient/Login";
 import CheckOrder from "../page/MyOrder/CheckOrder";
 import AddProduct from "../page/CustomizeProduct/AddProduct";
 import UpdateProduct from "../page/CustomizeProduct/UpdateProduct";
+import ProductDeleted from "../page/CustomizeProduct/ProductDeleted";
+import FavoriteProduct from "../page/FavoriteProduct/FavoriteProduct";
 
 const publicRoutes = [
   { path: "/", component: Home, layout: LayoutCilent },
@@ -30,16 +32,29 @@ const publicRoutes = [
   { path: "/payment", component: Payment, layout: LayoutCilent },
   { path: "/client/login", component: Login, layout: LayoutCilent },
 
+  {
+    path: "/client/favoriteproduct",
+    component: FavoriteProduct,
+    layout: LayoutCilent,
+  },
+
   // admin
   { path: "/admin", component: AdminHome, layout: LayoutCilent },
   { path: "/admin/addproduct", component: AddProduct, layout: LayoutCilent },
-  { path: "/admin/updateproduct", component: UpdateProduct, layout: LayoutCilent },
+  {
+    path: "/admin/updateproduct",
+    component: UpdateProduct,
+    layout: LayoutCilent,
+  },
+  {
+    path: "/admin/productdeleted",
+    component: ProductDeleted,
+    layout: LayoutCilent,
+  },
 
-
-// 
-// 
+  //
+  //
   { path: "/client/checkorder", component: CheckOrder, layout: LayoutCilent },
-
 ];
 
 const privateRoutes = [];

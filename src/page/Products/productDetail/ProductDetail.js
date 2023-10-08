@@ -298,7 +298,7 @@ function ProductDetail(props) {
                 <div className={cx("article--iconFavorite")}>
                   <i className={cx("fa-solid fa-heart iconFavorite")}></i>
                   <FontAwesomeIcon
-                    className={cx("iconFavorite")}
+                    className={cx("iconFavorite",{"isFavorite":inforDetail.isFavorite})}
                     icon={faHeart}
                   ></FontAwesomeIcon>
                 </div>

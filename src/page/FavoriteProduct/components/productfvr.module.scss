@@ -1,0 +1,29 @@
+.infor_itemFVR {
+  position: relative;
+  height: 20%;
+  background-color: rgba(226, 226, 226,   0.615);
+  gap: 10px;
+}
+.pictureItem {
+  width: 16%;
+  height: 100%;
+  &:hover{
+    cursor: pointer;
+  }
+}
+.titleDeleteItem {
+  &:hover{
+    cursor: pointer;
+  }
+}
+.iconItem {
+  font-size: 24px;
+  color: red;
+  position: absolute;
+  top: 0;
+  right: 10px;
+}
+.form-check-input {
+  width: 1.5rem;
+  height: 1.5rem;
+}

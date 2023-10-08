@@ -7,12 +7,14 @@ import Product from "./components/Product";
 
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { productsAfterFilter } from "../../redux/selector";
+import { productsAfterFilter, userSelector } from "../../redux/selector";
 import { productsSlice } from "./productsSlice";
 import {
   getAllProduct,
   getProductByCaterogy,
 } from "../../apiRequset/product.api";
+import { addProductFavorite } from "../../apiRequset/client.api";
+import Cookies from "js-cookie";
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -31,35 +33,17 @@ function Products(props) {
   // let date =new Date();
   const cx = classNames.bind(styles);
   const dispatch = useDispatch();
-  // console.log(date.getTime());
+  const inforUser = useSelector(userSelector);
+  const accessToken = Cookies.get("accessToken");
+
 
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     if (props.router.params.caterogy) {
       getProductByCaterogy(props.router.params.caterogy, setProducts);
-      // axios
-      //   .get(
-      //     `http://localhost:3001/products/men/${props.router.params.caterogy}`
-      //   )
-      //   .then((res) => {
-      //     // console.log(res.data);
-      //     setProducts(res.data);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
     } else {
       getAllProduct(setProducts);
-      // axios
-      //   .get(`http://localhost:3001/products/men/`)
-      //   .then((res) => {
-      //     // console.log(res.data);
-      //     setProducts(res.data);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
     }
   }, [props.router.params.caterogy]);
 
@@ -67,19 +51,22 @@ function Products(props) {
 
   dispatch(productsSlice.actions.setProductsList(products));
   const productsList = useSelector(productsAfterFilter);
-  // console.log(productsList);
 
-  // console.log(keyFilter)
-  // useEffect(()=>{
-  //   if (keyFilter && products !== null) {
-  //     const new_product = products.filter((product) => {
-  //       // console.log(product.name_product)
-  //       return product.name_product.includes(keyFilter);
-  //     });
-  //     console.log(new_product);
-  //     setProducts(new_product);
-  //   }
-  // },[keyFilter,products])
+  // console.log(productsList)
+
+  // console.log(inforUser);
+
+  const handleOnClickIconFavorite = async (id_product) => {
+    if (inforUser && id_product) {
+      const entity = { id_user: inforUser.id_user, id_product };
+      const resultaddFVR = await addProductFavorite(entity,accessToken);
+      alert(resultaddFVR);
+    }
+    else{
+      alert("Please, login to add to favorite")
+    }
+  };
+
   return (
     <div>
       <div className={cx("frame--intruduce")}>
@@ -97,7 +84,7 @@ function Products(props) {
           {productsList.length > 0
             ? productsList.map((product) => {
                 return (
-                  <Product key={product.id_product} product={product}></Product>
+                  <Product key={product.id_product} product={product} handleOnClickIconFavorite={handleOnClickIconFavorite}></Product>
                 );
               })
             : "Chưa có sản phẩm"}

@@ -10,6 +10,8 @@ export const getAllProduct = async (setProducts) => {
     console.log(error);
   }
 };
+
+
 export const getProductByCaterogy = async (caterogy,setProducts) => {
   try {
     console.log(caterogy)

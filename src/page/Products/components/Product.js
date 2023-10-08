@@ -22,18 +22,16 @@ function Product(props) {
     listColor,
     listSize,
     listColorDetail,
+    isFavorite,
   } = props.product;
 
-  // console.log(listColorDetail);
+  
   const [quantity, setQuantity] = useState(listColorDetail[0].quantity_product);
   const [size, setSize] = useState(listSize[0].id_size);
   const [colorrr, setColor] = useState(listColor[0].color);
 
-  // console.log(listColor)
-
   const handleOnChangeColor = (e) => {
-    // setQuantity(quantity);
-    // console.log(e.target.value);
+   
     setColor(e.target.value);
     const itemColor = listColorDetail.filter((productColor) => {
       return (
@@ -41,13 +39,10 @@ function Product(props) {
       );
     });
     setQuantity(itemColor[0].quantity_product);
-
-    // console.log(itemColor);
-    // console.log(itemColor.quantity_product);
+   
   };
   const handleOnChangeSize = (e) => {
-    // setQuantity(quantity);
-    // console.log(e.target.value);
+   
     setSize(e.target.value);
     const itemColor = listColorDetail.filter((productColor) => {
       return (
@@ -55,19 +50,20 @@ function Product(props) {
         productColor.id_size === e.target.value
       );
     });
-    // console.log(itemColor);
+    
     setQuantity(itemColor[0].quantity_product);
   };
-  // const handleOnChangeQuantity = () => {
-  //   const itemColor = listColorDetail.filter((productColor) => {
-  //     return productColor.color === colorrr && productColor.id_size === size;
-  //   });
-  //   console.log(itemColor);
-  // };
+ 
+  const handleAddToFVR = ()=>{
+    props.handleOnClickIconFavorite(id_product);
+  }
 
   const dispatch = useDispatch();
-  // console.log(props.product)
+  
   const cx = classNames.bind(styles);
+
+
+
   return (
     <div className={cx("product__item")}>
       <div className={cx("avata--product")}>
@@ -133,58 +129,6 @@ function Product(props) {
                   );
                 })
               : ""}
-
-            {/* <div>
-              <input
-                type="radio"
-                onChange={(e) => {
-                  handleOnChangeSize(e);
-                }}
-                id="size1"
-                name="itemSize"
-                value="S"
-              />
-              <label htmlFor="size1">S</label>
-              <br />
-            </div>
-            <div>
-              <input
-                type="radio"
-                onChange={(e) => {
-                  handleOnChangeSize(e);
-                }}
-                id="size2"
-                name="itemSize"
-                value="M"
-              />
-              <label htmlFor="size2">M</label>
-              <br />
-            </div>
-            <div>
-              <input
-                type="radio"
-                onChange={(e) => {
-                  handleOnChangeSize(e);
-                }}
-                id="size3"
-                name="itemSize"
-                value="L"
-              />
-              <label htmlFor="size3">L</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                onChange={(e) => {
-                  handleOnChangeSize(e);
-                }}
-                id="size4"
-                name="itemSize"
-                value="XL"
-              />
-              <label htmlFor="size4">XL</label>
-            </div> */}
-            {/*  */}
           </div>
         </div>
         <div className={cx("show--cart")}>
@@ -216,14 +160,11 @@ function Product(props) {
               <FontAwesomeIcon icon={faBagShopping}></FontAwesomeIcon>
             </div>
 
-            <div className={cx("article--iconFavorite")}>
-              {/* /<i className={cx("fa-solid fa-heart isFavorite"></i> */}
+            <div className={cx("article--iconFavorite","iconFavorite",{"isFavorite":isFavorite})} onClick={handleAddToFVR}>
+       
               <FontAwesomeIcon icon={faHeart}></FontAwesomeIcon>
             </div>
 
-            <div className={cx("article--iconFavorite")}>
-              {/* <i className={cx("fa-solid fa-heart iconFavorite"></i> */}
-            </div>
           </div>
 
           <p className={cx("item-quantity")}>Số lượng: {quantity}</p>

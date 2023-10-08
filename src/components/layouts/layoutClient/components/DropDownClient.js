@@ -6,16 +6,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 const cx = className.bind(styles);
 function DropDownClient(props) {
   const dispatch = useDispatch();
-  
-  const accessToken = Cookies.get('accessToken')
+
+  const accessToken = Cookies.get("accessToken");
 
   const handleClicklogout = () => {
-    props.handleLogout(accessToken,dispatch);
+    props.handleLogout(accessToken, dispatch);
   };
 
   return (
@@ -43,7 +43,10 @@ function DropDownClient(props) {
             </Link>
           </li>
           <li>
-            <Link className={cx("dropdown-item")} to={""}>
+            <Link
+              className={cx("dropdown-item")}
+              to={"/client/favoriteproduct"}
+            >
               Xem sản phẩm yêu thích
             </Link>
           </li>

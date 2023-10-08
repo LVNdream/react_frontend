@@ -66,35 +66,36 @@ export const updateQuantity = async (inforUpdate, accessToken) => {
   }
 };
 
-export const addProductDetail = async (inforProduct,accessToken) =>{
-  try {
-
-    const res = await axios.post( "http://localhost:3001/admin/addproduct/productdetail",{inforProduct,accessToken})
-    return res.data
-    
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-
-export const UpdateProductDetail = async (inforProduct,accessToken) =>{
-  try {
-
-    const res = await axios.post( "http://localhost:3001/admin/updateproduct/productdetail",{inforProduct,accessToken})
-    return res.data
-    
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-export const addProductDeleted = async (inforProduct,accessToken) => {
+export const addProductDetail = async (inforProduct, accessToken) => {
   try {
     const res = await axios.post(
-      "http://localhost:3001/admin/deletedroduct",
-      {inforProduct,accessToken}
+      "http://localhost:3001/admin/addproduct/productdetail",
+      { inforProduct, accessToken }
     );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const UpdateProductDetail = async (inforProduct, accessToken) => {
+  try {
+    const res = await axios.post(
+      "http://localhost:3001/admin/updateproduct/productdetail",
+      { inforProduct, accessToken }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addProductDeleted = async (inforProduct, accessToken) => {
+  try {
+    const res = await axios.post("http://localhost:3001/admin/deletedroduct", {
+      inforProduct,
+      accessToken,
+    });
 
     return res.data;
 
@@ -103,4 +104,12 @@ export const addProductDeleted = async (inforProduct,accessToken) => {
     console.log(error);
   }
 };
-
+export const getProductDeleted = async (accessToken) => {
+  try {
+    const res = await axios.post(`http://localhost:3001/admin/deletedroduct`,{accessToken});
+    // console.log(res.data);
+    return (res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
