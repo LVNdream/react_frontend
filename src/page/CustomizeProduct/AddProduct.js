@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import { userSelector } from "../../redux/selector";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 const cx = classnames.bind(styles);
 
 function AddProduct() {
@@ -129,7 +130,14 @@ function AddProduct() {
     if (inforUser !== null && inforUser.authorization === 0) {
       get_and_set_typeproduct();
     } else if (inforUser) {
-      alert("You're not Admin");
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: "You're not Admin",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // alert("You're not Admin");
     } else {
       navigate("/client/login");
     }
@@ -174,14 +182,35 @@ function AddProduct() {
     }
 
     if (errorLoop) {
-      alert("Lap trinh nhu CC");
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: "Loi trung san pham",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // alert("Lap trinh nhu CC");
     } else {
       inforProduct = { ...inforProduct, dataColor: detailColor };
       const resultadd = await addProduct(inforProduct, accessToken);
       if (resultadd.error && resultadd.error === true) {
-        alert(resultadd.mess);
+        Swal.fire({
+          position: "top",
+          icon: "error",
+          title: resultadd.mess,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // alert(resultadd.mess);
       } else {
-        alert(resultadd.mess);
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: resultadd.mess,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // alert(resultadd.mess);
       }
 
       setNameProduct("");

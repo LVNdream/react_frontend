@@ -1,6 +1,7 @@
 import axios from "axios";
 import { userSlice } from "../page/accountClient/userSlice";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 // import { productsSlice } from "../page/Products/productsSlice";
 export const registerUser = async (entity) => {
   try {
@@ -28,11 +29,26 @@ export const loginUser = async (entity, dispatch) => {
       }";expires=" + ${now.toUTCString()} + ";path=/`;
       // console.log(res.data.user_temp);
       dispatch(userSlice.actions.addUser(res.data.user_temp));
-      alert("Login Success!!!");
+      // alert("Login Success!!!");
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: '"Login Success!!!"',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       isloginSuccess = true;
       return isloginSuccess;
     } else {
-      alert(res.data);
+      // alert(res.data);
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: res.data,
+        showConfirmButton: false,
+        timer: 1500,
+      });
       return res.data;
     }
   } catch (error) {
@@ -47,12 +63,27 @@ export const logoutUser = async (accessToken, dispatch) => {
     // console.log(entity);
     const res = await axios.post(`http://localhost:3001/auth/logout`, entity);
     if (res.data.isError && res.data.isError === true) {
-      alert(res.data.mess);
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: res.data.mess,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // alert(res.data.mess);
     } else {
       Cookies.remove("accessToken");
       Cookies.remove("refreshToken");
       dispatch(userSlice.actions.clearUser());
-      alert(res.data);
+      // alert(res.data);
+
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: res.data,
+        showConfirmButton: false,
+        timer: 1500,
+      });
       return res.data;
     }
   } catch (error) {

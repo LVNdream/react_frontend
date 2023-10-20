@@ -4,6 +4,7 @@ import styles from "./login.module.scss";
 import { loginUser } from "../../apiRequset/account.api";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const cx = classNames.bind(styles);
 
@@ -32,7 +33,15 @@ function Login() {
         navigate("/");
       }
     } else {
-      alert("Enter enough infor, please");
+
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: "Enter enough infor, please",
+        showConfirmButton: false,
+        timer: 1500
+      })
+      // alert("Enter enough infor, please");
     }
   };
   return (

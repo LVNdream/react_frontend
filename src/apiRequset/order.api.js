@@ -34,3 +34,15 @@ export const getAllOrder = async (accessToken) => {
     console.log(error);
   }
 };
+
+export const clientGetAllOrderSuccess = async (email, accessToken) => {
+  try {
+    const res = await axios.post(`http://localhost:3001/order/clientgetordersuccess`, {
+      email_user: email,
+      accessToken: accessToken,
+    });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

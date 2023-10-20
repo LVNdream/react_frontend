@@ -1,11 +1,3 @@
-#aritcle__infor {
-  border: 3px solid #c49d5a;
-  width: 80%;
-  height: 600px;
-  padding: 20px;
-  overflow: scroll;
-  margin: auto;
-}
 .infor_item {
   position: relative;
   flex-wrap: wrap;
@@ -14,7 +6,6 @@
   width: 100%;
   height: 17%;
   background-color: rgba(208, 206, 206, 0.27);
-  word-wrap: break-word;
   gap: 10px;
 }
 .picture_item {
@@ -31,4 +22,7 @@
   font-size: 15px !important;
   width: 100px;
   height: 30px;
+}
+.name_product{
+    word-break:break-all;
 }

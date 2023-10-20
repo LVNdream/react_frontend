@@ -82,7 +82,7 @@ function AdminHome() {
                 <div>Bạn chưa có đơn hàng</div>
               )}
 
-              <div>Bạn chưa có đơn hàng</div>
+              
             </div>
           </div>
         </div>

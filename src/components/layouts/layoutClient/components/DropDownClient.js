@@ -51,7 +51,7 @@ function DropDownClient(props) {
             </Link>
           </li>
           <li>
-            <Link className={cx("dropdown-item")} to={""}>
+            <Link className={cx("dropdown-item")} to={"/client/usedproduct"}>
               Lịch sử mua hàng
             </Link>
           </li>

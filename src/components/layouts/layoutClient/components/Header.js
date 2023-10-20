@@ -20,6 +20,7 @@ import DropdownAdmin from "../../layoutAdmin/components/DropdownAdmin";
 import DropDownClient from "./DropDownClient";
 import { loginUser, logoutUser } from "../../../../apiRequset/account.api";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 const cx = className.bind(styles);
 
 function Header() {
@@ -88,7 +89,15 @@ function Header() {
         navigate("/");
       }
     } else {
-      alert("Enter enough infor, please");
+
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: "Enter enough infor, please",
+        showConfirmButton: false,
+        timer: 1500
+      })
+      // alert("Enter enough infor, please");
     }
   };
   return (

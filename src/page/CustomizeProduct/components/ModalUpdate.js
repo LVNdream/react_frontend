@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import classnames from "classnames/bind";
 import styles from "./modalupdate.module.scss";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import UpdateQuantity from "./UpdateQuantity";
 import AddColorAndSize from "./AddColorAndSize";
 import {
@@ -10,6 +10,7 @@ import {
   addProductDetail,
   updateQuantity,
 } from "../../../apiRequset/admin.api";
+import Swal from "sweetalert2";
 
 function ModalUpdate(props) {
   // console.log(props);
@@ -25,7 +26,7 @@ function ModalUpdate(props) {
   } = props.product;
   const cx = classnames.bind(styles);
   // khai bao cac ten bien
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const accessToken = Cookies.get("accessToken");
 
   const [nameProduct, setNameProduct] = useState(id_product + name_product);
@@ -50,16 +51,39 @@ function ModalUpdate(props) {
   const handleSubmitUpdateQuantityProduct = async (entityUpdate) => {
     // console.log({entity,accessToken});
     const resultadd = await updateQuantity(entityUpdate, accessToken);
+
+    Swal.fire({
+      position: "top-end",
+      icon: "warning",
+      title: resultadd.mess,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+
     // console.log(resultadd);
-    alert(resultadd.mess);
+    // alert(resultadd.mess);
   };
   const handleSubmitAddColorAndSize = async (entity) => {
     const resultadd = await addProductDetail(entity, accessToken);
     if (resultadd.isError) {
-      alert(resultadd.mess);
+      Swal.fire({
+        position: "top",
+        icon: "warning",
+        title: resultadd.mess,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // alert(resultadd.mess);
       return false;
     } else {
-      alert(resultadd.mess);
+      Swal.fire({
+        position: "top",
+        icon: "warning",
+        title: resultadd.mess,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // alert(resultadd.mess);
       return true;
     }
   };
@@ -71,9 +95,23 @@ function ModalUpdate(props) {
       const resultUpdate = await UpdateProductDetail(inforProduct, accessToken);
 
       if (resultUpdate.isError) {
-        alert(resultUpdate.mess);
+        Swal.fire({
+          position: "top",
+          icon: "error",
+          title: resultUpdate.mess,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // alert(resultUpdate.mess);
       } else {
-        alert(resultUpdate.mess);
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: resultUpdate.mess,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // alert(resultUpdate.mess);
         // console.log(1312312)
         // navigate("/admin/updateproduct");
       }
@@ -87,6 +125,7 @@ function ModalUpdate(props) {
 
   const handleClose = (id) => {
     props.handleCloseToggleModal(id);
+    props.setRerender(props.rerender + 1);
   };
   return (
     <>

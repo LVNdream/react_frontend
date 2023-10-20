@@ -8,6 +8,8 @@ import { userSelector } from "../../redux/selector";
 import { useSelector } from "react-redux";
 import Order from "./components/Order";
 import { useNavigate } from "react-router-dom";
+import { clientDeleteOrder } from "../../apiRequset/client.api";
+import Swal from "sweetalert2";
 
 function CheckOrder() {
   const cx = classnames.bind(styles);
@@ -16,6 +18,7 @@ function CheckOrder() {
 
   const inforUser = useSelector(userSelector);
   const [orders, setOrders] = useState({});
+  const [rerender, setRerender] = useState(1);
 
   useEffect(() => {
     if (inforUser === null) {
@@ -31,8 +34,35 @@ function CheckOrder() {
       }
       getOrder();
     }
-  }, [accessToken, inforUser, navigate]);
-  console.log(orders);
+  }, [accessToken, inforUser, navigate,rerender]);
+  // console.log(orders);
+
+  const handleClientDeleteOrder = async (id_order) => {
+    const condition = {
+      email: inforUser.email_user,
+      id_order: id_order,
+    };
+    const resDeleteOrder = await clientDeleteOrder(condition, accessToken);
+
+    setRerender(rerender + 1);
+    if (resDeleteOrder.isError) {
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: resDeleteOrder.mess,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: resDeleteOrder.mess,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
 
   return (
     <>
@@ -42,7 +72,13 @@ function CheckOrder() {
             <div>
               {orders.allOrder ? (
                 orders.allOrder.map((order) => {
-                  return <Order key={order.id_order} order={order}></Order>
+                  return (
+                    <Order
+                      key={order.id_order}
+                      order={order}
+                      handleClientDeleteOrder={handleClientDeleteOrder}
+                    ></Order>
+                  );
                 })
               ) : (
                 <div>Bạn chưa có đơn hàng</div>

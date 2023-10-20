@@ -10,6 +10,7 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 // import axios from "axios";
 import { cartSlice } from "../Cart/cartSlice";
 import { addOrder } from "../../apiRequset/order.api";
+import Swal from "sweetalert2";
 
 function Payment() {
   const dispatch = useDispatch();
@@ -80,22 +81,22 @@ function Payment() {
       payMethod &&
       itemInCart.length > 0
     ) {
-      console.log({
-        fullname,
-        email,
-        phone,
-        recive,
-        adress,
-        paymethod_order: payMethod,
-        note_order: note,
-        total_money_order:
-          totalMoneyInCart && totalMoneyInCart > 30000
-            ? totalMoneyInCart
-            : totalMoneyInCart + 30000,
-        itemInCart,
-        status: "Chờ xác nhận",
-      });
-      alert("Thông tin đã đầy đủ và hợp lê");
+      // console.log({
+      //   fullname,
+      //   email,
+      //   phone,
+      //   recive,
+      //   adress,
+      //   paymethod_order: payMethod,
+      //   note_order: note,
+      //   total_money_order:
+      //     totalMoneyInCart && totalMoneyInCart > 30000
+      //       ? totalMoneyInCart
+      //       : totalMoneyInCart + 30000,
+      //   itemInCart,
+      //   status: "Chờ xác nhận",
+      // });
+      // alert("Thông tin đã đầy đủ và hợp lê");
 
       const inforOrder = {
         fullname,
@@ -114,8 +115,17 @@ function Payment() {
       };
       const response = await addOrder(inforOrder);
 
-      console.log(response);
-      alert(response);
+      // console.log(response);
+
+      Swal.fire({
+        position: 'top',
+        icon: 'success',
+        title: response,
+        showConfirmButton: false,
+        timer: 1500
+      })
+      
+      // alert(response);
       setFullname("");
       setEmail("");
       setPhone("");
@@ -157,7 +167,17 @@ function Payment() {
       //     console.log(error);
       //   });
     } else {
-      alert("Chưa có sản phẩm trong giỏ hàng hoặc bạn điền thiếu thông tin: ");
+
+
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: 'Chưa có sản phẩm trong giỏ hàng hoặc bạn điền thiếu thông tin',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      
+      // alert("Chưa có sản phẩm trong giỏ hàng hoặc bạn điền thiếu thông tin: ");
     }
   };
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 // import { productsSlice } from "../page/Products/productsSlice";
 export const getTypeProduct = async (accessToken) => {
   try {
@@ -6,11 +7,27 @@ export const getTypeProduct = async (accessToken) => {
       accessToken,
     });
     if (res.data.isErrorLoginAd) {
-      alert("You're not authenticated not admin");
+
+
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: "You're not authenticated not admin",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // alert("You're not authenticated not admin");
       return;
     }
     if (res.data.isErrorLogin) {
-      alert("You're not authenticated");
+      // alert("You're not authenticated");
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: "You're not authenticated",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       return;
     }
     return res.data;
@@ -18,6 +35,7 @@ export const getTypeProduct = async (accessToken) => {
     console.log(error);
   }
 };
+
 export const getCaterogyProduct = async (type_product, accessToken) => {
   try {
     const res = await axios.post(
@@ -30,7 +48,15 @@ export const getCaterogyProduct = async (type_product, accessToken) => {
       return;
     }
     if (res.data.isErrorLogin) {
-      alert("You're not authenticated");
+
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: "You're not authenticated",
+        showConfirmButton: false,
+        timer: 1500
+      })
+      // alert("You're not authenticated");
       return;
     }
     return res.data;
@@ -97,18 +123,32 @@ export const addProductDeleted = async (inforProduct, accessToken) => {
       accessToken,
     });
 
+    // console.log(res.data);
     return res.data;
-
-    //   console.log(res.data);
   } catch (error) {
     console.log(error);
   }
 };
+
 export const getProductDeleted = async (accessToken) => {
   try {
-    const res = await axios.post(`http://localhost:3001/admin/deletedroduct`,{accessToken});
+    const res = await axios.post(`http://localhost:3001/admin/getdeletedroduct`, {
+      accessToken,
+    });
     // console.log(res.data);
-    return (res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateOrderStatus = async (inforUpdate, accessToken) => {
+  try {
+    const res = await axios.post("http://localhost:3001/admin/updatestatus", {
+      inforUpdate,
+      accessToken,
+    });
+    return res.data;
   } catch (error) {
     console.log(error);
   }

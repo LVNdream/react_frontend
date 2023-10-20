@@ -11,14 +11,11 @@ function Home() {
   const cx = classNames.bind(styles);
   return (
     <main className={cx("mainHome")}>
-      {/* <div className={cx("frame--intruduce")}>
-        <img className={cx("framepicture__picturemain" src="img/slide_1_img.webp" alt="loading"> 
-      </div> */}
       <div className={cx("intruduce")}>
         <div
           className={cx("intruduce__left")}
-          onMouseEnter={()=>{}}
-          onMouseLeave={()=>{}}
+          onMouseEnter={() => {}}
+          onMouseLeave={() => {}}
         >
           <div
             id={cx("intruduce__animation--left1")}
@@ -63,8 +60,8 @@ function Home() {
 
         <div
           className={cx("intruduce__right")}
-          onMouseEnter={()=>{}}
-          onMouseLeave={()=>{}}
+          onMouseEnter={() => {}}
+          onMouseLeave={() => {}}
         >
           <div
             id={cx("intruduce__animation--right1")}
@@ -115,25 +112,12 @@ function Home() {
         </div>
         <p className={cx("information__content", "pb-2")}>Thời trang nam</p>
         <div className={cx("information__product")}>
-          <div
-            className={cx("avata")}
-            onMouseEnter={()=>{}}
-            onMouseLeave={()=>{}}
-          >
-            <div
-              id={cx("AvataMan__animation--left1")}
-              className={cx("AvataMan__animation1")}
-            ></div>
-            <div
-              id={cx("AvataMan__animation--left2")}
-              className={cx("AvataMan__animation2")}
-            ></div>
-            <img
-              className={cx("avata--fashion")}
-              src="https://theme.hstatic.net/1000296747/1000891809/14/home_collection_1_banner.jpg?v=20"
-              alt="loanging"
-            />
-          </div>
+          <img
+            className={cx("avata--fashion")}
+            src="https://theme.hstatic.net/1000296747/1000891809/14/home_collection_1_banner.jpg?v=20"
+            alt="loanging"
+          />
+
           <div className={cx("product")}>
             <div className={cx("product__items")}>
               <div className={cx("avata--product")}>
@@ -312,9 +296,9 @@ function Home() {
             ALICE BLUE
           </a>
         </div>
-        <p className={cx("information__content","pb-3 ")}>Thời trang nữ</p>
+        <p className={cx("information__content", "pb-3 ")}>Thời trang nữ</p>
         <div className={cx("information__product")}>
-          <div className={cx("product","product--girl")}>
+          <div className={cx("product", "product--girl")}>
             <div className={cx("product__items")}>
               <div className={cx("avata--product")}>
                 <a className={cx("avata__link")} href="/">
@@ -493,25 +477,12 @@ function Home() {
               </div>
             </div>
           </div>
-          <div
-            className={cx("avata")}
-            onMouseEnter={()=>{}}
-            onMouseLeave={()=>{}} 
-          >
-            <div
-              id={cx("AvataWoman__animation--left1")}
-              className={cx("AvataWoman__animation1")}
-            ></div>
-            <div
-              id={cx("AvataWoman__animation--left2")}
-              className={cx("AvataWoman__animation2")}
-            ></div>
-            <img
-              className={cx("avata--fashion")}
-              src="https://theme.hstatic.net/1000296747/1000891809/14/home_collection_2_banner.jpg?v=20"
-              alt="loanging"
-            />
-          </div>
+
+          <img
+            className={cx("avata--fashion")}
+            src="https://theme.hstatic.net/1000296747/1000891809/14/home_collection_2_banner.jpg?v=20"
+            alt="loanging"
+          />
         </div>
       </div>
     </main>

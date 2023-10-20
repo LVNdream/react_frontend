@@ -60,3 +60,15 @@
     text-decoration:underline;  
   }
 }
+.listItem{
+  gap: 10px;
+}
+.iconComment{
+  color: #6e460a;
+  margin-left: 20px;
+  font-size: 20px;
+  &:hover{
+    cursor: pointer;
+    font-size: 25px;
+  }
+}

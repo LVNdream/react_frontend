@@ -24,6 +24,7 @@ function FavoriteProduct() {
 
   const inforUser = useSelector(userSelector);
   const [listProductFVR, setListProductFVR] = useState([]);
+  const [rerender, setRerender] = useState(1);
 
   useEffect(() => {
     if (inforUser === null || !accessToken) {
@@ -39,7 +40,7 @@ function FavoriteProduct() {
       }
       getListProductFVR();
     }
-  }, [accessToken, inforUser, navigate]);
+  }, [accessToken, inforUser, navigate, rerender]);
   // console.log(listProductFVR);
   const handleDeleteFVRItem = async (id_product) => {
     Swal.fire({
@@ -57,6 +58,8 @@ function FavoriteProduct() {
           accessToken,
           id_product
         );
+        setRerender(rerender + 1);
+
         Swal.fire(resultDelete);
       }
     });
@@ -77,6 +80,7 @@ function FavoriteProduct() {
           inforUser.id_user,
           accessToken
         );
+        setRerender(rerender + 1);
         // console.log(resultDeleteAll)
         Swal.fire(resultDeleteAll);
       }

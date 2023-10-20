@@ -15,6 +15,7 @@ import {
 } from "../../apiRequset/product.api";
 import { addProductFavorite } from "../../apiRequset/client.api";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -35,7 +36,6 @@ function Products(props) {
   const dispatch = useDispatch();
   const inforUser = useSelector(userSelector);
   const accessToken = Cookies.get("accessToken");
-
 
   const [products, setProducts] = useState([]);
 
@@ -59,11 +59,26 @@ function Products(props) {
   const handleOnClickIconFavorite = async (id_product) => {
     if (inforUser && id_product) {
       const entity = { id_user: inforUser.id_user, id_product };
-      const resultaddFVR = await addProductFavorite(entity,accessToken);
-      alert(resultaddFVR);
-    }
-    else{
-      alert("Please, login to add to favorite")
+      const resultaddFVR = await addProductFavorite(entity, accessToken);
+
+      Swal.fire({
+        position: "top",
+        icon: "warning",
+        title: resultaddFVR,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // alert(resultaddFVR);
+    } else {
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: "Please, login to add to favorite",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      // alert("Please, login to add to favorite");
     }
   };
 
@@ -84,7 +99,11 @@ function Products(props) {
           {productsList.length > 0
             ? productsList.map((product) => {
                 return (
-                  <Product key={product.id_product} product={product} handleOnClickIconFavorite={handleOnClickIconFavorite}></Product>
+                  <Product
+                    key={product.id_product}
+                    product={product}
+                    handleOnClickIconFavorite={handleOnClickIconFavorite}
+                  ></Product>
                 );
               })
             : "Chưa có sản phẩm"}

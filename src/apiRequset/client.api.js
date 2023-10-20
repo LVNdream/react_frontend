@@ -59,3 +59,16 @@ export const clientDeleteAllFVRProduct = async (id_user, accessToken) => {
     console.log(error);
   }
 };
+export const clientDeleteOrder = async (inforDelete, accessToken) => {
+  try {
+    // console.log("123123")
+    const res = await axios.post(`http://localhost:3001/client/deleteorder`, {
+      inforDelete,
+      accessToken: accessToken,
+    });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+

@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./register.module.scss";
 import { registerUser } from "../../apiRequset/account.api";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Register() {
   const cx = classNames.bind(styles);
@@ -43,9 +44,24 @@ function Register() {
     ) {
       console.log(inforRegister);
       const resultRegister = await registerUser(inforRegister);
-      alert(resultRegister);
+
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: resultRegister,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // alert(resultRegister);
     } else {
-      alert("Vui lòng điền đủ thông tin để đăng kí");
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: "Vui lòng điền đủ thông tin để đăng kí",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // alert("Vui lòng điền đủ thông tin để đăng kí");
     }
   };
   return (

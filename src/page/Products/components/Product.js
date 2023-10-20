@@ -10,6 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { cartSlice } from "../../Cart/cartSlice";
+import Swal from "sweetalert2";
 
 function Product(props) {
   const {
@@ -25,13 +26,11 @@ function Product(props) {
     isFavorite,
   } = props.product;
 
-  
   const [quantity, setQuantity] = useState(listColorDetail[0].quantity_product);
   const [size, setSize] = useState(listSize[0].id_size);
   const [colorrr, setColor] = useState(listColor[0].color);
 
   const handleOnChangeColor = (e) => {
-   
     setColor(e.target.value);
     const itemColor = listColorDetail.filter((productColor) => {
       return (
@@ -39,10 +38,8 @@ function Product(props) {
       );
     });
     setQuantity(itemColor[0].quantity_product);
-   
   };
   const handleOnChangeSize = (e) => {
-   
     setSize(e.target.value);
     const itemColor = listColorDetail.filter((productColor) => {
       return (
@@ -50,19 +47,17 @@ function Product(props) {
         productColor.id_size === e.target.value
       );
     });
-    
+
     setQuantity(itemColor[0].quantity_product);
   };
- 
-  const handleAddToFVR = ()=>{
+
+  const handleAddToFVR = () => {
     props.handleOnClickIconFavorite(id_product);
-  }
+  };
 
   const dispatch = useDispatch();
-  
+
   const cx = classNames.bind(styles);
-
-
 
   return (
     <div className={cx("product__item")}>
@@ -93,6 +88,7 @@ function Product(props) {
                   return (
                     <div key={index}>
                       <input
+                        id={color.color + index + id_product}
                         onChange={(e) => {
                           handleOnChangeColor(e);
                         }}
@@ -100,7 +96,9 @@ function Product(props) {
                         name="itemColor"
                         value={color.color}
                       />
-                      <label>{color.color}</label>
+                      <label htmlFor={color.color + index + id_product}>
+                        {color.color}
+                      </label>
                       <br />
                     </div>
                   );
@@ -119,11 +117,13 @@ function Product(props) {
                         onChange={(e) => {
                           handleOnChangeSize(e);
                         }}
-                        id="size1"
+                        id={size.id_size + index + id_product}
                         name="itemSize"
                         value={size.id_size}
                       />
-                      <label htmlFor="size1">{size.id_size}</label>
+                      <label htmlFor={size.id_size + index + id_product}>
+                        {size.id_size}
+                      </label>
                       <br />
                     </div>
                   );
@@ -150,6 +150,14 @@ function Product(props) {
                     quantity_product: quantity,
                   })
                 );
+                Swal.fire({
+                  position: 'top',
+                  icon: 'success',
+                  title: 'Add to caart success',
+                  showConfirmButton: false,
+                  timer: 1500,
+                
+                })
               }}
             >
               {/* <i className={cx("fa-solid fa-cart-shopping")}></i> */}
@@ -160,11 +168,14 @@ function Product(props) {
               <FontAwesomeIcon icon={faBagShopping}></FontAwesomeIcon>
             </div>
 
-            <div className={cx("article--iconFavorite","iconFavorite",{"isFavorite":isFavorite})} onClick={handleAddToFVR}>
-       
+            <div
+              className={cx("article--iconFavorite", "iconFavorite", {
+                isFavorite: isFavorite,
+              })}
+              onClick={handleAddToFVR}
+            >
               <FontAwesomeIcon icon={faHeart}></FontAwesomeIcon>
             </div>
-
           </div>
 
           <p className={cx("item-quantity")}>Số lượng: {quantity}</p>

@@ -46,17 +46,46 @@ function CartProduct(props) {
     // console.log(data);
     if (operator === true) {
       if (inputQuantity <= 1 && data === -1) {
-        alert(" Quantity have to larger 0");
+
+        Swal.fire({
+          position: 'top',
+          icon: 'warning',
+          title: 'Quantity have to larger 0',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        // alert(" Quantity have to larger 0");
       } else if (data === 1 && inputQuantity >= quantity_product) {
-        alert(" Quantity not enough for you");
+        Swal.fire({
+          position: 'top',
+          icon: 'warning',
+          title: 'Quantity have to larger 0',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        // alert(" Quantity not enough for you");
       } else {
         setInputQuantity(inputQuantity + data);
       }
     } else {
       if (data < 0) {
-        alert(" Quantity have to larger 0");
+        Swal.fire({
+          position: 'top',
+          icon: 'warning',
+          title: 'Quantity have to larger 0',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        // alert(" Quantity have to larger 0");
       } else if (data > quantity_product) {
-        alert(" Quantity not enough for you");
+        Swal.fire({
+          position: 'top',
+          icon: 'warning',
+          title: 'Quantity not enough for you',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        // alert(" Quantity not enough for you");
       } else {
         setInputQuantity(data);
       }
@@ -66,7 +95,7 @@ function CartProduct(props) {
   const hadleDeleteOnClick = (product) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "You want delete it now!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -135,15 +164,40 @@ function CartProduct(props) {
                   "btnUpdateQuantity"
                 )}
                 onClick={() => {
-                  if(inputQuantity>0){
-                    dispatch(
-                      cartSlice.actions.updateQuantityInCart({
-                        ...props.product,
-                        quantity: inputQuantity,
-                      })
-                    );
-                  }else{
-                    alert("Quantity phải lớn hơn 0")
+                  if (inputQuantity > 0) {
+                    Swal.fire({
+                      title: "Are you sure?",
+                      text: "You want updated!",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#3085d6",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Yes, update it!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        dispatch(
+                          cartSlice.actions.updateQuantityInCart({
+                            ...props.product,
+                            quantity: inputQuantity,
+                          })
+                        );
+                        Swal.fire(
+                          "Updated!",
+                          "Your cart has been updated.",
+                          "success"
+                        );
+                      }
+                    });
+                  } else {
+                    Swal.fire({
+                      position: "top",
+                      icon: "error",
+                      title: "Quantity phải lớn hơn 0",
+                      showConfirmButton: false,
+                      timer: 1500,
+                    });
+
+                    // alert("Quantity phải lớn hơn 0");
                   }
                 }}
               >

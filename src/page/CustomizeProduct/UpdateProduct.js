@@ -49,6 +49,7 @@ function UpdateProduct(props) {
     open: false,
     id: "",
   });
+  const [rerender, setRerender] = useState(0);
 
   const handleOpenToggle = (id, setToggle) => {
     const cp = { open: true, id: id };
@@ -60,11 +61,12 @@ function UpdateProduct(props) {
     // console.log(cp);
     setToggle(cp);
   };
+
+  // xu li modal update
   const handleCloseToggleModal = (id) => {
     const cp = { open: false, id: id };
     // console.log(cp);
     setOpenModalUpdate(cp);
-    console.log(deleteItem);
   };
 
   const handleClickTrash = async (product) => {
@@ -78,28 +80,36 @@ function UpdateProduct(props) {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const inforProductDeleted ={
-          id_product_deleted:product.id_product,
-          name_product_deleted:product.name_product,
-          picture_product_deleted:product.picture_product,
-          price_product_deleted:product.price_product,
-          type_product_deleted:product.type_product,
-          caterogy_product_deleted:product.caterogy_product
-        }
-        const resutlDeleted = await addProductDeleted(inforProductDeleted,accessToken)
+        const inforProductDeleted = {
+          id_product_deleted: product.id_product,
+          name_product_deleted: product.name_product,
+          picture_product_deleted: product.picture_product,
+          price_product_deleted: product.price_product,
+          type_product_deleted: product.type_product,
+          caterogy_product_deleted: product.caterogy_product,
+        };
+        const resutlDeleted = await addProductDeleted(
+          inforProductDeleted,
+          accessToken
+        );
 
-        if(resutlDeleted.error){
-          alert(resutlDeleted.mess)
-        }
-        else{
+        if (resutlDeleted.error) {
+          Swal.fire({
+            position: "top",
+            icon: "error",
+            title: resutlDeleted.mess,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          // alert(resutlDeleted.mess)
+        } else {
           Swal.fire("Deleted!", "Your file has been deleted.", "success");
+          setRerender(rerender + 1);
         }
-
       }
     });
   };
 
-  let deleteItem = 0;
   // console.log(deleteItem)
   useEffect(() => {
     if (props.router.params.caterogy) {
@@ -107,7 +117,7 @@ function UpdateProduct(props) {
     } else {
       getAllProduct(setProducts);
     }
-  }, [props.router.params.caterogy, deleteItem]);
+  }, [props.router.params.caterogy, rerender]);
 
   // console.log(products);
 
@@ -215,6 +225,8 @@ function UpdateProduct(props) {
                 openModalUpdate.id === product.id_product ? (
                   <ModalUpdate
                     product={product}
+                    rerender={rerender}
+                    setRerender={setRerender}
                     handleCloseToggleModal={handleCloseToggleModal}
                   ></ModalUpdate>
                 ) : (

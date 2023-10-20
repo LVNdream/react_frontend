@@ -8,6 +8,7 @@ import { faCartShopping, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { cartSlice } from "../../Cart/cartSlice";
 import { getProductDetail } from "../../../apiRequset/product.api";
+import Swal from "sweetalert2";
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -34,17 +35,45 @@ function ProductDetail(props) {
     // console.log(data);
     if (operator === true) {
       if (inputQuantity <= 1 && data === -1) {
-        alert(" Quantity have to larger 0");
+        // alert(" Quantity have to larger 0");
+        Swal.fire({
+          position: "top",
+          icon: "warning",
+          title: "Quantity have to larger 0",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } else if (data === 1 && inputQuantity >= quantity) {
-        alert(" Quantity not enough for you");
+        Swal.fire({
+          position: "top",
+          icon: "warning",
+          title: " Quantity not enough for you",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // alert(" Quantity not enough for you");
       } else {
         setInputQuantity(inputQuantity + data);
       }
     } else {
       if (data < 0) {
-        alert(" Quantity have to larger 0");
+        // alert(" Quantity have to larger 0");
+        Swal.fire({
+          position: "top",
+          icon: "warning",
+          title: "Quantity have to larger 0",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } else if (data > quantity) {
-        alert(" Quantity not enough for you or please choose size and color");
+        Swal.fire({
+          position: "top",
+          icon: "warning",
+          title: " Quantity not enough for you or please choose size and color",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // alert(" Quantity not enough for you or please choose size and color");
       } else {
         setInputQuantity(data);
       }
@@ -103,7 +132,15 @@ function ProductDetail(props) {
       );
     });
     if (itemColor.length === 0) {
-      alert("Mời bạn chọn kích thước để xem số lượng");
+      Swal.fire({
+        position: "top",
+        icon: "warning",
+        title: "Mời bạn chọn kích thước để xem số lượng",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      // alert("Mời bạn chọn kích thước để xem số lượng");
     } else {
       setQuantity(itemColor[0].quantity_product);
       setInputQuantity(1);
@@ -125,7 +162,14 @@ function ProductDetail(props) {
     // console.log(itemColor);
 
     if (itemColor.length === 0) {
-      alert("Mời bạn chọn màu để xem số lượng");
+      Swal.fire({
+        position: "top",
+        icon: "warning",
+        title: "Mời bạn chọn màu để xem số lượng",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // alert("Mời bạn chọn màu để xem số lượng");
     } else {
       setQuantity(itemColor[0].quantity_product);
       setInputQuantity(1);
@@ -298,7 +342,9 @@ function ProductDetail(props) {
                 <div className={cx("article--iconFavorite")}>
                   <i className={cx("fa-solid fa-heart iconFavorite")}></i>
                   <FontAwesomeIcon
-                    className={cx("iconFavorite",{"isFavorite":inforDetail.isFavorite})}
+                    className={cx("iconFavorite", {
+                      isFavorite: inforDetail.isFavorite,
+                    })}
                     icon={faHeart}
                   ></FontAwesomeIcon>
                 </div>
@@ -346,11 +392,26 @@ function ProductDetail(props) {
                         size === "" ||
                         inputQuantity === ""
                       ) {
-                        alert(
-                          "Mời ban chọn size, color, quantity để thêm vào giỏ hàng"
-                        );
-                      } else if (inputQuantity <=0) {
-                        alert("Quantity phải lớn hơn 0  ");
+                        Swal.fire({
+                          position: "top",
+                          icon: "warning",
+                          title:
+                            "Mời ban chọn size, color, quantity để thêm vào giỏ hàng",
+                          showConfirmButton: false,
+                          timer: 1500,
+                        });
+                        // alert(
+                        //   "Mời ban chọn size, color, quantity để thêm vào giỏ hàng"
+                        // );
+                      } else if (inputQuantity <= 0) {
+                        Swal.fire({
+                          position: "top",
+                          icon: "warning",
+                          title: "Quantity phải lớn hơn 0  ",
+                          showConfirmButton: false,
+                          timer: 1500,
+                        });
+                        // alert("Quantity phải lớn hơn 0  ");
                       } else {
                         dispatch(
                           cartSlice.actions.addToCart({
@@ -369,7 +430,14 @@ function ProductDetail(props) {
                         // setColor(inforDetail.listColorDetail[0].color)
                         // setSize(inforDetail.listColorDetail[0].size)
                         setInputQuantity(1);
-                        alert("Bạn đã thêm sản phẩm vào giỏ hàng thành công");
+                        Swal.fire({
+                          position: "top",
+                          icon: "success",
+                          title: "Bạn đã thêm sản phẩm vào giỏ hàng thành công",
+                          showConfirmButton: false,
+                          timer: 1500,
+                        });
+                        // alert("Bạn đã thêm sản phẩm vào giỏ hàng thành công");
                       }
                     }}
                   >
