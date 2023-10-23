@@ -33,7 +33,7 @@ function EvalauatePage() {
       getOrder();
     }
   }, [accessToken, inforUser, navigate, rerender]);
-  console.log(orders);
+  // console.log(orders);
   return (
     <>
       <div>

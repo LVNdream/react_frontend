@@ -72,3 +72,16 @@ export const clientDeleteOrder = async (inforDelete, accessToken) => {
   }
 };
 
+export const clientUploadImgCmt = async (data) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/upload/image`,
+      data,
+      {}
+    );
+    // console.log(res);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

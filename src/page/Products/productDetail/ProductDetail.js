@@ -5,10 +5,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 // import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faHeart } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartSlice } from "../../Cart/cartSlice";
 import { getProductDetail } from "../../../apiRequset/product.api";
 import Swal from "sweetalert2";
+import ContentComment from "./ContentComment";
+import { userSelector } from "../../../redux/selector";
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -28,6 +30,8 @@ function ProductDetail(props) {
 
   const [inforDetail, setInforDetail] = useState();
   const [inputQuantity, setInputQuantity] = useState(1);
+
+  const inforUser = useSelector(userSelector);
 
   // ham dung de thay doi so luong khi nhap vao
 
@@ -89,26 +93,14 @@ function ProductDetail(props) {
       props.router.params.id,
       setInforDetail
     );
-    // axios
-    //   .get(
-    //     `http://localhost:3001/products/${props.router.params.type}/${props.router.params.caterogy}/${props.router.params.id}`
-    //   )
-    //   .then((res) => {
-    //     // console.log(res.data);
-    //     setInforDetail(res.data);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   }, [
     props.router.params.type,
     props.router.params.caterogy,
     props.router.params.id,
   ]);
 
-  // console.log(
-  //   inforDetail ? inforDetail.listColorDetail[0].quantity_product : ""
-  // );
+  console.log(inforDetail);
+  console.log(inforUser);
 
   // xet so luong khi chon san pham
 
@@ -145,13 +137,9 @@ function ProductDetail(props) {
       setQuantity(itemColor[0].quantity_product);
       setInputQuantity(1);
     }
-
-    // console.log(itemColor);
-    // console.log(itemColor.quantity_product);
   };
   const handleOnChangeSize = (e) => {
     // setQuantity(quantity);
-    // console.log(e.target.value);
     setSize(e.target.value);
     const itemColor = inforDetail.listColorDetail.filter((productColor) => {
       return (
@@ -159,7 +147,6 @@ function ProductDetail(props) {
         productColor.id_size === e.target.value
       );
     });
-    // console.log(itemColor);
 
     if (itemColor.length === 0) {
       Swal.fire({
@@ -282,57 +269,6 @@ function ProductDetail(props) {
                       </div>
                     );
                   })}
-
-                  {/* <div>
-                    <input
-                      onChange={(e) => {
-                        handleOnChangeSize(e);
-                      }}
-                      type="radio"
-                      id={cx("size1")}
-                      name="itemSize"
-                      value="S"
-                    />
-                    <label htmlFor="size1">S</label>
-                    <br />
-                  </div>
-                  <div>
-                    <input
-                      onChange={(e) => {
-                        handleOnChangeSize(e);
-                      }}
-                      type="radio"
-                      id={cx("size2")}
-                      name="itemSize"
-                      value="M"
-                    />
-                    <label htmlFor="size2">M</label>
-                    <br />
-                  </div>
-                  <div>
-                    <input
-                      onChange={(e) => {
-                        handleOnChangeSize(e);
-                      }}
-                      type="radio"
-                      id={cx("size3")}
-                      name="itemSize"
-                      value="L"
-                    />
-                    <label htmlFor="size3">L</label>
-                  </div>
-                  <div>
-                    <input
-                      onChange={(e) => {
-                        handleOnChangeSize(e);
-                      }}
-                      type="radio"
-                      id={cx("size4")}
-                      name="itemSize"
-                      value="XL"
-                    />
-                    <label htmlFor="size4">XL</label>
-                  </div> */}
                 </div>
               </div>
 
@@ -492,42 +428,26 @@ function ProductDetail(props) {
             >
               <p>Đánh giá sản phẩm</p>
 
-              <div className={cx("alert", "alert-danger")} role="alert">
+              {/* <div className={cx("alert", "alert-danger")} role="alert">
                 <p>Để đánh giá sản phẩm vui lòng bạn hãy đăng nhập</p>
-              </div>
+              </div> */}
             </div>
 
             <div className={cx("mb-3", "aritcle-infor-comment")}>
-              <div className={cx("")}>
-                <div className={cx("d-flex", "align-items-center")}>
-                  <div className={cx("d-flex", "article-comment-content")}>
-                    <img
-                      className={cx("avata")}
-                      src="/img/uploaded/avatar-trang-y-nghia.webp"
-                      alt=""
-                    />
-                    <p className={cx("writer")}>nhut nhut: </p>
-                    <p className={cx("comment-content")}> hang qua dep</p>
-                  </div>
-
-                  <div className={cx("icon-edit")}>
-                    <i className={cx("fa-solid fa-pen-to-square")}></i>
-                  </div>
-                </div>
-
-                <img
-                  className={cx("picture-comment")}
-                  src="/img/uploaded/{{namepicture}}"
-                  alt="Đang xử lí"
-                />
-
-                <hr />
-              </div>
+              {inforDetail.commentDetail && inforDetail.commentDetail.length > 0
+                ? inforDetail.commentDetail.map((comment, index) => {
+                    return (
+                      <ContentComment
+                        key={index}
+                        comment={comment}
+                        inforUser={inforUser}
+                      ></ContentComment>
+                    );
+                  })
+                : ""}
             </div>
 
-            <p>không có nhận xét</p>
-
-            <div>
+            {/* <div>
               <form
                 action="/fashion/menfashion/product/{{ctproduct.masp}}"
                 encType="multipart/form-data"
@@ -576,7 +496,7 @@ function ProductDetail(props) {
                   </button>
                 </div>
               </form>
-            </div>
+            </div> */}
           </div>
         </div>
       ) : (

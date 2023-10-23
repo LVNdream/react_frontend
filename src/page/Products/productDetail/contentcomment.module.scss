@@ -1,0 +1,36 @@
+.article-comment-content {
+  background-color: rgb(244, 244, 244);
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 50px;
+  gap: 10px;
+  align-items: center;
+}
+.avata {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+}
+.writer {
+  margin-bottom: 0px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.comment-content {
+  margin-bottom: 0px;
+}
+.picture-comment {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+}
+.icon-edit {
+  margin-left: 15px;
+  margin-bottom: 10px;
+
+  display: flex;
+  font-size: 23px;
+  padding-left: 10px;
+  color: rgba(225, 77, 50, 0.881);
+  gap: 15px;
+}

@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import classnames from "classnames/bind";
 import styles from "./modalcomment.module.scss";
 import Cookies from "js-cookie";
+import { clientUploadImgCmt } from "../../../apiRequset/client.api";
+import { useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
+import { userSelector } from "../../../redux/selector";
 
 function ModalComment(props) {
   // console.log(props);
@@ -18,6 +21,9 @@ function ModalComment(props) {
   } = props.product;
   const cx = classnames.bind(styles);
   // khai bao cac ten bien
+  const inforUser = useSelector(userSelector);
+  const [files, setFile] = useState("");
+  const [content, setContent] = useState("");
   // const navigate = useNavigate();
   const accessToken = Cookies.get("accessToken");
 
@@ -25,6 +31,33 @@ function ModalComment(props) {
     props.handleCloseToggleModalComment(id);
     // props.setRerender(props.rerender + 1);
   };
+
+  const handleOnclickBtnPost = async (e) => {
+    e.preventDefault();
+    if (files.length > 0 || content) {
+      const formData = new FormData();
+      console.log({ accessToken, id_user: inforUser.id_user });
+      formData.append(`accessToken`, accessToken);
+      formData.append(`id_user`, inforUser.id_user);
+      formData.append(`content`, content);
+      formData.append(`lastname_user`, inforUser.lastname_user);
+      formData.append(`firstname_user`, inforUser.firstname_user);
+      formData.append(`id_product`, id_product);
+
+
+
+
+      for (let i = 0; i < files.length; i++) {
+        formData.append(`files`, files[i]);
+      }
+
+      const resUpload = await clientUploadImgCmt(formData);
+      alert(resUpload);
+    } else {
+      alert("No data");
+    }
+  };
+
   return (
     <>
       <div className={cx("modal123")}>
@@ -38,7 +71,11 @@ function ModalComment(props) {
             X
           </button>
 
-          <form onSubmit={() => {}}>
+          <form
+            onSubmit={(e) => {
+              handleOnclickBtnPost(e);
+            }}
+          >
             <div className={cx("inforOrder")}>
               <div className={cx("mb-4", "mt-4")}>
                 <p>
@@ -66,19 +103,32 @@ function ModalComment(props) {
                   alt="Loading"
                 ></img>
               </div>
-              <div class="mb-3">
-                <label for="placeComment" class="form-label">
+              <div className="mb-3">
+                <label htmlFor="placeComment" className="form-label">
                   Comment
                 </label>
                 <input
+                  value={content}
+                  onChange={(e) => {
+                    setContent(e.target.value);
+                  }}
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="placeComment"
                   placeholder="You can write comment here ... "
                 />
               </div>
-              <div class="mt-3">
-                <input type="file" multiple accept="image/*" />
+              <div className="mt-3">
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => {
+                    // console.log(e.target.files);
+
+                    setFile(e.target.files);
+                  }}
+                />
               </div>
               <div className={cx("d-flex", "justify-content-around", "mt-5")}>
                 <button className={cx("btn", "btn-danger")} type="submit">
