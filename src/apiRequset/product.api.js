@@ -1,20 +1,22 @@
 import axios from "axios";
 // import { productsSlice } from "../page/Products/productsSlice";
-export const getAllProduct = async (setProducts) => {
+export const getAllProduct = async (inforUser, setProducts) => {
   try {
-    const res = await axios.get(`http://localhost:3001/products/men/`);
+    const res = await axios.get(`http://localhost:3001/products/men/`, {
+      params: {
+        id_user: inforUser?.id_user,
+      },
+    });
     // console.log(res.data);
     setProducts(res.data);
-    
   } catch (error) {
     console.log(error);
   }
 };
 
-
-export const getProductByCaterogy = async (caterogy,setProducts) => {
+export const getProductByCaterogy = async (caterogy, setProducts) => {
   try {
-    console.log(caterogy)
+    console.log(caterogy);
     const res = await axios.get(
       `http://localhost:3001/products/men/${caterogy}`
     );
@@ -25,18 +27,16 @@ export const getProductByCaterogy = async (caterogy,setProducts) => {
     console.log(error);
   }
 };
-export const getProductDetail = async (type,caterogy,id,setInforDetail) => {
-    try {
-      console.log(caterogy)
-      const res = await axios
-      .get(
-        `http://localhost:3001/products/${type}/${caterogy}/${id}`
-      )
-      // console.log(res.data);
-      setInforDetail(res.data);
-      // dispatch(productsSlice.actions.setProductsList(res.data))
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
+export const getProductDetail = async (type, caterogy, id, setInforDetail) => {
+  try {
+    console.log(caterogy);
+    const res = await axios.get(
+      `http://localhost:3001/products/${type}/${caterogy}/${id}`
+    );
+    // console.log(res.data);
+    setInforDetail(res.data);
+    // dispatch(productsSlice.actions.setProductsList(res.data))
+  } catch (error) {
+    console.log(error);
+  }
+};

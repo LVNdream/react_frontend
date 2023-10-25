@@ -38,14 +38,15 @@ function Products(props) {
   const accessToken = Cookies.get("accessToken");
 
   const [products, setProducts] = useState([]);
+  const [rerender, setRerender] = useState(1);
 
   useEffect(() => {
     if (props.router.params.caterogy) {
       getProductByCaterogy(props.router.params.caterogy, setProducts);
     } else {
-      getAllProduct(setProducts);
+      getAllProduct(inforUser, setProducts);
     }
-  }, [props.router.params.caterogy]);
+  }, [props.router.params.caterogy, inforUser, rerender]);
 
   // console.log(products);
 
@@ -68,7 +69,7 @@ function Products(props) {
         showConfirmButton: false,
         timer: 1500,
       });
-      // alert(resultaddFVR);
+      setRerender(rerender + 1);
     } else {
       Swal.fire({
         position: "top",

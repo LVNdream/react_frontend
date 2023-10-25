@@ -153,3 +153,16 @@ export const updateOrderStatus = async (inforUpdate, accessToken) => {
     console.log(error);
   }
 };
+
+export const getOrderFilterByDate = async (filter,accessToken) => {
+  try {
+    const res = await axios.post(`http://localhost:3001/admin/getorderfilterbydate`, {
+      accessToken,
+      filter
+    });
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -57,6 +57,24 @@ function DropdownAdmin(props) {
               Sản phẩm đã xóa
             </Link>
           </li>
+          <li
+            className={cx(
+              "dropdown_thongke",
+              "dropdown-item",
+              "ps-3",
+              "pe-3",
+              "pt-1",
+              "pb-1"
+            )}
+          >
+            Thống kê
+            <div className={cx("dropdown_second")}>
+              <Link className={cx("dropdown-item")} to={"/admin/thongkedonhang"}>
+                Thống kê đơn hàng
+              </Link>
+            </div>
+          </li>
+
           <li>
             <hr className={cx("dropdown-divider")} />
           </li>

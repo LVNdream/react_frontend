@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./payment.module.scss";
 import PayProduct from "./components/PayProduct";
 import { useDispatch, useSelector } from "react-redux";
-import { cartSelector, totalMoney } from "../../redux/selector";
-import { Link } from "react-router-dom";
+import { cartSelector, totalMoney, userSelector } from "../../redux/selector";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 // import axios from "axios";
@@ -14,6 +14,18 @@ import Swal from "sweetalert2";
 
 function Payment() {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const inforUser = useSelector(userSelector);
+
+
+  useEffect(() => {
+    if (inforUser === null) {
+      navigate("/client/login");
+    } else {
+    }
+  }, [inforUser, navigate]);
+  
+
   // hàm check Email
   const validateEmail = (email) => {
     return String(email)
@@ -55,9 +67,9 @@ function Payment() {
   const totalMoneyInCart = useSelector(totalMoney);
   const itemInCart = useSelector(cartSelector);
 
-  const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [fullname, setFullname] = useState(inforUser?.firstname_user+" "+inforUser?.lastname_user);
+  const [email, setEmail] = useState(inforUser?.email_user);
+  const [phone, setPhone] = useState(inforUser?.phone_user);
   const [recive, setRecive] = useState("");
   const [adress, setAdress] = useState("");
   const [payMethod, setPayMethod] = useState("");
@@ -118,13 +130,13 @@ function Payment() {
       // console.log(response);
 
       Swal.fire({
-        position: 'top',
-        icon: 'success',
+        position: "top",
+        icon: "success",
         title: response,
         showConfirmButton: false,
-        timer: 1500
-      })
-      
+        timer: 1500,
+      });
+
       // alert(response);
       setFullname("");
       setEmail("");
@@ -167,16 +179,14 @@ function Payment() {
       //     console.log(error);
       //   });
     } else {
-
-
       Swal.fire({
-        position: 'top',
-        icon: 'error',
-        title: 'Chưa có sản phẩm trong giỏ hàng hoặc bạn điền thiếu thông tin',
+        position: "top",
+        icon: "error",
+        title: "Chưa có sản phẩm trong giỏ hàng hoặc bạn điền thiếu thông tin",
         showConfirmButton: false,
-        timer: 1500
-      })
-      
+        timer: 1500,
+      });
+
       // alert("Chưa có sản phẩm trong giỏ hàng hoặc bạn điền thiếu thông tin: ");
     }
   };
