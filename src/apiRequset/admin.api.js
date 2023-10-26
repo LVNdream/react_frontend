@@ -7,8 +7,6 @@ export const getTypeProduct = async (accessToken) => {
       accessToken,
     });
     if (res.data.isErrorLoginAd) {
-
-
       Swal.fire({
         position: "top",
         icon: "error",
@@ -48,14 +46,13 @@ export const getCaterogyProduct = async (type_product, accessToken) => {
       return;
     }
     if (res.data.isErrorLogin) {
-
       Swal.fire({
-        position: 'top-end',
-        icon: 'error',
+        position: "top-end",
+        icon: "error",
         title: "You're not authenticated",
         showConfirmButton: false,
-        timer: 1500
-      })
+        timer: 1500,
+      });
       // alert("You're not authenticated");
       return;
     }
@@ -132,9 +129,12 @@ export const addProductDeleted = async (inforProduct, accessToken) => {
 
 export const getProductDeleted = async (accessToken) => {
   try {
-    const res = await axios.post(`http://localhost:3001/admin/getdeletedroduct`, {
-      accessToken,
-    });
+    const res = await axios.post(
+      `http://localhost:3001/admin/getdeletedroduct`,
+      {
+        accessToken,
+      }
+    );
     // console.log(res.data);
     return res.data;
   } catch (error) {
@@ -154,13 +154,66 @@ export const updateOrderStatus = async (inforUpdate, accessToken) => {
   }
 };
 
-export const getOrderFilterByDate = async (filter,accessToken) => {
+export const getOrderFilterByDate = async (filter, accessToken) => {
   try {
-    const res = await axios.post(`http://localhost:3001/admin/getorderfilterbydate`, {
-      accessToken,
-      filter
-    });
-    console.log(res.data);
+    const res = await axios.post(
+      `http://localhost:3001/admin/getorderfilterbydate`,
+      {
+        accessToken,
+        filter,
+      }
+    );
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// filter////
+export const getOrderFilterByDate_Email = async (filter, accessToken) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/admin/getorderfilterbydate/email`,
+      {
+        accessToken,
+        filter,
+      }
+    );
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getOrderFilterByDate_TypeOrder = async (filter, accessToken) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/admin/getorderfilterbydate/typeorder`, 
+      {
+        accessToken,
+        filter,
+      }
+    );
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getOrderFilterByDate_TypeOrder_Email = async (
+  filter,
+  accessToken
+) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/admin/getorderfilterbydate/typeorderandemail`,
+      {
+        accessToken,
+        filter,
+      }
+    );
+    // console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);

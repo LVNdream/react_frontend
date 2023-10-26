@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classname from "classnames/bind";
 import styles from "./thongkedonhang.module.scss";
 import {
@@ -14,7 +14,12 @@ import {
 import { Line } from "react-chartjs-2";
 //   import {faker} from 'faker';
 import { faker } from "@faker-js/faker";
-import { getOrderFilterByDate } from "../../apiRequset/admin.api";
+import {
+  getOrderFilterByDate,
+  getOrderFilterByDate_Email,
+  getOrderFilterByDate_TypeOrder,
+  getOrderFilterByDate_TypeOrder_Email,
+} from "../../apiRequset/admin.api";
 import Cookies from "js-cookie";
 
 function ThongKeDonHang() {
@@ -24,7 +29,99 @@ function ThongKeDonHang() {
   const [startday, setStartday] = useState("");
   const [endday, setEndday] = useState("");
   const [email, setEmail] = useState("");
-  const [typeOrder, setTypeOrder] = useState("");
+  const [typeOrder, setTypeOrder] = useState();
+  const [orders, setOrders] = useState("");
+  const [dataChart, setDataChart] = useState([]);
+  useEffect(() => {
+    if (orders) {
+      setDataChart(orders);
+      if (email && !typeOrder) {
+        console.log("co email");
+        // const data = orders.filter((order) => {
+        //   return email === order.email;
+        // });
+
+        async function fetchData() {
+          const filter = {
+            startday,
+            endday,
+            email,
+          };
+          const data = await getOrderFilterByDate_Email(filter, accessToken);
+          setDataChart(data);
+        }
+        fetchData();
+      } else if (!email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
+        console.log("co loai");
+
+        // const data = orders.filter((order) => {
+        //   return typeOrder === order.status_order;
+        // });
+        // setDataChart(data);
+
+        async function fetchData() {
+          const filter = {
+            startday,
+            endday,
+            status_order:typeOrder,
+          };
+          const data = await getOrderFilterByDate_TypeOrder(
+            filter,
+            accessToken
+          );
+          setDataChart(data);
+        }
+        fetchData();
+      } else if (email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
+        console.log("co email va loai");
+
+        // const data = orders.filter((order) => {
+        //   return typeOrder === order.status_order && email === order.email;
+        // });
+        // setDataChart(data);
+
+        async function fetchData() {
+          const filter = {
+            startday,
+            endday,
+            email,
+            status_order:typeOrder,
+          };
+          const data = await getOrderFilterByDate_TypeOrder_Email(
+            filter,
+            accessToken
+          );
+          setDataChart(data);
+        }
+        fetchData();
+      } else if (!email && typeOrder === "Tất cả đơn hàng") {
+        console.log(" k co email && all");
+
+        const data = orders;
+        setDataChart(data);
+      } else if (email && typeOrder === "Tất cả đơn hàng") {
+        // console.log("co email && all");
+
+        // const data = orders.filter((order) => {
+        //   return email === order.email;
+        // });
+        // setDataChart(data);
+
+        async function fetchData() {
+          const filter = {
+            startday,
+            endday,
+            email,
+          };
+          const data = await getOrderFilterByDate_Email(filter, accessToken);
+          setDataChart(data);
+        }
+        fetchData();
+      }
+    }
+  }, [orders, typeOrder, email]);
+
+  console.log(dataChart);
 
   // ham xet lai gia tri day
 
@@ -36,14 +133,16 @@ function ThongKeDonHang() {
     if (startday && endday) {
       const start = new Date(startday);
       const end = new Date(endday);
-      console.log({ start: start.getTime(), end: end.getTime() });
+      // console.log({ start: start.getTime(), end: end.getTime() });
       if (start.getTime() > end.getTime()) {
         alert("ngay bat dau phai lon hon ngay ket thuc");
       } else {
-        console.log({ startday, endday });
-        const dataFilter = { start, endday };
+        // console.log({ startday, endday });
+        const dataFilter = { startday, endday };
         const resfilter = await getOrderFilterByDate(dataFilter, accessToken);
-        alert(resfilter);
+        console.log(resfilter);
+        setOrders(resfilter);
+        alert("success");
       }
     } else {
       alert("Moi ban chon cac ngay");
@@ -74,47 +173,51 @@ function ThongKeDonHang() {
       },
     },
   };
-  console.log({ startday, endday });
-  const labels = [
-    "21/12/2023",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "July8",
-    "July9",
-    "July10",
-    "July11",
-    "July12",
-    "July13",
-    "July14",
-    "July15",
-    "July16",
-    "July17",
-    "July18",
-    "July19",
-    "July20",
-    "July22",
-    "July23",
-    "July24",
-    "July25",
-    "July26",
-    "July27",
-    "July28",
-    "July29",
-    "July30",
-    "July31",
-    "July32",
-  ];
+  // const labels = [
+  //   "21/12/2023",
+  //   "February",
+  //   "March",
+  //   "April",
+  //   "May",
+  //   "June",
+  //   "July",
+  //   "July8",
+  //   "July9",
+  //   "July10",
+  //   "July11",
+  //   "July12",
+  //   "July13",
+  //   "July14",
+  //   "July15",
+  //   "July16",
+  //   "July17",
+  //   "July18",
+  //   "July19",
+  //   "July20",
+  //   "July22",
+  //   "July23",
+  //   "July24",
+  //   "July25",
+  //   "July26",
+  //   "July27",
+  //   "July28",
+  //   "July29",
+  //   "July30",
+  //   "July31",
+  //   "July32",
+  // ];
 
+  const labels = dataChart.map((data) => {
+    return data.date_order;
+  });
   const data = {
     labels,
     datasets: [
       {
         label: "Số đơn hàng",
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 13 })),
+        data: dataChart.map((data) => {
+          return data.total_order;
+        }),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
@@ -187,14 +290,14 @@ function ThongKeDonHang() {
               <select
                 id={cx("type_order")}
                 className="form-select"
-                value="Tất cả đơn hàng"
+                value={typeOrder}
                 onChange={(e) => {
                   handleOnChangeDay(e, setTypeOrder);
                 }}
               >
                 <option value="Tất cả đơn hàng">Tất cả đơn hàng</option>
                 <option value="Chờ xác nhận">Chờ xác nhận</option>
-                <option value="Đang xác nhận">Đang xác nhận</option>
+                <option value="Đang giao">Đang giao</option>
                 <option value="Giao hàng thành công">
                   Giao hàng thành công
                 </option>
@@ -207,7 +310,7 @@ function ThongKeDonHang() {
               </label>
               <input
                 onChange={(e) => {
-                  handleOnChangeDay(setEmail);
+                  handleOnChangeDay(e, setEmail);
                 }}
                 value={email}
                 type="email"
@@ -221,7 +324,14 @@ function ThongKeDonHang() {
 
         {/* khu vuc bieu do */}
         <div className={cx("article_chart")}>
-          <div className={cx("total_order")}>Đơn hàng:</div>
+          <div className={cx("total_order")}>
+            Đơn hàng:
+            {orders.length > 0
+              ? dataChart.reduce((total, data) => {
+                  return total + data.total_order;
+                }, 0)
+              : "0"}
+          </div>
           <hr className={cx("mt-1", "mb-1")}></hr>
           <Line options={options} data={data} />
         </div>
