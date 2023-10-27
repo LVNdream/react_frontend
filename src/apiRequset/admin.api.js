@@ -170,7 +170,7 @@ export const getOrderFilterByDate = async (filter, accessToken) => {
   }
 };
 
-// filter////
+// filter date////
 export const getOrderFilterByDate_Email = async (filter, accessToken) => {
   try {
     const res = await axios.post(
@@ -189,7 +189,7 @@ export const getOrderFilterByDate_Email = async (filter, accessToken) => {
 export const getOrderFilterByDate_TypeOrder = async (filter, accessToken) => {
   try {
     const res = await axios.post(
-      `http://localhost:3001/admin/getorderfilterbydate/typeorder`, 
+      `http://localhost:3001/admin/getorderfilterbydate/typeorder`,
       {
         accessToken,
         filter,
@@ -208,6 +208,75 @@ export const getOrderFilterByDate_TypeOrder_Email = async (
   try {
     const res = await axios.post(
       `http://localhost:3001/admin/getorderfilterbydate/typeorderandemail`,
+      {
+        accessToken,
+        filter,
+      }
+    );
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+// filter by year
+export const getOrderFilterByDate_Year = async (
+  filter,
+  accessToken
+) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/admin/getorderfilterbydate/year`,
+      {
+        accessToken,
+        filter,
+      }
+    );
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 
+export const getOrderFilterByDate_Year_Email = async (filter, accessToken) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/admin/getorderfilterbydate/yearemail`,
+      {
+        accessToken,
+        filter,
+      }
+    );
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getOrderFilterByDate_Year_TypeOrder = async (filter, accessToken) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/admin/getorderfilterbydate/yeartypeorder`,
+      {
+        accessToken,
+        filter,
+      }
+    );
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getOrderFilterByDate_Year_TypeOrder_Email = async (
+  filter,
+  accessToken
+) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/admin/getorderfilterbydate/yeartypeorderandemail`,
       {
         accessToken,
         filter,

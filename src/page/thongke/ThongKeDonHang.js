@@ -12,35 +12,35 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-//   import {faker} from 'faker';
-import { faker } from "@faker-js/faker";
+// import { faker } from "@faker-js/faker";
 import {
   getOrderFilterByDate,
   getOrderFilterByDate_Email,
   getOrderFilterByDate_TypeOrder,
   getOrderFilterByDate_TypeOrder_Email,
+  getOrderFilterByDate_Year,
+  getOrderFilterByDate_Year_Email,
+  getOrderFilterByDate_Year_TypeOrder,
+  getOrderFilterByDate_Year_TypeOrder_Email,
 } from "../../apiRequset/admin.api";
 import Cookies from "js-cookie";
 
 function ThongKeDonHang() {
   const accessToken = Cookies.get("accessToken");
   const cx = classname.bind(styles);
-
+  const [year, setYear] = useState("");
   const [startday, setStartday] = useState("");
   const [endday, setEndday] = useState("");
   const [email, setEmail] = useState("");
   const [typeOrder, setTypeOrder] = useState();
+  const [orderYear, setOrderYear] = useState("");
   const [orders, setOrders] = useState("");
+
   const [dataChart, setDataChart] = useState([]);
   useEffect(() => {
     if (orders) {
       setDataChart(orders);
       if (email && !typeOrder) {
-        console.log("co email");
-        // const data = orders.filter((order) => {
-        //   return email === order.email;
-        // });
-
         async function fetchData() {
           const filter = {
             startday,
@@ -52,18 +52,11 @@ function ThongKeDonHang() {
         }
         fetchData();
       } else if (!email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
-        console.log("co loai");
-
-        // const data = orders.filter((order) => {
-        //   return typeOrder === order.status_order;
-        // });
-        // setDataChart(data);
-
         async function fetchData() {
           const filter = {
             startday,
             endday,
-            status_order:typeOrder,
+            status_order: typeOrder,
           };
           const data = await getOrderFilterByDate_TypeOrder(
             filter,
@@ -73,19 +66,12 @@ function ThongKeDonHang() {
         }
         fetchData();
       } else if (email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
-        console.log("co email va loai");
-
-        // const data = orders.filter((order) => {
-        //   return typeOrder === order.status_order && email === order.email;
-        // });
-        // setDataChart(data);
-
         async function fetchData() {
           const filter = {
             startday,
             endday,
             email,
-            status_order:typeOrder,
+            status_order: typeOrder,
           };
           const data = await getOrderFilterByDate_TypeOrder_Email(
             filter,
@@ -100,13 +86,6 @@ function ThongKeDonHang() {
         const data = orders;
         setDataChart(data);
       } else if (email && typeOrder === "Tất cả đơn hàng") {
-        // console.log("co email && all");
-
-        // const data = orders.filter((order) => {
-        //   return email === order.email;
-        // });
-        // setDataChart(data);
-
         async function fetchData() {
           const filter = {
             startday,
@@ -119,7 +98,67 @@ function ThongKeDonHang() {
         fetchData();
       }
     }
-  }, [orders, typeOrder, email]);
+    // thong ke theo nam
+    if (orderYear) {
+      if (email && !typeOrder) {
+        async function fetchData() {
+          const filter = {
+            year,
+            email,
+          };
+          const data = await getOrderFilterByDate_Year_Email(
+            filter,
+            accessToken
+          );
+          setDataChart(data);
+        }
+        fetchData();
+      } else if (!email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
+        async function fetchData() {
+          const filter = {
+            year,
+            status_order: typeOrder,
+          };
+          const data = await getOrderFilterByDate_Year_TypeOrder(
+            filter,
+            accessToken
+          );
+          setDataChart(data);
+        }
+        fetchData();
+      } else if (email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
+        async function fetchData() {
+          const filter = {
+            year,
+            email,
+            status_order: typeOrder,
+          };
+          const data = await getOrderFilterByDate_Year_TypeOrder_Email(
+            filter,
+            accessToken
+          );
+          setDataChart(data);
+        }
+        fetchData();
+      } else if (!email && typeOrder === "Tất cả đơn hàng") {
+        const data = orderYear;
+        setDataChart(data);
+      } else if (email && typeOrder === "Tất cả đơn hàng") {
+        async function fetchData() {
+          const filter = {
+            year,
+            email,
+          };
+          const data = await getOrderFilterByDate_Year_Email(
+            filter,
+            accessToken
+          );
+          setDataChart(data);
+        }
+        fetchData();
+      }
+    }
+  }, [orders, typeOrder, email, orderYear]);
 
   console.log(dataChart);
 
@@ -137,15 +176,38 @@ function ThongKeDonHang() {
       if (start.getTime() > end.getTime()) {
         alert("ngay bat dau phai lon hon ngay ket thuc");
       } else {
+        setYear("");
         // console.log({ startday, endday });
         const dataFilter = { startday, endday };
         const resfilter = await getOrderFilterByDate(dataFilter, accessToken);
         console.log(resfilter);
         setOrders(resfilter);
+        setOrderYear("");
         alert("success");
       }
     } else {
       alert("Moi ban chon cac ngay");
+    }
+  };
+
+  const handleGetOrderByFilter_ByYear = async () => {
+    if (year) {
+      setStartday("");
+      setEndday("");
+      // console.log({ startday, endday });
+      const dataFilter = { year };
+      // console.log(dataFilter)
+      const resfilter = await getOrderFilterByDate_Year(
+        dataFilter,
+        accessToken
+      );
+      console.log(resfilter);
+      setOrderYear(resfilter);
+      setDataChart(resfilter);
+      setOrders("");
+      // alert("success");
+    } else {
+      alert("Mời bạn nhập năm");
     }
   };
 
@@ -173,39 +235,6 @@ function ThongKeDonHang() {
       },
     },
   };
-  // const labels = [
-  //   "21/12/2023",
-  //   "February",
-  //   "March",
-  //   "April",
-  //   "May",
-  //   "June",
-  //   "July",
-  //   "July8",
-  //   "July9",
-  //   "July10",
-  //   "July11",
-  //   "July12",
-  //   "July13",
-  //   "July14",
-  //   "July15",
-  //   "July16",
-  //   "July17",
-  //   "July18",
-  //   "July19",
-  //   "July20",
-  //   "July22",
-  //   "July23",
-  //   "July24",
-  //   "July25",
-  //   "July26",
-  //   "July27",
-  //   "July28",
-  //   "July29",
-  //   "July30",
-  //   "July31",
-  //   "July32",
-  // ];
 
   const labels = dataChart.map((data) => {
     return data.date_order;
@@ -273,6 +302,28 @@ function ThongKeDonHang() {
                 Tìm
               </div>
             </div>
+            <div className={cx("d-flex")}>
+              <div className={cx("me-3")}>
+                <label htmlFor="filterByYear" className="form-label">
+                  Năm
+                </label>
+                <input
+                  value={year}
+                  onChange={(e) => {
+                    handleOnChangeDay(e, setYear);
+                  }}
+                  id={cx("filterByYear")}
+                  type="text"
+                  className={cx("form-control", "input_date")}
+                />
+              </div>
+              <div
+                onClick={handleGetOrderByFilter_ByYear}
+                className={cx("btn", "btn-danger")}
+              >
+                Tìm
+              </div>
+            </div>
           </div>
           <hr className={cx("mt-1", "mb-1")}></hr>
           <div
@@ -324,13 +375,22 @@ function ThongKeDonHang() {
 
         {/* khu vuc bieu do */}
         <div className={cx("article_chart")}>
+          {dataChart.length <= 0
+            ? "Mời bạn chọn ngày tháng để xem biểu đồ"
+            : ""}
           <div className={cx("total_order")}>
             Đơn hàng:
             {orders.length > 0
               ? dataChart.reduce((total, data) => {
                   return total + data.total_order;
                 }, 0)
-              : "0"}
+              : ""}
+            {orderYear.length > 0
+              ? dataChart.reduce((total, data) => {
+                  return total + data.total_order;
+                }, 0)
+              : ""}
+            {orderYear.length <= 0 && orders.length <= 0 ? "0" : ""}
           </div>
           <hr className={cx("mt-1", "mb-1")}></hr>
           <Line options={options} data={data} />
