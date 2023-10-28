@@ -1,0 +1,32 @@
+.article_main {
+  margin: auto;
+}
+.input_date {
+  width: 100% !important;
+}
+.article_filter {
+  margin: auto;
+  width: 90%;
+  border: 1px solid rgb(103, 102, 102);
+  background-color: rgba(234, 234, 234, 0.278);
+}
+.filter_byDate {
+  padding: 5px 24px;
+}
+.filter_byEmail {
+  padding: 10px 24px;
+}
+
+.article_chart {
+  margin: auto;
+  width: 90%;
+  // height: 60vh;
+  border: 1px solid rgb(103, 102, 102);
+  background-color: rgba(234, 234, 234, 0.278);
+}
+.total_order {
+  padding: 10px 24px;
+}
+.article_formDate {
+  gap: 15px;
+}

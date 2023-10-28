@@ -13,6 +13,15 @@ export const getAllProduct = async (inforUser, setProducts) => {
     console.log(error);
   }
 };
+export const getAllProduct_Nologin = async (setProducts) => {
+  try {
+    const res = await axios.get(`http://localhost:3001/products/men/`);
+    // console.log(res.data);
+    setProducts(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getProductByCaterogy = async (caterogy, setProducts) => {
   try {

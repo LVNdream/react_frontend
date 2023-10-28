@@ -15,6 +15,8 @@ import ProductDeleted from "../page/CustomizeProduct/ProductDeleted";
 import FavoriteProduct from "../page/FavoriteProduct/FavoriteProduct";
 import EvalauatePage from "../page/evaluate/EvalauatePage";
 import ThongKeDonHang from "../page/thongke/ThongKeDonHang";
+import ThongKeDoanhThu from "../page/thongke/ThongKeDoanhThu";
+import ThongKeSanPham from "../page/thongke/ThongKeSanPham";
 
 const publicRoutes = [
   { path: "/", component: Home, layout: LayoutCilent },
@@ -38,6 +40,10 @@ const publicRoutes = [
   { path: "/admin", component: AdminHome, layout: LayoutCilent },
   { path: "/admin/addproduct", component: AddProduct, layout: LayoutCilent },
   { path: "/admin/thongkedonhang", component: ThongKeDonHang, layout: LayoutCilent },
+  { path: "/admin/thongkedoanhthu", component: ThongKeDoanhThu, layout: LayoutCilent },
+  { path: "/admin/thongkesanpham", component: ThongKeSanPham, layout: LayoutCilent },
+
+
 
   {
     path: "/admin/updateproduct",

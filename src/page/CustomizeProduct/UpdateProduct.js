@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { productsAfterFilter } from "../../redux/selector";
 import {
   getAllProduct,
+  getAllProduct_Nologin,
   getProductByCaterogy,
 } from "../../apiRequset/product.api";
 import { productsSlice } from "../Products/productsSlice";
@@ -115,7 +116,7 @@ function UpdateProduct(props) {
     if (props.router.params.caterogy) {
       getProductByCaterogy(props.router.params.caterogy, setProducts);
     } else {
-      getAllProduct(setProducts);
+      getAllProduct_Nologin( setProducts);
     }
   }, [props.router.params.caterogy, rerender]);
 

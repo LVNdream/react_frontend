@@ -220,10 +220,7 @@ export const getOrderFilterByDate_TypeOrder_Email = async (
   }
 };
 // filter by year
-export const getOrderFilterByDate_Year = async (
-  filter,
-  accessToken
-) => {
+export const getOrderFilterByDate_Year = async (filter, accessToken) => {
   try {
     const res = await axios.post(
       `http://localhost:3001/admin/getorderfilterbydate/year`,
@@ -239,7 +236,7 @@ export const getOrderFilterByDate_Year = async (
   }
 };
 
-// 
+//
 export const getOrderFilterByDate_Year_Email = async (filter, accessToken) => {
   try {
     const res = await axios.post(
@@ -255,7 +252,10 @@ export const getOrderFilterByDate_Year_Email = async (filter, accessToken) => {
     console.log(error);
   }
 };
-export const getOrderFilterByDate_Year_TypeOrder = async (filter, accessToken) => {
+export const getOrderFilterByDate_Year_TypeOrder = async (
+  filter,
+  accessToken
+) => {
   try {
     const res = await axios.post(
       `http://localhost:3001/admin/getorderfilterbydate/yeartypeorder`,
@@ -282,6 +282,35 @@ export const getOrderFilterByDate_Year_TypeOrder_Email = async (
         filter,
       }
     );
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// thống kê doanh thu theo ngày Date
+
+export const revenueByDate = async (filter, accessToken) => {
+  try {
+    const res = await axios.post(`http://localhost:3001/admin/revenue/date`, {
+      accessToken,
+      filter,
+    });
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// revenue theo năm
+export const revenueByYear = async (filter, accessToken) => {
+  try {
+    const res = await axios.post(`http://localhost:3001/admin/revenue/year`, {
+      accessToken,
+      filter,
+    });
     // console.log(res.data);
     return res.data;
   } catch (error) {

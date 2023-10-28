@@ -69,8 +69,23 @@ function DropdownAdmin(props) {
           >
             Thống kê
             <div className={cx("dropdown_second")}>
-              <Link className={cx("dropdown-item")} to={"/admin/thongkedonhang"}>
+              <Link
+                className={cx("dropdown-item")}
+                to={"/admin/thongkedonhang"}
+              >
                 Thống kê đơn hàng
+              </Link>
+              <Link
+                className={cx("dropdown-item")}
+                to={"/admin/thongkedoanhthu"}
+              >
+                Thống kê doanh thu
+              </Link>
+              <Link
+                className={cx("dropdown-item")}
+                to={"/admin/thongkesanpham"}
+              >
+                Thống kê sản phẩm
               </Link>
             </div>
           </li>

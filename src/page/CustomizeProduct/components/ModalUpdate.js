@@ -29,7 +29,7 @@ function ModalUpdate(props) {
   // const navigate = useNavigate();
   const accessToken = Cookies.get("accessToken");
 
-  const [nameProduct, setNameProduct] = useState(id_product + name_product);
+  const [nameProduct, setNameProduct] = useState(name_product);
   const [pictureProduct, setPictureProduct] = useState(picture_product);
   const [priceProduct, setPriceProduct] = useState(price_product);
   const [openUpdateQuantity, setopenUpdateQuantity] = useState(false);
