@@ -3,6 +3,7 @@ import { filtersSlice } from "../components/layouts/layoutClient/components/filt
 import { productsSlice } from "../page/Products/productsSlice";
 import { cartSlice } from "../page/Cart/cartSlice";
 import { userSlice } from "../page/accountClient/userSlice";
+import { thongkeSlice } from "../page/thongke/thongkeSclice";
 
 
 const store = configureStore({
@@ -10,7 +11,8 @@ const store = configureStore({
     filters: filtersSlice.reducer,
     products: productsSlice.reducer,
     cart:cartSlice.reducer,
-    user:userSlice.reducer
+    user:userSlice.reducer,
+    products_daban:thongkeSlice.reducer,
   },
 });
 

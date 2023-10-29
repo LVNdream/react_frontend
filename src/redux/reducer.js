@@ -10,7 +10,8 @@ const rootReducer = (state = {}, action) => {
     filters: filtersReducer(state.filters, action),
     cart: cartReducer(state.cart, action),
     products: productsReducer(state.products, action),
-    user:useReducer(state.infor,action)
+    user:useReducer(state.infor,action),
+    products_daban:useReducer(state.products_daban)
   };
 };
 

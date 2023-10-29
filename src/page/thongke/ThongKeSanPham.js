@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import classname from "classnames/bind";
 import styles from "./thongkesanpham.module.scss";
 import { sanphamdaban } from "../../apiRequset/admin.api";
 import Cookies from "js-cookie";
+import ProductDaban from "./components/ProductDaban";
 
 function ThongKeDonHang() {
   const accessToken = Cookies.get("accessToken");
@@ -13,129 +14,7 @@ function ThongKeDonHang() {
   const [nameProduct, setNameProduct] = useState("");
 
   const [products, setProducts] = useState("");
-
-  //   useEffect(() => {
-  //     if (orders) {
-  //       setDataChart(orders);
-  //       if (email && !typeOrder) {
-  //         async function fetchData() {
-  //           const filter = {
-  //             startday,
-  //             endday,
-  //             email,
-  //           };
-  //           const data = await getOrderFilterByDate_Email(filter, accessToken);
-  //           setDataChart(data);
-  //         }
-  //         fetchData();
-  //       } else if (!email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
-  //         async function fetchData() {
-  //           const filter = {
-  //             startday,
-  //             endday,
-  //             status_order: typeOrder,
-  //           };
-  //           const data = await getOrderFilterByDate_TypeOrder(
-  //             filter,
-  //             accessToken
-  //           );
-  //           setDataChart(data);
-  //         }
-  //         fetchData();
-  //       } else if (email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
-  //         async function fetchData() {
-  //           const filter = {
-  //             startday,
-  //             endday,
-  //             email,
-  //             status_order: typeOrder,
-  //           };
-  //           const data = await getOrderFilterByDate_TypeOrder_Email(
-  //             filter,
-  //             accessToken
-  //           );
-  //           setDataChart(data);
-  //         }
-  //         fetchData();
-  //       } else if (!email && typeOrder === "Tất cả đơn hàng") {
-  //         console.log(" k co email && all");
-
-  //         const data = orders;
-  //         setDataChart(data);
-  //       } else if (email && typeOrder === "Tất cả đơn hàng") {
-  //         async function fetchData() {
-  //           const filter = {
-  //             startday,
-  //             endday,
-  //             email,
-  //           };
-  //           const data = await getOrderFilterByDate_Email(filter, accessToken);
-  //           setDataChart(data);
-  //         }
-  //         fetchData();
-  //       }
-  //     }
-  //     // thong ke theo nam
-  //     if (orderYear) {
-  //       if (email && !typeOrder) {
-  //         async function fetchData() {
-  //           const filter = {
-  //             year,
-  //             email,
-  //           };
-  //           const data = await getOrderFilterByDate_Year_Email(
-  //             filter,
-  //             accessToken
-  //           );
-  //           setDataChart(data);
-  //         }
-  //         fetchData();
-  //       } else if (!email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
-  //         async function fetchData() {
-  //           const filter = {
-  //             year,
-  //             status_order: typeOrder,
-  //           };
-  //           const data = await getOrderFilterByDate_Year_TypeOrder(
-  //             filter,
-  //             accessToken
-  //           );
-  //           setDataChart(data);
-  //         }
-  //         fetchData();
-  //       } else if (email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
-  //         async function fetchData() {
-  //           const filter = {
-  //             year,
-  //             email,
-  //             status_order: typeOrder,
-  //           };
-  //           const data = await getOrderFilterByDate_Year_TypeOrder_Email(
-  //             filter,
-  //             accessToken
-  //           );
-  //           setDataChart(data);
-  //         }
-  //         fetchData();
-  //       } else if (!email && typeOrder === "Tất cả đơn hàng") {
-  //         const data = orderYear;
-  //         setDataChart(data);
-  //       } else if (email && typeOrder === "Tất cả đơn hàng") {
-  //         async function fetchData() {
-  //           const filter = {
-  //             year,
-  //             email,
-  //           };
-  //           const data = await getOrderFilterByDate_Year_Email(
-  //             filter,
-  //             accessToken
-  //           );
-  //           setDataChart(data);
-  //         }
-  //         fetchData();
-  //       }
-  //     }
-  //   }, [orders, typeOrder, email, orderYear]);
+  const [productsFilter, setProductsFilter] = useState([]);
 
   //   console.log(dataChart);
 
@@ -143,6 +22,18 @@ function ThongKeDonHang() {
 
   const handleOnChangeDay = (e, setData) => {
     setData(e.target.value);
+  };
+
+  const handleOnChangSearch = (e) => {
+    setNameProduct(e.target.value);
+    const productAfterFilter = products.filter((product) => {
+      return product.name_product
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase());
+    });
+    console.log(productAfterFilter);
+    setProductsFilter(productAfterFilter);
+    console.log(e.target.value);
   };
   // ham de loc
   const handleProductedByFilter_Date = async () => {
@@ -156,8 +47,9 @@ function ThongKeDonHang() {
         // console.log({ startday, endday });
         const dataFilter = { startday, endday };
         const resfilter = await sanphamdaban(dataFilter, accessToken);
-        console.log(resfilter);
+        // console.log(resfilter);
         setProducts(resfilter);
+        setProductsFilter(resfilter);
         alert("success");
       }
     } else {
@@ -168,6 +60,7 @@ function ThongKeDonHang() {
   //   cai de ve bieu do
 
   //
+  console.log(products);
   return (
     <>
       <div className={cx("container-fluid", "article_main")}>
@@ -235,7 +128,7 @@ function ThongKeDonHang() {
               </label>
               <input
                 onChange={(e) => {
-                  handleOnChangeDay(e, setNameProduct);
+                  handleOnChangSearch(e);
                 }}
                 value={nameProduct}
                 type="email"
@@ -249,28 +142,25 @@ function ThongKeDonHang() {
 
         {/* khu vuc bieu do */}
         <div className={cx("article_chart")}>
-          <div className={cx("row","ms-3","me-3","mt-3")}>
-            <h6 className={cx("col-4","colName")}>Tên sản phẩm</h6>
+          <div className={cx("row", "ms-3", "me-3", "mt-3")}>
+            <h6 className={cx("col-4", "colName")}>Tên sản phẩm</h6>
 
-            <div className={cx("row","col-8")}>
-              <h6 className={cx("col-3","colName")}>Số lượng còn lại</h6>
-              <h6 className={cx("col-3","colName")}>Số lượng bán ra</h6>
-              <h6 className={cx("col-3","colName")}>Giá bán</h6>
-              <h6 className={cx("col-3","colName")}>Thành tiền</h6>
+            <div className={cx("row", "col-8")}>
+              <h6 className={cx("col-3", "colName")}>Số lượng còn lại</h6>
+              <h6 className={cx("col-3", "colName")}>Số lượng bán ra</h6>
+              <h6 className={cx("col-3", "colName")}>Giá bán</h6>
+              <h6 className={cx("col-3", "colName")}>Thành tiền</h6>
             </div>
           </div>
-          {products.length>0? products.map((product)=>{
-            return <div key={product.id_product} className={cx("row","ms-3","me-3")}>
-            <p className={cx("col-4","colName")}>{product.name_product}</p>
+          {productsFilter.length > 0
+            ? productsFilter.map((product) => {
+                return (
+                 
+                  <ProductDaban key={product.id_product} product={product} startday={startday} endday={endday}></ProductDaban>
 
-            <div className={cx("row","col-8")}>
-              <p className={cx("col-3","colName")}>{product.quantity_daban}</p>
-              <p className={cx("col-3","colName")}>{product.quantity_product}</p>
-              <p className={cx("col-3","colName")}>{product.price_temp}</p>
-              <p className={cx("col-3","colName")}>{product.price_temp*product.quantity_daban}</p>
-            </div>
-          </div>
-          }):"vui lonhgf chọn ngày tháng để xem"}
+                );
+              })
+            : "vui lòng chọn ngày tháng để xem hoặc không có sản phẩm phù hợp"}
         </div>
       </div>
     </>

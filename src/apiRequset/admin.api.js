@@ -333,3 +333,21 @@ export const sanphamdaban = async (filter, accessToken) => {
     console.log(error);
   }
 };
+
+// 
+
+export const sanphamdabanchitiet = async (filter, accessToken) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/admin/productedtotal/dabanchitiet`,
+      {
+        accessToken,
+        filter,
+      }
+    );
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

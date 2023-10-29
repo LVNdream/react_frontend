@@ -26,14 +26,6 @@ export const productsAfterFilter = createSelector(
   searchTextSelector,
   productsListSelector,
   (searchText, productsList) => {
-    // const aaaaa=productsList.productsList.filter((product) => {
-    //     return product.name.includes(searchText);
-    //   });
-    //   console.log(aaaaa);
-    // ///
-    // console.log(productsList);
-    // console.log(productsList);
-
     if (productsList.length === 0) {
       return [];
     } else {

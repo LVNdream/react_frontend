@@ -32,11 +32,24 @@
   gap: 15px;
 }
 .colName{
+  display: flex;
   padding: 5px 0px;
   text-align: center;
   border: 1px solid black;
   word-break: break-word;
+  align-items: center;
+  float: center;
 }
 .inforQuantity{
   gap: 10%;
+}
+.picture_product{
+  gap: 10px;
+  width: 10vh;
+  height: 10vh;
+}
+.articleInfor{
+  &:hover{
+    cursor: pointer;
+  }
 }
