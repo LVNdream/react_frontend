@@ -317,3 +317,19 @@ export const revenueByYear = async (filter, accessToken) => {
     console.log(error);
   }
 };
+// thong ke cac san pham da ban
+export const sanphamdaban = async (filter, accessToken) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/admin/productedtotal/date`,
+      {
+        accessToken,
+        filter,
+      }
+    );
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

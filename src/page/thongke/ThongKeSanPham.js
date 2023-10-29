@@ -1,166 +1,143 @@
 import React, { useEffect, useState } from "react";
 import classname from "classnames/bind";
 import styles from "./thongkesanpham.module.scss";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
-// import { faker } from "@faker-js/faker";
-import {
-  getOrderFilterByDate,
-  getOrderFilterByDate_Email,
-  getOrderFilterByDate_TypeOrder,
-  getOrderFilterByDate_TypeOrder_Email,
-  getOrderFilterByDate_Year,
-  getOrderFilterByDate_Year_Email,
-  getOrderFilterByDate_Year_TypeOrder,
-  getOrderFilterByDate_Year_TypeOrder_Email,
-} from "../../apiRequset/admin.api";
+import { sanphamdaban } from "../../apiRequset/admin.api";
 import Cookies from "js-cookie";
 
 function ThongKeDonHang() {
   const accessToken = Cookies.get("accessToken");
   const cx = classname.bind(styles);
-  const [year, setYear] = useState("");
+
   const [startday, setStartday] = useState("");
   const [endday, setEndday] = useState("");
   const [nameProduct, setNameProduct] = useState("");
-  const [typeOrder, setTypeOrder] = useState();
-  const [orderYear, setOrderYear] = useState("");
-  const [orders, setOrders] = useState("");
 
-  const [dataChart, setDataChart] = useState([]);
-//   useEffect(() => {
-//     if (orders) {
-//       setDataChart(orders);
-//       if (email && !typeOrder) {
-//         async function fetchData() {
-//           const filter = {
-//             startday,
-//             endday,
-//             email,
-//           };
-//           const data = await getOrderFilterByDate_Email(filter, accessToken);
-//           setDataChart(data);
-//         }
-//         fetchData();
-//       } else if (!email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
-//         async function fetchData() {
-//           const filter = {
-//             startday,
-//             endday,
-//             status_order: typeOrder,
-//           };
-//           const data = await getOrderFilterByDate_TypeOrder(
-//             filter,
-//             accessToken
-//           );
-//           setDataChart(data);
-//         }
-//         fetchData();
-//       } else if (email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
-//         async function fetchData() {
-//           const filter = {
-//             startday,
-//             endday,
-//             email,
-//             status_order: typeOrder,
-//           };
-//           const data = await getOrderFilterByDate_TypeOrder_Email(
-//             filter,
-//             accessToken
-//           );
-//           setDataChart(data);
-//         }
-//         fetchData();
-//       } else if (!email && typeOrder === "Tất cả đơn hàng") {
-//         console.log(" k co email && all");
+  const [products, setProducts] = useState("");
 
-//         const data = orders;
-//         setDataChart(data);
-//       } else if (email && typeOrder === "Tất cả đơn hàng") {
-//         async function fetchData() {
-//           const filter = {
-//             startday,
-//             endday,
-//             email,
-//           };
-//           const data = await getOrderFilterByDate_Email(filter, accessToken);
-//           setDataChart(data);
-//         }
-//         fetchData();
-//       }
-//     }
-//     // thong ke theo nam
-//     if (orderYear) {
-//       if (email && !typeOrder) {
-//         async function fetchData() {
-//           const filter = {
-//             year,
-//             email,
-//           };
-//           const data = await getOrderFilterByDate_Year_Email(
-//             filter,
-//             accessToken
-//           );
-//           setDataChart(data);
-//         }
-//         fetchData();
-//       } else if (!email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
-//         async function fetchData() {
-//           const filter = {
-//             year,
-//             status_order: typeOrder,
-//           };
-//           const data = await getOrderFilterByDate_Year_TypeOrder(
-//             filter,
-//             accessToken
-//           );
-//           setDataChart(data);
-//         }
-//         fetchData();
-//       } else if (email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
-//         async function fetchData() {
-//           const filter = {
-//             year,
-//             email,
-//             status_order: typeOrder,
-//           };
-//           const data = await getOrderFilterByDate_Year_TypeOrder_Email(
-//             filter,
-//             accessToken
-//           );
-//           setDataChart(data);
-//         }
-//         fetchData();
-//       } else if (!email && typeOrder === "Tất cả đơn hàng") {
-//         const data = orderYear;
-//         setDataChart(data);
-//       } else if (email && typeOrder === "Tất cả đơn hàng") {
-//         async function fetchData() {
-//           const filter = {
-//             year,
-//             email,
-//           };
-//           const data = await getOrderFilterByDate_Year_Email(
-//             filter,
-//             accessToken
-//           );
-//           setDataChart(data);
-//         }
-//         fetchData();
-//       }
-//     }
-//   }, [orders, typeOrder, email, orderYear]);
+  //   useEffect(() => {
+  //     if (orders) {
+  //       setDataChart(orders);
+  //       if (email && !typeOrder) {
+  //         async function fetchData() {
+  //           const filter = {
+  //             startday,
+  //             endday,
+  //             email,
+  //           };
+  //           const data = await getOrderFilterByDate_Email(filter, accessToken);
+  //           setDataChart(data);
+  //         }
+  //         fetchData();
+  //       } else if (!email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
+  //         async function fetchData() {
+  //           const filter = {
+  //             startday,
+  //             endday,
+  //             status_order: typeOrder,
+  //           };
+  //           const data = await getOrderFilterByDate_TypeOrder(
+  //             filter,
+  //             accessToken
+  //           );
+  //           setDataChart(data);
+  //         }
+  //         fetchData();
+  //       } else if (email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
+  //         async function fetchData() {
+  //           const filter = {
+  //             startday,
+  //             endday,
+  //             email,
+  //             status_order: typeOrder,
+  //           };
+  //           const data = await getOrderFilterByDate_TypeOrder_Email(
+  //             filter,
+  //             accessToken
+  //           );
+  //           setDataChart(data);
+  //         }
+  //         fetchData();
+  //       } else if (!email && typeOrder === "Tất cả đơn hàng") {
+  //         console.log(" k co email && all");
 
-//   console.log(dataChart);
+  //         const data = orders;
+  //         setDataChart(data);
+  //       } else if (email && typeOrder === "Tất cả đơn hàng") {
+  //         async function fetchData() {
+  //           const filter = {
+  //             startday,
+  //             endday,
+  //             email,
+  //           };
+  //           const data = await getOrderFilterByDate_Email(filter, accessToken);
+  //           setDataChart(data);
+  //         }
+  //         fetchData();
+  //       }
+  //     }
+  //     // thong ke theo nam
+  //     if (orderYear) {
+  //       if (email && !typeOrder) {
+  //         async function fetchData() {
+  //           const filter = {
+  //             year,
+  //             email,
+  //           };
+  //           const data = await getOrderFilterByDate_Year_Email(
+  //             filter,
+  //             accessToken
+  //           );
+  //           setDataChart(data);
+  //         }
+  //         fetchData();
+  //       } else if (!email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
+  //         async function fetchData() {
+  //           const filter = {
+  //             year,
+  //             status_order: typeOrder,
+  //           };
+  //           const data = await getOrderFilterByDate_Year_TypeOrder(
+  //             filter,
+  //             accessToken
+  //           );
+  //           setDataChart(data);
+  //         }
+  //         fetchData();
+  //       } else if (email && typeOrder && typeOrder !== "Tất cả đơn hàng") {
+  //         async function fetchData() {
+  //           const filter = {
+  //             year,
+  //             email,
+  //             status_order: typeOrder,
+  //           };
+  //           const data = await getOrderFilterByDate_Year_TypeOrder_Email(
+  //             filter,
+  //             accessToken
+  //           );
+  //           setDataChart(data);
+  //         }
+  //         fetchData();
+  //       } else if (!email && typeOrder === "Tất cả đơn hàng") {
+  //         const data = orderYear;
+  //         setDataChart(data);
+  //       } else if (email && typeOrder === "Tất cả đơn hàng") {
+  //         async function fetchData() {
+  //           const filter = {
+  //             year,
+  //             email,
+  //           };
+  //           const data = await getOrderFilterByDate_Year_Email(
+  //             filter,
+  //             accessToken
+  //           );
+  //           setDataChart(data);
+  //         }
+  //         fetchData();
+  //       }
+  //     }
+  //   }, [orders, typeOrder, email, orderYear]);
+
+  //   console.log(dataChart);
 
   // ham xet lai gia tri day
 
@@ -168,7 +145,7 @@ function ThongKeDonHang() {
     setData(e.target.value);
   };
   // ham de loc
-  const handleGetOrderByFilter = async () => {
+  const handleProductedByFilter_Date = async () => {
     if (startday && endday) {
       const start = new Date(startday);
       const end = new Date(endday);
@@ -176,13 +153,11 @@ function ThongKeDonHang() {
       if (start.getTime() > end.getTime()) {
         alert("ngay bat dau phai lon hon ngay ket thuc");
       } else {
-        setYear("");
         // console.log({ startday, endday });
         const dataFilter = { startday, endday };
-        const resfilter = await getOrderFilterByDate(dataFilter, accessToken);
+        const resfilter = await sanphamdaban(dataFilter, accessToken);
         console.log(resfilter);
-        setOrders(resfilter);
-        setOrderYear("");
+        setProducts(resfilter);
         alert("success");
       }
     } else {
@@ -190,68 +165,8 @@ function ThongKeDonHang() {
     }
   };
 
-  const handleGetOrderByFilter_ByYear = async () => {
-    if (year) {
-      setStartday("");
-      setEndday("");
-      // console.log({ startday, endday });
-      const dataFilter = { year };
-      // console.log(dataFilter)
-      const resfilter = await getOrderFilterByDate_Year(
-        dataFilter,
-        accessToken
-      );
-      console.log(resfilter);
-      setOrderYear(resfilter);
-      setDataChart(resfilter);
-      setOrders("");
-      // alert("success");
-    } else {
-      alert("Mời bạn nhập năm");
-    }
-  };
-
   //   cai de ve bieu do
 
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-  );
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Biểu đồ số lượng đơn hàng",
-      },
-    },
-  };
-
-  const labels = dataChart.map((data) => {
-    return data.date_order;
-  });
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Số đơn hàng",
-        data: dataChart.map((data) => {
-          return data.total_order;
-        }),
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-    ],
-  };
   //
   return (
     <>
@@ -296,7 +211,7 @@ function ThongKeDonHang() {
                 />
               </div>
               <div
-                onClick={handleGetOrderByFilter}
+                onClick={handleProductedByFilter_Date}
                 className={cx("btn", "btn-danger")}
               >
                 Tìm
@@ -314,11 +229,9 @@ function ThongKeDonHang() {
               "align-items-center"
             )}
           >
-            
-
             <div className={cx("mb-3")}>
               <label htmlFor="inputEmail" className="form-label">
-            Filter:
+                Filter:
               </label>
               <input
                 onChange={(e) => {
@@ -328,7 +241,7 @@ function ThongKeDonHang() {
                 type="email"
                 className="form-control"
                 id={cx("inputEmail")}
-                placeholder="Vui tên sản phẩm"
+                placeholder="Vui lòng tên sản phẩm"
               />
             </div>
           </div>
@@ -336,25 +249,28 @@ function ThongKeDonHang() {
 
         {/* khu vuc bieu do */}
         <div className={cx("article_chart")}>
-          {/* {dataChart.length <= 0
-            ? "Mời bạn chọn ngày tháng để xem biểu đồ"
-            : ""}
-          <div className={cx("total_order")}>
-            Đơn hàng:
-            {orders.length > 0
-              ? dataChart.reduce((total, data) => {
-                  return total + data.total_order;
-                }, 0)
-              : ""}
-            {orderYear.length > 0
-              ? dataChart.reduce((total, data) => {
-                  return total + data.total_order;
-                }, 0)
-              : ""}
-            {orderYear.length <= 0 && orders.length <= 0 ? "0" : ""}
+          <div className={cx("row","ms-3","me-3","mt-3")}>
+            <h6 className={cx("col-4","colName")}>Tên sản phẩm</h6>
+
+            <div className={cx("row","col-8")}>
+              <h6 className={cx("col-3","colName")}>Số lượng còn lại</h6>
+              <h6 className={cx("col-3","colName")}>Số lượng bán ra</h6>
+              <h6 className={cx("col-3","colName")}>Giá bán</h6>
+              <h6 className={cx("col-3","colName")}>Thành tiền</h6>
+            </div>
           </div>
-          <hr className={cx("mt-1", "mb-1")}></hr>
-          <Line options={options} data={data} /> */}
+          {products.length>0? products.map((product)=>{
+            return <div key={product.id_product} className={cx("row","ms-3","me-3")}>
+            <p className={cx("col-4","colName")}>{product.name_product}</p>
+
+            <div className={cx("row","col-8")}>
+              <p className={cx("col-3","colName")}>{product.quantity_daban}</p>
+              <p className={cx("col-3","colName")}>{product.quantity_product}</p>
+              <p className={cx("col-3","colName")}>{product.price_temp}</p>
+              <p className={cx("col-3","colName")}>{product.price_temp*product.quantity_daban}</p>
+            </div>
+          </div>
+          }):"vui lonhgf chọn ngày tháng để xem"}
         </div>
       </div>
     </>
