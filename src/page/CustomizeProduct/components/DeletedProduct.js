@@ -1,6 +1,7 @@
 import React from "react";
 import classnames from "classnames/bind";
 import styles from "./deletedproduct.module.scss";
+import Swal from "sweetalert2";
 
 function DeletedProduct(props) {
   const cx = classnames.bind(styles);
@@ -10,9 +11,32 @@ function DeletedProduct(props) {
     price_product_deleted,
     picture_product_deleted,
   } = props.product;
+
+  // ham khi click vao nut restore
+  const handleOnclickBtnRestore = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        props.handleRestoreProduct(id_product_deleted);
+      }
+    });
+  };
   return (
     <div className={cx("infor_item", "d-flex", "flex-wrap")}>
-      <div className={cx("btn", "btn-danger", "button-undo")}>Restore</div>
+      <div
+        onClick={handleOnclickBtnRestore}
+        className={cx("btn", "btn-danger", "button-undo")}
+      >
+        {" "}
+        Restore{" "}
+      </div>
       <img
         className={cx("picture_item")}
         src={picture_product_deleted}

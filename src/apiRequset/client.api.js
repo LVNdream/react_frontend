@@ -1,6 +1,7 @@
 import axios from "axios";
 // import { productsSlice } from "../page/Products/productsSlice";
 
+// hàm để thêm sản phẩm vào yêu thích
 export const addProductFavorite = async (inforProductFVR, accessToken) => {
   try {
     const res = await axios.post("http://localhost:3001/client/addfavorite", {
@@ -13,6 +14,7 @@ export const addProductFavorite = async (inforProductFVR, accessToken) => {
   }
 };
 
+// hàm trả về sản phẩm yêu thích theo yêu cầu người dùng
 export const clientGetListProductFVRbyUser = async (id_user, accessToken) => {
   try {
     const res = await axios.post(`http://localhost:3001/client/getfavorite`, {
@@ -24,6 +26,7 @@ export const clientGetListProductFVRbyUser = async (id_user, accessToken) => {
     console.log(error);
   }
 };
+// hàm để xóa khỏi sản phẩm khỏi yêu thích
 export const clientDeleteFVRProduct = async (
   id_user,
   accessToken,
@@ -44,6 +47,7 @@ export const clientDeleteFVRProduct = async (
   }
 };
 
+// hàm để xóa tất cả các sản phẩm yêu thích
 export const clientDeleteAllFVRProduct = async (id_user, accessToken) => {
   try {
     // console.log("123123")
@@ -59,6 +63,8 @@ export const clientDeleteAllFVRProduct = async (id_user, accessToken) => {
     console.log(error);
   }
 };
+
+// hàm để cho khách hàng hủy hóa đơn
 export const clientDeleteOrder = async (inforDelete, accessToken) => {
   try {
     // console.log("123123")
@@ -72,6 +78,7 @@ export const clientDeleteOrder = async (inforDelete, accessToken) => {
   }
 };
 
+// hàm để upload hình ảnh lên comments
 export const clientUploadImgCmt = async (data) => {
   try {
     const res = await axios.post(
@@ -85,3 +92,21 @@ export const clientUploadImgCmt = async (data) => {
     console.log(error);
   }
 };
+
+// ham de cap nhat cai comment cua client
+export const clientUpdateComment = async (entity, accessToken) => {
+  try {
+    // console.log("123123")
+    const res = await axios.post(
+      `http://localhost:3001/client/updatecomments`,
+      {
+        entity,
+        accessToken: accessToken,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+

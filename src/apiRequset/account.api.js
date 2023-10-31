@@ -3,6 +3,8 @@ import { userSlice } from "../page/accountClient/userSlice";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 // import { productsSlice } from "../page/Products/productsSlice";
+
+// hàm dùng để đăng kí tài khoản
 export const registerUser = async (entity) => {
   try {
     const res = await axios.post(`http://localhost:3001/auth/register`, entity);
@@ -12,6 +14,7 @@ export const registerUser = async (entity) => {
   }
 };
 
+// hàm để đăng nhập tài khoản
 export const loginUser = async (entity, dispatch) => {
   try {
     let isloginSuccess = false;
@@ -55,6 +58,8 @@ export const loginUser = async (entity, dispatch) => {
     console.log(error);
   }
 };
+
+// hàm để đăng xuất tài khoản
 export const logoutUser = async (accessToken, dispatch) => {
   try {
     const entity = {
@@ -117,6 +122,7 @@ export const checkAdmin = (inforUser, navigate) => {
     return (isAdmin = false);
   }
 };
+
 // export const getProductDetail = async (type,caterogy,id,setInforDetail) => {
 //     try {
 //       console.log(caterogy)

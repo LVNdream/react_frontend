@@ -34,3 +34,18 @@
   color: rgba(225, 77, 50, 0.881);
   gap: 15px;
 }
+.article_btnUpdate{
+  position: relative;
+}
+.button-close {
+  width: 30%;
+  height: 50%;
+  position: absolute;
+  top: -46%;
+  right: 0px;
+  font-size: 10px;
+  text-align: center;
+  color: #ffffff;
+  display: inline-block;
+  background-color: black;
+}

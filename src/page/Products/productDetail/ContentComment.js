@@ -1,15 +1,87 @@
-import React from "react";
+import React, { useState } from "react";
 import classname from "classnames/bind";
 import styles from "./contentcomment.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { clientUpdateComment } from "../../../apiRequset/client.api";
+import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 function ContentComment(props) {
   const cx = classname.bind(styles);
-  //   console.log(props.comment);
-  const { lastname_user, firstname_user, content, img, id_user } =
-    props.comment;
+  // console.log(props.comment);
+  const accessToken = Cookies.get("accessToken");
+
+  const {
+    lastname_user,
+    firstname_user,
+    content,
+    img,
+    id_user,
+    id_product,
+    id_content,
+  } = props.comment;
+  const handleRerender = props.handleRerender;
   const inforUser = props.inforUser;
+  const [inputValueCmt, setInputValueCmt] = useState(content);
+  const [openInputUpdate, setOpenInputUpdate] = useState(false);
+
+  const handleFocusComment = () => {
+    if (id_user === inforUser?.id_user) {
+      setOpenInputUpdate(true);
+    }
+  };
+  const handleUpdateComment = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (id_user === inforUser?.id_user) {
+          const entity = {
+            id_user,
+            id_product,
+            id_content,
+            content: inputValueCmt,
+          };
+          const resultUpdate = await clientUpdateComment(entity, accessToken);
+          if (!resultUpdate.isError) {
+            Swal.fire({
+              position: "top",
+              icon: "success",
+              title: resultUpdate.mess,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            handleRerender();
+            setOpenInputUpdate(false);
+          }
+          else{
+            Swal.fire({
+              position: "top",
+              icon: "error",
+              title: resultUpdate.mess,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        } else {
+          Swal.fire({
+            position: "top",
+            icon: "error",
+            title: "Ban khong phai tac gia",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      }
+    });
+  };
   return (
     <>
       <div className={cx("")}>
@@ -23,14 +95,48 @@ function ContentComment(props) {
             <p className={cx("writer")}>
               {firstname_user} {lastname_user}:
             </p>
-            <p className={cx("comment-content")}> {content}</p>
+
+            {openInputUpdate ? (
+              <input
+                onChange={(e) => {
+                  setInputValueCmt(e.target.value);
+                }}
+                className={cx("form-control")}
+                type="text"
+                value={inputValueCmt}
+                autoFocus
+              ></input>
+            ) : (
+              <p className={cx("comment-content")}>{content}</p>
+            )}
           </div>
 
           {inforUser?.id_user === id_user ? (
             <div className={cx("icon-edit")}>
-              <FontAwesomeIcon icon={faPenToSquare}></FontAwesomeIcon>
+              {openInputUpdate ? (
+                <div className={cx("article_btnUpdate")}>
+                  <button
+                    onClick={() => {
+                      setOpenInputUpdate(false);
+                    }}
+                    className={cx("", "button-close")}
+                  >
+                    X
+                  </button>
+                  <div
+                    onClick={handleUpdateComment}
+                    className={cx("btn", "btn-small", "btn-danger")}
+                  >
+                    Update
+                  </div>
+                </div>
+              ) : (
+                <FontAwesomeIcon
+                  onClick={handleFocusComment}
+                  icon={faPenToSquare}
+                ></FontAwesomeIcon>
+              )}
               <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
-
             </div>
           ) : (
             ""

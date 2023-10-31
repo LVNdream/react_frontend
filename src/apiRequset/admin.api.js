@@ -1,6 +1,8 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 // import { productsSlice } from "../page/Products/productsSlice";
+
+// hàm này dùng để tra về các kiểu sản phẩm là men hay women
 export const getTypeProduct = async (accessToken) => {
   try {
     const res = await axios.post("http://localhost:3001/admin/gettypeproduct", {
@@ -34,6 +36,7 @@ export const getTypeProduct = async (accessToken) => {
   }
 };
 
+// hàm này để trả về danh muc sản phẩm của thời trang nam hay nữ
 export const getCaterogyProduct = async (type_product, accessToken) => {
   try {
     const res = await axios.post(
@@ -62,6 +65,7 @@ export const getCaterogyProduct = async (type_product, accessToken) => {
   }
 };
 
+// hàm này để thêm sản phẩm mới vào database
 export const addProduct = async (inforProduct) => {
   try {
     const res = await axios.post(
@@ -77,6 +81,7 @@ export const addProduct = async (inforProduct) => {
   }
 };
 
+// hàm này để cập nhật số lượng các sản phẩm
 export const updateQuantity = async (inforUpdate, accessToken) => {
   try {
     const res = await axios.post(
@@ -89,6 +94,7 @@ export const updateQuantity = async (inforUpdate, accessToken) => {
   }
 };
 
+// hàm này để thêm chi tiết của sản phẩm
 export const addProductDetail = async (inforProduct, accessToken) => {
   try {
     const res = await axios.post(
@@ -113,6 +119,7 @@ export const UpdateProductDetail = async (inforProduct, accessToken) => {
   }
 };
 
+// hàm này để thêm sản phẩm vào bảng đã xóa
 export const addProductDeleted = async (inforProduct, accessToken) => {
   try {
     const res = await axios.post("http://localhost:3001/admin/deletedroduct", {
@@ -127,6 +134,7 @@ export const addProductDeleted = async (inforProduct, accessToken) => {
   }
 };
 
+// hàm trả về các sản phẩm đã xóa
 export const getProductDeleted = async (accessToken) => {
   try {
     const res = await axios.post(
@@ -142,6 +150,7 @@ export const getProductDeleted = async (accessToken) => {
   }
 };
 
+// hàm này dùng để cập nhật trạng thái các sản phẩm đã xóa
 export const updateOrderStatus = async (inforUpdate, accessToken) => {
   try {
     const res = await axios.post("http://localhost:3001/admin/updatestatus", {
@@ -154,6 +163,7 @@ export const updateOrderStatus = async (inforUpdate, accessToken) => {
   }
 };
 
+// hàm trả về các hóa đơn dducjocjl lọc trong giai đoạn ngày
 export const getOrderFilterByDate = async (filter, accessToken) => {
   try {
     const res = await axios.post(
@@ -171,6 +181,8 @@ export const getOrderFilterByDate = async (filter, accessToken) => {
 };
 
 // filter date////
+
+// hàm lọc theo ngày và có chứa email
 export const getOrderFilterByDate_Email = async (filter, accessToken) => {
   try {
     const res = await axios.post(
@@ -186,6 +198,8 @@ export const getOrderFilterByDate_Email = async (filter, accessToken) => {
     console.log(error);
   }
 };
+
+// hàm lọc the ngày và có chứa trạng thái đơn hàng
 export const getOrderFilterByDate_TypeOrder = async (filter, accessToken) => {
   try {
     const res = await axios.post(
@@ -201,6 +215,8 @@ export const getOrderFilterByDate_TypeOrder = async (filter, accessToken) => {
     console.log(error);
   }
 };
+
+// hàm tọc theo ngày và có chứa trạng thái và email
 export const getOrderFilterByDate_TypeOrder_Email = async (
   filter,
   accessToken
@@ -220,6 +236,8 @@ export const getOrderFilterByDate_TypeOrder_Email = async (
   }
 };
 // filter by year
+
+// hàm lọc hóa đơn theo năm
 export const getOrderFilterByDate_Year = async (filter, accessToken) => {
   try {
     const res = await axios.post(
@@ -236,6 +254,7 @@ export const getOrderFilterByDate_Year = async (filter, accessToken) => {
   }
 };
 
+// hàm lọc hóa đơn theo năm có chứa emaiil
 //
 export const getOrderFilterByDate_Year_Email = async (filter, accessToken) => {
   try {
@@ -252,6 +271,8 @@ export const getOrderFilterByDate_Year_Email = async (filter, accessToken) => {
     console.log(error);
   }
 };
+
+// hàm lọc hóa đơn theo năm có chứa trạng thái
 export const getOrderFilterByDate_Year_TypeOrder = async (
   filter,
   accessToken
@@ -270,6 +291,7 @@ export const getOrderFilterByDate_Year_TypeOrder = async (
     console.log(error);
   }
 };
+// hàm lọc hóa đơn có chưa email và trang thái
 export const getOrderFilterByDate_Year_TypeOrder_Email = async (
   filter,
   accessToken
@@ -334,8 +356,7 @@ export const sanphamdaban = async (filter, accessToken) => {
   }
 };
 
-// 
-
+//thống kê sản phẩm đã bán thoe từng loại
 export const sanphamdabanchitiet = async (filter, accessToken) => {
   try {
     const res = await axios.post(
@@ -343,6 +364,23 @@ export const sanphamdabanchitiet = async (filter, accessToken) => {
       {
         accessToken,
         filter,
+      }
+    );
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// ham de khoi phuc lai san pham
+export const restoreProduct = async (entity, accessToken) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/admin/restoreroduct`,
+      {
+        accessToken,
+        entity,
       }
     );
     // console.log(res.data);

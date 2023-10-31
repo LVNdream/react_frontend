@@ -30,6 +30,7 @@ function ProductDetail(props) {
 
   const [inforDetail, setInforDetail] = useState();
   const [inputQuantity, setInputQuantity] = useState(1);
+  const [rerender, setRerender] = useState();
 
   const inforUser = useSelector(userSelector);
 
@@ -97,10 +98,14 @@ function ProductDetail(props) {
     props.router.params.type,
     props.router.params.caterogy,
     props.router.params.id,
+    rerender,
   ]);
 
-  console.log(inforDetail);
-  console.log(inforUser);
+  const handleRerender = () => {
+    setRerender(rerender + 1);
+  };
+  // console.log(inforDetail);
+  // console.log(inforUser);
 
   // xet so luong khi chon san pham
 
@@ -441,6 +446,7 @@ function ProductDetail(props) {
                         key={index}
                         comment={comment}
                         inforUser={inforUser}
+                        handleRerender={handleRerender}
                       ></ContentComment>
                     );
                   })
