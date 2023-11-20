@@ -1,7 +1,6 @@
 import axios from "axios";
 // import { productsSlice } from "../page/Products/productsSlice";
 
-
 // hàm trả về tất cả các sản phẩm để lấy thông tin yêu thích từ người dùng
 export const getAllProduct = async (inforUser, setProducts) => {
   try {
@@ -16,7 +15,6 @@ export const getAllProduct = async (inforUser, setProducts) => {
     console.log(error);
   }
 };
-
 
 // hàm trả về tất cả các sản phẩm khi chưa đang nhập
 export const getAllProduct_Nologin = async (setProducts) => {
@@ -45,11 +43,17 @@ export const getProductByCaterogy = async (caterogy, setProducts) => {
 };
 
 // hàm để lấy chi tiết của một sản phẩm
-export const getProductDetail = async (type, caterogy, id, setInforDetail) => {
+export const getProductDetail = async (
+  type,
+  caterogy,
+  id,
+  setInforDetail,
+  iduser
+) => {
   try {
-    console.log(caterogy);
+
     const res = await axios.get(
-      `http://localhost:3001/products/${type}/${caterogy}/${id}`
+      `http://localhost:3001/products/${type}/${caterogy}/${id}/${iduser}`,
     );
     // console.log(res.data);
     setInforDetail(res.data);

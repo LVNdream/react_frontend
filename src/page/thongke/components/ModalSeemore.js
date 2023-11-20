@@ -36,19 +36,22 @@ function ModalSeemore(props) {
             X
           </button>
           <div className={cx("mt-3")}>
-          {productsdaban_detail.length > 0
-            ? productsdaban_detail.map((product) => {
-                return (
-                  <div className={cx("d-flex","mt-2")}>
-                    <p className={cx("ms-3")}>Color: {product.color}</p>
-                    <p className={cx("ms-3")}>size: {product.size}</p>
-                    <p className={cx("ms-3")}>
-                      Đã bán: {product.quantity_daban}
-                    </p>
-                  </div>
-                );
-              })
-            : ""}
+            {productsdaban_detail.length > 0
+              ? productsdaban_detail.map((product) => {
+                  return (
+                    <div
+                      key={product.id_product + product.color + product.size}
+                      className={cx("d-flex", "mt-2")}
+                    >
+                      <p className={cx("ms-3")}>Color: {product.color}</p>
+                      <p className={cx("ms-3")}>size: {product.size}</p>
+                      <p className={cx("ms-3")}>
+                        Đã bán: {product.quantity_daban}
+                      </p>
+                    </div>
+                  );
+                })
+              : ""}
           </div>
         </div>
       </div>

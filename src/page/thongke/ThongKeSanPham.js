@@ -60,7 +60,7 @@ function ThongKeDonHang() {
   //   cai de ve bieu do
 
   //
-  console.log(products);
+  // console.log(products);
   return (
     <>
       <div className={cx("container-fluid", "article_main")}>

@@ -463,7 +463,7 @@ function Header() {
                       </Link>
                     </p>
                     <Link
-                      to={"/payment"}
+                      to={"/payment/faild"}
                       className={cx("btn", "btn-cart", "btn-danger")}
                       id={cx("btn--pay")}
                     >

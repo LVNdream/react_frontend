@@ -17,7 +17,7 @@ function ProductDaban(props) {
     price_temp,
   } = props.product;
   return (
-    <div key={id_product} className={cx("row", "ms-3", "me-3")}>
+    <div key={id_product + name_product} className={cx("row", "ms-3", "me-3")}>
       <div className={cx("col-4", "colName")}>
         <div
           className={cx("d-flex", "articleInfor")}

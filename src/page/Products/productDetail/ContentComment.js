@@ -3,7 +3,7 @@ import classname from "classnames/bind";
 import styles from "./contentcomment.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { clientUpdateComment } from "../../../apiRequset/client.api";
+import { clientDeleteComment, clientUpdateComment } from "../../../apiRequset/client.api";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
@@ -60,8 +60,7 @@ function ContentComment(props) {
             });
             handleRerender();
             setOpenInputUpdate(false);
-          }
-          else{
+          } else {
             Swal.fire({
               position: "top",
               icon: "error",
@@ -82,6 +81,58 @@ function ContentComment(props) {
       }
     });
   };
+
+  // hàm để xóa comment
+  const handleDeleteComment = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (id_user === inforUser?.id_user) {
+          const entity = {
+            id_user,
+            id_product,
+            id_content,
+          };
+          const resultUpdate = await clientDeleteComment(entity, accessToken);
+          if (!resultUpdate.isError) {
+            Swal.fire({
+              position: "top",
+              icon: "success",
+              title: resultUpdate.mess,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            handleRerender();
+          } else {
+            Swal.fire({
+              position: "top",
+              icon: "error",
+              title: resultUpdate.mess,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        } else {
+          Swal.fire({
+            position: "top",
+            icon: "error",
+            title: "Ban khong phai tac gia",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        console.log("da xóa thành công")
+      }
+    });
+  };
+
   return (
     <>
       <div className={cx("")}>
@@ -136,7 +187,7 @@ function ContentComment(props) {
                   icon={faPenToSquare}
                 ></FontAwesomeIcon>
               )}
-              <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+              <FontAwesomeIcon icon={faTrash} onClick={handleDeleteComment}></FontAwesomeIcon>
             </div>
           ) : (
             ""

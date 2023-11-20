@@ -15,11 +15,11 @@ function AdminHome() {
   const navigate = useNavigate();
   const accessToken = Cookies.get("accessToken");
 
-  const [orders,setOrder] = useState()
+  const [orders, setOrder] = useState();
   useEffect(() => {
     if (inforUser !== null && inforUser.authorization === 0) {
       async function adminGetAllOrder() {
-         const allorder = await getAllOrder(accessToken);
+        const allorder = await getAllOrder(accessToken);
         setOrder(allorder);
       }
       adminGetAllOrder();
@@ -35,34 +35,14 @@ function AdminHome() {
           <div>
             <div id={cx("aritcle__infor")} className={cx("container")}>
               <div className={cx("d-flex", "filter_order", "mb-1")}>
-                <form action="/admin/showOrder/filterByDate" method="POST">
-                  <input type="date" name="ngay" />
+                <div>
+                  <input type="date" />
                   <button
                     className={cx("btn-design", "btn-info", "btn-sizebtn")}
                   >
                     Tìm
                   </button>
-                </form>
-                <form action="/admin/showOrder/filterByMonth" method="POST">
-                  <input
-                    type="month"
-                    name="thang"
-                    aria-placeholder="asdasdsa"
-                  />
-                  <button
-                    className={cx("btn-design", "btn-info", "btn-sizebtn")}
-                  >
-                    Tìm
-                  </button>
-                </form>
-                <form >
-                  <input type="week" name="tuan" />
-                  <button
-                    className={cx("btn-design", "btn-info", "btn-sizebtn")}
-                  >
-                    Tìm
-                  </button>
-                </form>
+                </div>
               </div>
               <div className={cx("mb-2")}>
                 <Link>Tất cả hóa đơn</Link>
@@ -72,7 +52,12 @@ function AdminHome() {
                 <div>
                   {orders.allOrder ? (
                     orders.allOrder.map((order) => {
-                      return <OrderAdmin key={order.id_order} order={order}></OrderAdmin>;
+                      return (
+                        <OrderAdmin
+                          key={order.id_order}
+                          order={order}
+                        ></OrderAdmin>
+                      );
                     })
                   ) : (
                     <div>Bạn chưa có đơn hàng</div>
@@ -81,8 +66,6 @@ function AdminHome() {
               ) : (
                 <div>Bạn chưa có đơn hàng</div>
               )}
-
-              
             </div>
           </div>
         </div>

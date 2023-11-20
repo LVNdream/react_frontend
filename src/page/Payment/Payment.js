@@ -4,27 +4,85 @@ import styles from "./payment.module.scss";
 import PayProduct from "./components/PayProduct";
 import { useDispatch, useSelector } from "react-redux";
 import { cartSelector, totalMoney, userSelector } from "../../redux/selector";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 // import axios from "axios";
 import { cartSlice } from "../Cart/cartSlice";
-import { addOrder } from "../../apiRequset/order.api";
+import { addOrder, createUrlVnPay } from "../../apiRequset/order.api";
 import Swal from "sweetalert2";
 
 function Payment() {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const inforUser = useSelector(userSelector);
 
+  let params = useParams();
+
+  const cx = classNames.bind(styles);
+
+  // const totalItemInCart = useSelector(totalItem);
+  const totalMoneyInCart = useSelector(totalMoney);
+  const itemInCart = useSelector(cartSelector);
+
+  const [fullname, setFullname] = useState(
+    inforUser?.firstname_user + " " + inforUser?.lastname_user
+  );
+  const [email, setEmail] = useState(inforUser?.email_user);
+  const [phone, setPhone] = useState(inforUser?.phone_user);
+  const [recive, setRecive] = useState("");
+  const [adress, setAdress] = useState("");
+  const [payMethod, setPayMethod] = useState("");
+  const [note, setNote] = useState("");
 
   useEffect(() => {
     if (inforUser === null) {
       navigate("/client/login");
     } else {
+      console.log(params.status);
+
+      if (params.status === "success" && JSON.parse(localStorage.getItem("inforOrder"))) {
+        const inforOrder = JSON.parse(localStorage.getItem("inforOrder"));
+
+        async function AddOrder() {
+          if (inforOrder) {
+            console.log(inforOrder);
+            console.log("them hoa don");
+            const response = await addOrder(inforOrder);
+            Swal.fire({
+              position: "top",
+              icon: "success",
+              title: response,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            setFullname("");
+            setEmail("");
+            setPhone("");
+            setRecive("");
+            setAdress("");
+            setPayMethod("");
+            setNote("");
+            dispatch(cartSlice.actions.clearCart());
+            localStorage.removeItem("inforOrder");
+            console.log(JSON.parse(localStorage.getItem("inforOrder")));
+          } else {
+            Swal.fire({
+              position: "top",
+              icon: "error",
+              title:
+                "Chưa có sản phẩm trong giỏ hàng hoặc bạn điền thiếu thông tin",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        }
+        AddOrder();
+      } else {
+        console.log("k them hoa don");
+      }
     }
-  }, [inforUser, navigate]);
-  
+  }, [inforUser, navigate, params]);
 
   // hàm check Email
   const validateEmail = (email) => {
@@ -61,20 +119,6 @@ function Payment() {
     }
   };
 
-  const cx = classNames.bind(styles);
-
-  // const totalItemInCart = useSelector(totalItem);
-  const totalMoneyInCart = useSelector(totalMoney);
-  const itemInCart = useSelector(cartSelector);
-
-  const [fullname, setFullname] = useState(inforUser?.firstname_user+" "+inforUser?.lastname_user);
-  const [email, setEmail] = useState(inforUser?.email_user);
-  const [phone, setPhone] = useState(inforUser?.phone_user);
-  const [recive, setRecive] = useState("");
-  const [adress, setAdress] = useState("");
-  const [payMethod, setPayMethod] = useState("");
-  const [note, setNote] = useState("");
-
   // if (fullname) {
   //   console.log("123");
   // } else {
@@ -93,23 +137,6 @@ function Payment() {
       payMethod &&
       itemInCart.length > 0
     ) {
-      // console.log({
-      //   fullname,
-      //   email,
-      //   phone,
-      //   recive,
-      //   adress,
-      //   paymethod_order: payMethod,
-      //   note_order: note,
-      //   total_money_order:
-      //     totalMoneyInCart && totalMoneyInCart > 30000
-      //       ? totalMoneyInCart
-      //       : totalMoneyInCart + 30000,
-      //   itemInCart,
-      //   status: "Chờ xác nhận",
-      // });
-      // alert("Thông tin đã đầy đủ và hợp lê");
-
       const inforOrder = {
         fullname,
         email,
@@ -125,59 +152,53 @@ function Payment() {
         itemInCart,
         status: "Chờ xác nhận",
       };
-      const response = await addOrder(inforOrder);
+      if (payMethod === "Chuyển khoản vnpay") {
+        console.log("chuyen khoan vn pay");
+        localStorage.setItem("inforOrder", JSON.stringify(inforOrder));
+        const response = await createUrlVnPay(inforOrder);
+        console.log(response);
+        window.location.href = response;
+      } else {
+        console.log("tien mat");
 
-      // console.log(response);
+        const response = await addOrder(inforOrder);
 
-      Swal.fire({
-        position: "top",
-        icon: "success",
-        title: response,
-        showConfirmButton: false,
-        timer: 1500,
-      });
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: response,
+          showConfirmButton: false,
+          timer: 1500,
+        });
 
-      // alert(response);
-      setFullname("");
-      setEmail("");
-      setPhone("");
-      setRecive("");
-      setAdress("");
-      setPayMethod("");
-      setNote("");
-      dispatch(cartSlice.actions.clearCart());
+        setFullname("");
+        setEmail("");
+        setPhone("");
+        setRecive("");
+        setAdress("");
+        setPayMethod("");
+        setNote("");
+        dispatch(cartSlice.actions.clearCart());
+      }
 
-      // axios
-      //   .post("http://localhost:3001/payment/addorder", {
-      //     fullname,
-      //     email,
-      //     phone,
-      //     recive,
-      //     adress,
-      //     paymethod_order: payMethod,
-      //     note_order: note,
-      //     total_money_order:
-      //       totalMoneyInCart && totalMoneyInCart > 30000
-      //         ? totalMoneyInCart
-      //         : totalMoneyInCart + 30000,
-      //     itemInCart,
-      //     status: "Chờ xác nhận",
-      //   })
-      //   .then(function (response) {
-      //     console.log(response.data);
-      //     alert(response.data);
-      //     setFullname("");
-      //     setEmail("");
-      //     setPhone("");
-      //     setRecive("");
-      //     setAdress("");
-      //     setPayMethod("");
-      //     setNote("");
-      //     dispatch(cartSlice.actions.clearCart())
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
+      //  const response = await addOrder(inforOrder);
+
+      // Swal.fire({
+      //   position: "top",
+      //   icon: "success",
+      //   title: response,
+      //   showConfirmButton: false,
+      //   timer: 1500,
+      // });
+
+      // setFullname("");
+      // setEmail("");
+      // setPhone("");
+      // setRecive("");
+      // setAdress("");
+      // setPayMethod("");
+      // setNote("");
+      // dispatch(cartSlice.actions.clearCart());
     } else {
       Swal.fire({
         position: "top",
@@ -411,6 +432,23 @@ function Payment() {
                   )}
                 </div>
 
+                <div className={cx("article--customer-note", "mb-4")}>
+                  <p className={cx("fw-bold")}>
+                    <label htmlFor="customer--note">Ghi chú đơn hàng:</label>
+                  </p>
+                  <textarea
+                    onChange={(e) => {
+                      setNote(e.target.value);
+                      // console.log(fullname)
+                    }}
+                    id="customer--note"
+                    name="ghichu"
+                    rows="5"
+                    cols="72"
+                    value={note}
+                  ></textarea>
+                </div>
+
                 <h5 className={cx("tiltle__pay--method", "mt-3")}>
                   Phương thức thanh toán
                 </h5>
@@ -432,7 +470,7 @@ function Payment() {
                         type="radio"
                         name="thanhtoan"
                         id="pay--method1"
-                        value="Chuyển khoản"
+                        value="Chuyển khoản vnpay"
                       />
                       <svg
                         className={cx("icon--credit-card")}
@@ -459,7 +497,7 @@ function Payment() {
                         className={cx("label--payType")}
                         htmlFor="pay--method2"
                       >
-                        Chuyển khoản
+                        Chuyển khoản vnpay
                       </label>
                     </div>
                     <div
@@ -560,22 +598,6 @@ function Payment() {
                   )}
                 </div>
 
-                <div className={cx("article--customer-note", "mb-4")}>
-                  <p className={cx("fw-bold")}>
-                    <label htmlFor="customer--note">Ghi chú đơn hàng:</label>
-                  </p>
-                  <textarea
-                    onChange={(e) => {
-                      setNote(e.target.value);
-                      // console.log(fullname)
-                    }}
-                    id="customer--note"
-                    name="ghichu"
-                    rows="5"
-                    cols="72"
-                    value={note}
-                  ></textarea>
-                </div>
                 <button
                   className={cx("btn", "btn-danger", "btn-comleteOddered")}
                 >

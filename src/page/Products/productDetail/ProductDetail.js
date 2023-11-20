@@ -88,17 +88,23 @@ function ProductDetail(props) {
   // ham de lay du lieu ve
 
   useEffect(() => {
+    let id_user = "null"
+    if(inforUser){
+      id_user = inforUser?.id_user
+    }
     getProductDetail(
       props.router.params.type,
       props.router.params.caterogy,
       props.router.params.id,
-      setInforDetail
+      setInforDetail,
+      id_user
     );
   }, [
     props.router.params.type,
     props.router.params.caterogy,
     props.router.params.id,
     rerender,
+    inforUser,
   ]);
 
   const handleRerender = () => {

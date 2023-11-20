@@ -110,3 +110,20 @@ export const clientUpdateComment = async (entity, accessToken) => {
   }
 };
 
+
+// ham de xoa CMT 
+export const clientDeleteComment = async (entity, accessToken) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:3001/client/deletecomments`,
+      {
+        entity,
+        accessToken: accessToken,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+

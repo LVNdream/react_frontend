@@ -15,6 +15,31 @@ export const addOrder = async (infor) => {
   }
 };
 
+export const createUrlVnPay = async (infor) => {
+  try {
+    const res = await axios.post(
+      "http://localhost:3001/payment/createurlvnpay",
+      infor
+    );
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const returnURL = async (infor) => {
+  try {
+    const res = await axios.post(
+      "http://localhost:3001/payment/test",
+      infor
+    );
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // / hàm để trả về tất cả các hóa đơn cho khách hàng
 export const clientGetAllOrder = async (email, accessToken) => {
   try {

@@ -33,7 +33,7 @@ const publicRoutes = [
   },
   { path: "/client/register", component: Register, layout: LayoutCilent },
   { path: "/cart", component: Cart, layout: LayoutCilent },
-  { path: "/payment", component: Payment, layout: LayoutCilent },
+  { path: "/payment/:status", component: Payment, layout: LayoutCilent },
   { path: "/client/login", component: Login, layout: LayoutCilent },
 
   // admin
