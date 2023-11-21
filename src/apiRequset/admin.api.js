@@ -389,3 +389,18 @@ export const restoreProduct = async (entity, accessToken) => {
     console.log(error);
   }
 };
+
+// ham nay loc hoa don de cap nhat
+export const filterToUpdate = async (dataSearch, accessToken) => {
+  try {
+    const res = await axios.post(`http://localhost:3001/admin/filtertoupdate`, {
+      accessToken,
+      dataSearch,
+    });
+    // console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+

@@ -47,3 +47,9 @@
   padding: 20px;
   overflow: scroll;
 }
+.setAllOrder{
+  color: blue;
+  &:hover{
+    cursor: pointer;
+  }
+}

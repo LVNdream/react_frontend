@@ -36,7 +36,7 @@ function OrderAdmin(props) {
   ) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "You update this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
