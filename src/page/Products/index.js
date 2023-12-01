@@ -64,7 +64,7 @@ function Products(props) {
 
       Swal.fire({
         position: "top",
-        icon: "warning",
+        icon: "success",
         title: resultaddFVR,
         showConfirmButton: false,
         timer: 1500,

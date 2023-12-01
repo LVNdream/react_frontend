@@ -34,7 +34,7 @@ function CheckOrder() {
       }
       getOrder();
     }
-  }, [accessToken, inforUser, navigate,rerender]);
+  }, [accessToken, inforUser, navigate, rerender]);
   // console.log(orders);
 
   const handleClientDeleteOrder = async (id_order) => {

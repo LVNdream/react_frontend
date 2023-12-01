@@ -52,7 +52,7 @@ function Cart() {
               <li>Phí vận chuyển sẽ được tính ở trang thanh toán.</li>
               <li>Bạn cũng có thể nhập mã giảm giá ở trang thanh toán.</li>
             </ul>
-            <Link id="pay--link" to={"/payment"}>
+            <Link id="pay--link" to={"/payment/faild"}>
               {!totalItemInCart || totalItemInCart < 0 ? (
                 <button
                   type="submit"

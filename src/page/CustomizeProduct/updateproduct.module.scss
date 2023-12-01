@@ -73,15 +73,29 @@
   font-size: 20px;
   color: #bf8b31;
 }
-.item_color{
-  gap:10px
+.item_color {
+  gap: 10px;
 }
-.btnToggleSeeDetail{
-  &:hover{
+.btnToggleSeeDetail {
+  &:hover {
     font-size: 17px;
     cursor: pointer;
   }
 }
-.articleIconUpdate{
+.articleIconUpdate {
   gap: 30px;
+}
+.articleSearch {
+  position: relative;
+}
+.iconSearch {
+  color: #c49d5a;
+  font-size: 20px;
+  position: absolute;
+  bottom: 9%;
+  right: 10px;
+  &:hover {
+    color: #e69915;
+    cursor: pointer;
+  }
 }

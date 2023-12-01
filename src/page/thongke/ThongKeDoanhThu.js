@@ -195,7 +195,7 @@ function ThongKeDaonhThu() {
         dataFilter,
         accessToken
       );
-      // console.log(resfilter);
+      console.log(resfilter);
       setOrderYear(resfilter);
       setDataChart(resfilter);
       setOrders("");

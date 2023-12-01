@@ -34,11 +34,10 @@ function Order(props) {
   const toggleSeeMore = () => {
     setSeeMore(!seeMore);
   };
-  const comment = props.comment;
   const {
     adress,
     date_order,
-
+    
     fullname,
     id_order,
     phone,
@@ -46,7 +45,8 @@ function Order(props) {
     status_order,
     total_money_order,
   } = props.order;
-
+  
+  const comment = status_order === "Giao hàng thành công";
   const handleClickButtonDeleteOrder = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -99,6 +99,8 @@ function Order(props) {
           )}
 
           {seeMore === true ? (
+
+
             <>
               {listItem
                 ? listItem.map((item) => {
@@ -107,7 +109,6 @@ function Order(props) {
                         key={item.id_product + item.size + item.color}
                         className={cx(
                           "d-flex",
-
                           "mb-2",
                           "mr-5",
                           "listItem",

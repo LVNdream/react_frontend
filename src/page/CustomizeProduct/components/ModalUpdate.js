@@ -50,15 +50,33 @@ function ModalUpdate(props) {
 
   const handleSubmitUpdateQuantityProduct = async (entityUpdate) => {
     // console.log({entity,accessToken});
-    const resultadd = await updateQuantity(entityUpdate, accessToken);
 
     Swal.fire({
-      position: "top-end",
+      title: "Are you sure?",
+      text: "You want to update this!",
       icon: "warning",
-      title: resultadd.mess,
-      showConfirmButton: false,
-      timer: 1500,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const resultadd = await updateQuantity(entityUpdate, accessToken);
+        Swal.fire({
+          title: "Updated!",
+          text: resultadd.mess,
+          icon: "success",
+        });
+      }
     });
+
+    // Swal.fire({
+    //   position: "top",
+    //   icon: "success",
+    //   title: resultadd.mess,
+    //   showConfirmButton: false,
+    //   timer: 1500,
+    // });
 
     // console.log(resultadd);
     // alert(resultadd.mess);
@@ -68,7 +86,7 @@ function ModalUpdate(props) {
     if (resultadd.isError) {
       Swal.fire({
         position: "top",
-        icon: "warning",
+        icon: "error",
         title: resultadd.mess,
         showConfirmButton: false,
         timer: 1500,
@@ -78,7 +96,7 @@ function ModalUpdate(props) {
     } else {
       Swal.fire({
         position: "top",
-        icon: "warning",
+        icon: "success",
         title: resultadd.mess,
         showConfirmButton: false,
         timer: 1500,
@@ -92,29 +110,42 @@ function ModalUpdate(props) {
     e.preventDefault();
     if (nameProduct && pictureProduct && priceProduct) {
       console.log(inforProduct);
-      const resultUpdate = await UpdateProductDetail(inforProduct, accessToken);
 
-      if (resultUpdate.isError) {
-        Swal.fire({
-          position: "top",
-          icon: "error",
-          title: resultUpdate.mess,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        // alert(resultUpdate.mess);
-      } else {
-        Swal.fire({
-          position: "top",
-          icon: "success",
-          title: resultUpdate.mess,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        // alert(resultUpdate.mess);
-        // console.log(1312312)
-        // navigate("/admin/updateproduct");
-      }
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You want to update this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, update it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const resultUpdate = await UpdateProductDetail(
+            inforProduct,
+            accessToken
+          );
+
+          if (resultUpdate.isError) {
+            Swal.fire({
+              position: "top",
+              icon: "error",
+              title: resultUpdate.mess,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            // alert(resultUpdate.mess);
+          } else {
+            Swal.fire({
+              position: "top",
+              icon: "success",
+              title: resultUpdate.mess,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        }
+      });
     } else {
       console.log("Chua co thong tin");
     }
@@ -198,27 +229,31 @@ function ModalUpdate(props) {
                   />
                 </div>
                 {openUpdateQuantity ? (
-                  <h5
-                    onClick={() => {
-                      handleToggleTableModal(
-                        openUpdateQuantity,
-                        setopenUpdateQuantity
-                      );
-                    }}
-                  >
-                    CloseModalUpdateQuantity
-                  </h5>
+                  <div className={cx("btn", "btn-sm", "btn-outline-secondary")}>
+                    <h6
+                      onClick={() => {
+                        handleToggleTableModal(
+                          openUpdateQuantity,
+                          setopenUpdateQuantity
+                        );
+                      }}
+                    >
+                      CloseModalUpdateQuantity
+                    </h6>
+                  </div>
                 ) : (
-                  <h5
-                    onClick={() => {
-                      handleToggleTableModal(
-                        openUpdateQuantity,
-                        setopenUpdateQuantity
-                      );
-                    }}
-                  >
-                    OpenModalUpdateQuantity
-                  </h5>
+                  <div className={cx("btn", "btn-sm", "btn-outline-secondary")}>
+                    <h6
+                      onClick={() => {
+                        handleToggleTableModal(
+                          openUpdateQuantity,
+                          setopenUpdateQuantity
+                        );
+                      }}
+                    >
+                      Update Quantity
+                    </h6>
+                  </div>
                 )}
 
                 {openUpdateQuantity ? (
@@ -268,27 +303,31 @@ function ModalUpdate(props) {
 
               <div>
                 {openAddSizeAndColor ? (
-                  <h5
-                    onClick={() => {
-                      handleToggleTableModal(
-                        openAddSizeAndColor,
-                        setopenAddSizeAndColor
-                      );
-                    }}
-                  >
-                    Close Add Color And Size
-                  </h5>
+                  <div className={cx("btn", "btn-sm", "btn-outline-secondary")}>
+                    <h6
+                      onClick={() => {
+                        handleToggleTableModal(
+                          openAddSizeAndColor,
+                          setopenAddSizeAndColor
+                        );
+                      }}
+                    >
+                      Close Modal
+                    </h6>
+                  </div>
                 ) : (
-                  <h5
-                    onClick={() => {
-                      handleToggleTableModal(
-                        openAddSizeAndColor,
-                        setopenAddSizeAndColor
-                      );
-                    }}
-                  >
-                    Open Add Color And Size
-                  </h5>
+                  <div className={cx("btn", "btn-sm", "btn-outline-secondary")}>
+                    <h6
+                      onClick={() => {
+                        handleToggleTableModal(
+                          openAddSizeAndColor,
+                          setopenAddSizeAndColor
+                        );
+                      }}
+                    >
+                      Add Color And Size
+                    </h6>
+                  </div>
                 )}
                 {openAddSizeAndColor ? (
                   <AddColorAndSize

@@ -44,14 +44,13 @@ function ModalComment(props) {
       formData.append(`firstname_user`, inforUser.firstname_user);
       formData.append(`id_product`, id_product);
 
-
-
-
       for (let i = 0; i < files.length; i++) {
         formData.append(`files`, files[i]);
       }
 
       const resUpload = await clientUploadImgCmt(formData);
+      setContent("");
+      setFile("");
       alert(resUpload);
     } else {
       alert("No data");

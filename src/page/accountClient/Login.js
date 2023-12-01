@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./login.module.scss";
 import { loginUser } from "../../apiRequset/account.api";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const cx = classNames.bind(styles);
@@ -106,7 +106,7 @@ function Login() {
         </p>
         <p className={cx("policy")}>
           Nếu bạn chưa có tài khoản, vui lòng tạo tài khoản!
-          <a href="/account/register">Tạo tài khoản</a>
+          <Link to="/client/register">Tạo tài khoản</Link>
         </p>
         <div className={cx("articleBtnLogin")}>
           <button

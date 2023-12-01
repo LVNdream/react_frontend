@@ -246,7 +246,7 @@ function Header() {
                   <h3>Tìm kiếm</h3>
                   <hr />
                   <div className={cx("formsearch__input")}>
-                    <form method="GET" action="/fashion/searchMenfashion">
+                    <form >
                       <input
                         type="text"
                         id={cx("inputsearch5")}
@@ -256,11 +256,11 @@ function Header() {
                         onChange={handleSearchTextChange}
                         placeholder="Nhập sản phẩm cần tìm... "
                       />
-                      <button className={cx("search-in-input")}>
+                      <div className={cx("search-in-input")}>
                         <FontAwesomeIcon
                           icon={faMagnifyingGlass}
                         ></FontAwesomeIcon>
-                      </button>
+                      </div>
                     </form>
                   </div>
                   <div

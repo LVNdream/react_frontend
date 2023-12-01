@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import classnames from "classnames/bind";
 import styles from "./updateproduct.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faPen,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { productsAfterFilter } from "../../redux/selector";
 import {
-  getAllProduct,
   getAllProduct_Nologin,
   getProductByCaterogy,
 } from "../../apiRequset/product.api";
@@ -116,7 +119,7 @@ function UpdateProduct(props) {
     if (props.router.params.caterogy) {
       getProductByCaterogy(props.router.params.caterogy, setProducts);
     } else {
-      getAllProduct_Nologin( setProducts);
+      getAllProduct_Nologin(setProducts);
     }
   }, [props.router.params.caterogy, rerender]);
 
@@ -124,11 +127,37 @@ function UpdateProduct(props) {
 
   dispatch(productsSlice.actions.setProductsList(products));
   const productsList = useSelector(productsAfterFilter);
+
+  // hamf de xu li loc hang hoa
+
+  const handleFilterProduct = async (e) => {
+    productsList.filter((product) => {
+      return product.name_product.toLowerCase().includes(e.target.value);
+    });
+  };
+
   // console.log(productsList);
 
   return (
     <>
       <div id={cx("aritcle__infor")} className={cx("container")}>
+        {/* <div className={cx("d-flex","mb-3","articleSearch")}>
+          <div className={cx("flex-fill")}>
+            <label for="exampleFormControlInput1" className={cx("form-label")}>
+              Tìm kiếm sản phẩm
+            </label>
+            <input
+              type="text"
+              className={cx("form-control")}
+              id="exampleFormControlInput1"
+              placeholder="Nhập tên sản phẩm"
+            />
+          </div>
+          <div className={cx("iconSearch")}>
+            <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>
+          </div>
+        </div> */}
+
         {productsList.length > 0 ? (
           productsList.map((product, index) => {
             return (
