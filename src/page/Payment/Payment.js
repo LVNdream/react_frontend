@@ -56,9 +56,9 @@ function Payment() {
               showConfirmButton: false,
               timer: 1500,
             });
-            setFullname("");
-            setEmail("");
-            setPhone("");
+            // setFullname("");
+            // setEmail("");
+            // setPhone("");
             setRecive("");
             setAdress("");
             setPayMethod("");
@@ -171,9 +171,9 @@ function Payment() {
           timer: 1500,
         });
 
-        setFullname("");
-        setEmail("");
-        setPhone("");
+        // setFullname("");
+        // setEmail("");
+        // setPhone("");
         setRecive("");
         setAdress("");
         setPayMethod("");

@@ -21,7 +21,7 @@ function ModalSeemore(props) {
       setProductsdaban_detail(response);
     }
     fetchData();
-  }, []);
+  },[accessToken]);
   console.log(productsdaban_detail);
   return (
     <>

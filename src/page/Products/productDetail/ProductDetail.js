@@ -30,7 +30,7 @@ function ProductDetail(props) {
 
   const [inforDetail, setInforDetail] = useState();
   const [inputQuantity, setInputQuantity] = useState(1);
-  const [rerender, setRerender] = useState();
+  const [rerender, setRerender] = useState(0);
 
   const inforUser = useSelector(userSelector);
 

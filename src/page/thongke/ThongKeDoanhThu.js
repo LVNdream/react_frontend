@@ -325,7 +325,7 @@ function ThongKeDaonhThu() {
         {/* khu vuc bieu do */}
         <div className={cx("article_chart")}>
           {dataChart.length <= 0
-            ? "Mời bạn chọn ngày tháng để xem biểu đồ"
+            ? "Mời bạn chọn mốc thời gian để xem biểu đồ"
             : ""}
           <div className={cx("total_order")}>
             Daonh thu:

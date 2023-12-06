@@ -59,7 +59,7 @@ function CartProduct(props) {
         Swal.fire({
           position: 'top',
           icon: 'warning',
-          title: 'Quantity have to larger 0',
+          title: 'Quantity not enough for you',
           showConfirmButton: false,
           timer: 1500
         })
